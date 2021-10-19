@@ -3,7 +3,7 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/cupertino.dart';
 
-@Entity(tableName: "users")
+@Entity(tableName: "users_table")
 class UserEntity {
   @PrimaryKey(autoGenerate: true)
   final int? id;

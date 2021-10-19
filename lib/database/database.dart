@@ -15,7 +15,7 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 
 part 'database.g.dart'; // the generated code will be there
 
-// run flutter packages pub run build_runner build   in the terminal to update database
+// run   flutter packages pub run build_runner build   in the terminal to update database
 
 @Database(version: 1, entities: [MovieEntity, UserEntity, FriendsEntity, LikedMovieEntity])
 abstract class AppDatabase extends FloorDatabase {

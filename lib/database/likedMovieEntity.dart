@@ -6,7 +6,7 @@ import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/movieEntity.dart';
 
 @Entity(
-    tableName: "liked_movies",
+    tableName: "liked_movies_table",
     foreignKeys: [
       ForeignKey(
         childColumns: ['user_id'],

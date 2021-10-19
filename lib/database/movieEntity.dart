@@ -3,7 +3,7 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/cupertino.dart';
 
-@Entity(tableName: "movie")
+@Entity(tableName: "movie_table")
 class MovieEntity {
   @PrimaryKey(autoGenerate: true)
   final int? id;
