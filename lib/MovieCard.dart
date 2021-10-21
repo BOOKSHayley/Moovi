@@ -4,28 +4,41 @@ import 'package:moovi/Movie.dart';
 import 'Movie.dart';
 
 class MovieCard extends StatelessWidget {
-  //take a movie as a field?
-  final String title;
-  final String imgurl;
-  MovieCard(this.title, this.imgurl);
+  //final Movie movie;
+  final Movie movie;
+  MovieCard(this.movie);
 
   @override
   Widget build(BuildContext context) {
     return Swipable(
-      //format this
-        child: Container(
-            child: Column(
-              children: <Widget>[
-                Text(title),
-                Image.network(imgurl)
-              ],
-            ),
-            decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(16.0)
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Text(movie.movieTitle,
+                style: TextStyle(fontSize: 30)),
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(20.0)
+              ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 30.0),
+                child: Image.network(
+                  movie.imageLink,
+                  fit: BoxFit.fitHeight
+                )
+              ),
             )
+          ],
+        ),
+        constraints: BoxConstraints.expand(),
+        margin: EdgeInsets.only(top: 40.0),
+        decoration: BoxDecoration(
+          color: Colors.lightBlueAccent,
+          borderRadius: BorderRadius.circular(16.0)
         )
-      //,onSwipeLeft: Karley/Lucas's function call goes here
+      ),
+      //onSwipeLeft: (){},
       //,onSwipeRight: Karley/Lucas's function call goes here
     );
   }
