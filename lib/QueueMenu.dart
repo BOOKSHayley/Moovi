@@ -17,7 +17,25 @@ class _QueueMenuState extends State<QueueMenu> {
       child: Column(
         children: <Widget>[
           Queue(),
-          Row(children: <Widget>[])
+          Row(children: <Widget>[
+            Expanded(
+              child: ElevatedButton(
+                child: Text("Like"),
+                //color: Colors.greenAccent,
+                onPressed: () {},
+
+              ),
+            ),
+
+            Expanded(
+              child: ElevatedButton(
+                child: Text("Dislike"),
+                //color: Colors.red,
+                onPressed: () {},
+              )
+            )
+
+          ])
         ],
       ),
     );
