@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'QueueMenu.dart';
-import "LikedListMenu.dart";
-import "FriendsLikedListMenu.dart";
+import 'movie/QueueMenu.dart';
+import 'movie/LikedListMenu.dart';
+import 'movie/FriendsLikedListMenu.dart';
 
 void main(){
    runApp(const MyApp());

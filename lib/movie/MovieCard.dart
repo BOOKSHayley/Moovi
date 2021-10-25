@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
-import 'package:moovi/Movie.dart';
+import 'package:moovi/movie/Movie.dart';
 import 'Movie.dart';
 
 class MovieCard extends StatelessWidget {
