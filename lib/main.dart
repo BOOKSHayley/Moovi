@@ -1,7 +1,7 @@
-
-import "package:flutter/material.dart";
-import "yourLikedList.dart";
-import "friendsLikedList.dart";
+import 'package:flutter/material.dart';
+import 'movie/QueueMenu.dart';
+import 'movie/LikedListMenu.dart';
+import 'movie/FriendsLikedListMenu.dart';
 
 void main(){
    runApp(const MyApp());
@@ -12,47 +12,37 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       title: 'MOOVI',
-      home: MyStatefulWidget(),
+      home: MenusStatefulWidget(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
     );
   }
 }
 
-/// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class MenusStatefulWidget extends StatefulWidget {
+  const MenusStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget>{
+class _MenusStatefulWidgetState extends State<MenusStatefulWidget>{
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[ //List of widgets for the screen
-       yourLikedList().returnMyList(), 
-          TextButton(
-              style: TextButton.styleFrom(
-              padding: const EdgeInsets.all(16.0),
-              primary: Colors.blue,
-              textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {},
-              child: const Text('Gradient'),
-              ) ,
-        friendsLikedList().returnFriendsList()  
+    LikedListMenu().returnMyList(),
+    QueueMenu(),
+    FriendsLikedListMenu().returnFriendsList()
   ];
-
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +54,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            label: 'Your Liked List',
+            label: 'Liked Movies',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
@@ -124,4 +114,5 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
 //     );
 //   }
 // }
+
 
