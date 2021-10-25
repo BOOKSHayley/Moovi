@@ -1,3 +1,4 @@
+
 import "package:flutter/material.dart";
 import "yourLikedList.dart";
 import "friendsLikedList.dart";
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       title: 'MOOVI',
       home: MyStatefulWidget(),
     );
