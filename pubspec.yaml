@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   floor:
+  flip_card: ^0.6.0
   flutter_swipable: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
