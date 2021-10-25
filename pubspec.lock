@@ -225,6 +225,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_swipable:
+    dependency: "direct main"
+    description:
+      name: flutter_swipable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -515,3 +522,4 @@ packages:
 sdks:
   dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.10.0"
+

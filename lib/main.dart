@@ -1,4 +1,5 @@
-
+import 'package:flutter/material.dart';
+import 'QueueMenu.dart';
 import "package:flutter/material.dart";
 import "yourLikedList.dart";
 import "friendsLikedList.dart";
@@ -12,12 +13,17 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       title: 'MOOVI',
       home: MyStatefulWidget(),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(body: QueueMenu(title: 'Flutter Demo Home Page'))
     );
   }
 }
+
 
 /// This is the stateful widget that the main application instantiates.
 class MyStatefulWidget extends StatefulWidget {
@@ -124,4 +130,5 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
 //     );
 //   }
 // }
+
 
