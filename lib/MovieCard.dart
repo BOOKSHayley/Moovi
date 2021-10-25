@@ -38,6 +38,9 @@ class MovieCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0)
         )
       ),
+
+      verticalSwipe: false
+
       //onSwipeLeft: (){},
       //,onSwipeRight: Karley/Lucas's function call goes here
     );
