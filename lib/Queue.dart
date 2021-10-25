@@ -19,7 +19,7 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
   //These are just sample cards for now
   List<MovieCard> cardsList = [
     MovieCard(Movie("2001: A Space Odyssey","https://m.media-amazon.com/images/M/MV5BMmNlYzRiNDctZWNhMi00MzI4LThkZTctMTUzMmZkMmFmNThmXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX67_CR0,0,67,98_AL_.jpg","G",8.3,"149 min","Adventure, Sci-Fi", "After discovering a mysterious artifact buried beneath the Lunar surface, mankind sets off on a quest to find its origins with help from intelligent supercomputer H.A.L. 9000.")),
-    MovieCard(Movie("Howl's Moving Castle","https://m.media-amazon.com/images/M/MV5BNmM4YTFmMmItMGE3Yy00MmRkLTlmZGEtMzZlOTQzYjk3MzA2XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX67_CR0,0,67,98_AL_.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle."))
+    MovieCard(Movie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle."))
   ];
 
   @override

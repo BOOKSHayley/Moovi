@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'Queue.dart';
 
 class QueueMenu extends StatefulWidget {
-  QueueMenu({Key? key, required this.title}) : super(key: key);
+  QueueMenu({Key? key, //required this.title}
+  }) : super(key: key);
 
-  final String title;
+  //final String title;
 
   @override
   _QueueMenuState createState() => _QueueMenuState();
