@@ -4,7 +4,160 @@ import 'movie/LikedListMenu.dart';
 import 'movie/FriendsLikedListMenu.dart';
 
 void main(){
-   runApp(const MyApp());
+   //runApp(const MyApp());
+  runApp(MaterialApp(home:LoginPage()));
+}
+
+class LoginPage extends StatelessWidget{
+  const LoginPage({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Sign In"),
+        ),
+        body: Column(
+            children: [
+              TextField(
+                  decoration: InputDecoration(
+                    hintText: "Your username",
+                    labelText: "Username",
+                    contentPadding: EdgeInsets.all(10),
+                  )
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+              Row(
+                children: <Widget> [
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                  ),
+                  SizedBox(
+                    width: 190,
+                    height: 50,
+                    child: TextButton(
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
+                      child: Align(
+                        alignment: Alignment.center,
+
+                        child: Text(
+                          "No Account? Sign up!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      onPressed: (){
+                        Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) => AccountCreationPage()
+                        ));
+                        //todo: backend code here
+                      },
+
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                  ),
+                  SizedBox(
+                  width: 190,
+                  height: 50,
+                  child: TextButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blueGrey[700])),
+                    child: Align(
+                      alignment: Alignment.center,
+
+                      child: Text(
+                        "Sign in",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    onPressed: (){
+                      Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) => MyApp()
+                      ));
+                      //todo: backend code here
+                    },
+
+                  ),
+                ),
+              ]
+              )
+
+            ]
+        )
+    );
+  }
+
+}
+
+class AccountCreationPage extends StatelessWidget{
+  const AccountCreationPage({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text("Create Account"),
+      ),
+      body: Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              hintText: "Your Name",
+              labelText: "Name",
+              contentPadding: EdgeInsets.all(10),
+            )
+          ),
+          TextField(
+            decoration: InputDecoration(
+              hintText: "Your username",
+              labelText: "Username",
+              contentPadding: EdgeInsets.all(10),
+            )
+          ),
+          Padding(
+              padding: EdgeInsets.all(10),
+          ),
+          SizedBox(
+            width: 200,
+            height: 50,
+            child: TextButton(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
+              child: Align(
+                alignment: Alignment.center,
+
+                child: Text(
+                  "Sign up",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => LoginPage()
+                ));
+              },
+
+            ),
+          ),
+        ]
+      )
+    );
+  }
+
 }
 
 class MyApp extends StatelessWidget{
