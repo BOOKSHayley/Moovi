@@ -8,9 +8,6 @@ abstract class LikedMoviesDao {
   @Query('SELECT * FROM liked_movies_table WHERE user_id = :userId')
   Future<List<LikedMovieEntity>> findAllLikedMoviesOf(int userId);
 
-  @Query('SELECT * FROM liked_movies_table WHERE user_id = :userId')
-  Stream<List<LikedMovieEntity>> findAllLikedMoviesOfUserAsStream(int userId);
-
   @Query('SELECT * FROM liked_movies_table WHERE user_id = :userId AND movie_id = :movieId')
   Future<LikedMovieEntity?> findLikedMovie(int userId, int movieId);
 

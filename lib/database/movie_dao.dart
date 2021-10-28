@@ -14,14 +14,11 @@ abstract class MovieDao {
   @Query('SELECT * FROM movie_table WHERE id = :id')
   Future<MovieEntity?> findMovieById(int id);
 
-  @Query('SELECT * FROM movie_table WHERE id = :id AND genres LIKE :genre')
-  Future<MovieEntity?> findMovieByIdAndGenre(int id, String genre);
-
   @Query('SELECT * FROM movie_table WHERE genres LIKE :genre')
   Future<List<MovieEntity>> findMoviesOfGenre(String genre);
 
   @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertMovie(MovieEntity movie);
+  Future<void> insertMovie(MovieEntity movie);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertListOfMovies(List<MovieEntity> movies);

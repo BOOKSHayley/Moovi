@@ -68,8 +68,6 @@ class _$AppDatabase extends AppDatabase {
 
   LikedMoviesDao? _likedMovieDaoInstance;
 
-  PersonalQueueDao? _personalQueueDaoInstance;
-
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
@@ -96,8 +94,6 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `friends_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_one_id` INTEGER NOT NULL, `user_two_id` INTEGER NOT NULL, `pending` INTEGER NOT NULL, FOREIGN KEY (`user_one_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`user_two_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `liked_movies_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` INTEGER NOT NULL, `movie_id` INTEGER NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`movie_id`) REFERENCES `movie_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE)');
-        await database.execute(
-            'CREATE TABLE IF NOT EXISTS `personal_queue_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` INTEGER NOT NULL, `movie_id` INTEGER NOT NULL, `priority` INTEGER NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`movie_id`) REFERENCES `movie_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -124,12 +120,6 @@ class _$AppDatabase extends AppDatabase {
   LikedMoviesDao get likedMovieDao {
     return _likedMovieDaoInstance ??=
         _$LikedMoviesDao(database, changeListener);
-  }
-
-  @override
-  PersonalQueueDao get personalQueueDao {
-    return _personalQueueDaoInstance ??=
-        _$PersonalQueueDao(database, changeListener);
   }
 }
 
@@ -235,22 +225,6 @@ class _$MovieDao extends MovieDao {
   }
 
   @override
-  Future<MovieEntity?> findMovieByIdAndGenre(int id, String genre) async {
-    return _queryAdapter.query(
-        'SELECT * FROM movie_table WHERE id = ?1 AND genres LIKE ?2',
-        mapper: (Map<String, Object?> row) => MovieEntity(
-            row['id'] as int?,
-            row['title'] as String,
-            row['image'] as String,
-            row['MPAA_rating'] as String,
-            row['IMDB_rating'] as double,
-            row['runtime'] as String,
-            row['genres'] as String,
-            row['synopsis'] as String),
-        arguments: [id, genre]);
-  }
-
-  @override
   Future<List<MovieEntity>> findMoviesOfGenre(String genre) async {
     return _queryAdapter.queryList(
         'SELECT * FROM movie_table WHERE genres LIKE ?1',
@@ -272,8 +246,8 @@ class _$MovieDao extends MovieDao {
   }
 
   @override
-  Future<int> insertMovie(MovieEntity movie) {
-    return _movieEntityInsertionAdapter.insertAndReturnId(
+  Future<void> insertMovie(MovieEntity movie) async {
+    await _movieEntityInsertionAdapter.insert(
         movie, OnConflictStrategy.replace);
   }
 
@@ -394,7 +368,7 @@ class _$UserDao extends UserDao {
 
 class _$FriendsDao extends FriendsDao {
   _$FriendsDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database, changeListener),
+      : _queryAdapter = QueryAdapter(database),
         _friendsEntityInsertionAdapter = InsertionAdapter(
             database,
             'friends_table',
@@ -403,8 +377,7 @@ class _$FriendsDao extends FriendsDao {
                   'user_one_id': item.userOneId,
                   'user_two_id': item.userTwoId,
                   'pending': item.pending ? 1 : 0
-                },
-            changeListener),
+                }),
         _friendsEntityUpdateAdapter = UpdateAdapter(
             database,
             'friends_table',
@@ -414,8 +387,7 @@ class _$FriendsDao extends FriendsDao {
                   'user_one_id': item.userOneId,
                   'user_two_id': item.userTwoId,
                   'pending': item.pending ? 1 : 0
-                },
-            changeListener),
+                }),
         _friendsEntityDeletionAdapter = DeletionAdapter(
             database,
             'friends_table',
@@ -425,8 +397,7 @@ class _$FriendsDao extends FriendsDao {
                   'user_one_id': item.userOneId,
                   'user_two_id': item.userTwoId,
                   'pending': item.pending ? 1 : 0
-                },
-            changeListener);
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -449,39 +420,11 @@ class _$FriendsDao extends FriendsDao {
   }
 
   @override
-  Stream<List<FriendsEntity>> findAllFriendsOfUserAsStream(int userId) {
-    return _queryAdapter.queryListStream(
-        'SELECT * FROM friends_table WHERE (user_one_id = ?1 OR user_two_id = ?1) AND pending = 0',
-        mapper: (Map<String, Object?> row) => FriendsEntity(
-            row['id'] as int?,
-            row['user_one_id'] as int,
-            row['user_two_id'] as int,
-            (row['pending'] as int) != 0),
-        arguments: [userId],
-        queryableName: 'friends_table',
-        isView: false);
-  }
-
-  @override
   Future<List<FriendsEntity>> findAllPendingFriendsOf(int userId) async {
     return _queryAdapter.queryList(
         'SELECT * FROM friends_table WHERE (user_one_id = ?1 OR user_two_id = ?1) AND pending = 1',
         mapper: (Map<String, Object?> row) => FriendsEntity(row['id'] as int?, row['user_one_id'] as int, row['user_two_id'] as int, (row['pending'] as int) != 0),
         arguments: [userId]);
-  }
-
-  @override
-  Stream<List<FriendsEntity>> findAllPendingFriendsOfUserAsStream(int userId) {
-    return _queryAdapter.queryListStream(
-        'SELECT * FROM friends_table WHERE (user_one_id = ?1 OR user_two_id = ?1) AND pending = 1',
-        mapper: (Map<String, Object?> row) => FriendsEntity(
-            row['id'] as int?,
-            row['user_one_id'] as int,
-            row['user_two_id'] as int,
-            (row['pending'] as int) != 0),
-        arguments: [userId],
-        queryableName: 'friends_table',
-        isView: false);
   }
 
   @override
@@ -524,7 +467,7 @@ class _$FriendsDao extends FriendsDao {
 
 class _$LikedMoviesDao extends LikedMoviesDao {
   _$LikedMoviesDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database, changeListener),
+      : _queryAdapter = QueryAdapter(database),
         _likedMovieEntityInsertionAdapter = InsertionAdapter(
             database,
             'liked_movies_table',
@@ -532,8 +475,7 @@ class _$LikedMoviesDao extends LikedMoviesDao {
                   'id': item.id,
                   'user_id': item.userId,
                   'movie_id': item.movieId
-                },
-            changeListener),
+                }),
         _likedMovieEntityDeletionAdapter = DeletionAdapter(
             database,
             'liked_movies_table',
@@ -542,8 +484,7 @@ class _$LikedMoviesDao extends LikedMoviesDao {
                   'id': item.id,
                   'user_id': item.userId,
                   'movie_id': item.movieId
-                },
-            changeListener);
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -562,17 +503,6 @@ class _$LikedMoviesDao extends LikedMoviesDao {
         mapper: (Map<String, Object?> row) => LikedMovieEntity(
             row['id'] as int?, row['user_id'] as int, row['movie_id'] as int),
         arguments: [userId]);
-  }
-
-  @override
-  Stream<List<LikedMovieEntity>> findAllLikedMoviesOfUserAsStream(int userId) {
-    return _queryAdapter.queryListStream(
-        'SELECT * FROM liked_movies_table WHERE user_id = ?1',
-        mapper: (Map<String, Object?> row) => LikedMovieEntity(
-            row['id'] as int?, row['user_id'] as int, row['movie_id'] as int),
-        arguments: [userId],
-        queryableName: 'liked_movies_table',
-        isView: false);
   }
 
   @override
@@ -605,118 +535,5 @@ class _$LikedMoviesDao extends LikedMoviesDao {
   @override
   Future<void> deleteLikedMovie(LikedMovieEntity likedMovie) async {
     await _likedMovieEntityDeletionAdapter.delete(likedMovie);
-  }
-}
-
-class _$PersonalQueueDao extends PersonalQueueDao {
-  _$PersonalQueueDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database, changeListener),
-        _personalQueueEntityInsertionAdapter = InsertionAdapter(
-            database,
-            'personal_queue_table',
-            (PersonalQueueEntity item) => <String, Object?>{
-                  'id': item.id,
-                  'user_id': item.userId,
-                  'movie_id': item.movieId,
-                  'priority': item.priority
-                },
-            changeListener),
-        _personalQueueEntityUpdateAdapter = UpdateAdapter(
-            database,
-            'personal_queue_table',
-            ['id'],
-            (PersonalQueueEntity item) => <String, Object?>{
-                  'id': item.id,
-                  'user_id': item.userId,
-                  'movie_id': item.movieId,
-                  'priority': item.priority
-                },
-            changeListener),
-        _personalQueueEntityDeletionAdapter = DeletionAdapter(
-            database,
-            'personal_queue_table',
-            ['id'],
-            (PersonalQueueEntity item) => <String, Object?>{
-                  'id': item.id,
-                  'user_id': item.userId,
-                  'movie_id': item.movieId,
-                  'priority': item.priority
-                },
-            changeListener);
-
-  final sqflite.DatabaseExecutor database;
-
-  final StreamController<String> changeListener;
-
-  final QueryAdapter _queryAdapter;
-
-  final InsertionAdapter<PersonalQueueEntity>
-      _personalQueueEntityInsertionAdapter;
-
-  final UpdateAdapter<PersonalQueueEntity> _personalQueueEntityUpdateAdapter;
-
-  final DeletionAdapter<PersonalQueueEntity>
-      _personalQueueEntityDeletionAdapter;
-
-  @override
-  Future<List<PersonalQueueEntity>> findAllPersonalQueueMovies(
-      int userId) async {
-    return _queryAdapter.queryList(
-        'SELECT * FROM personal_queue_table WHERE user_id = ?1 ORDER BY priority',
-        mapper: (Map<String, Object?> row) => PersonalQueueEntity(row['id'] as int?, row['user_id'] as int, row['movie_id'] as int, row['priority'] as int),
-        arguments: [userId]);
-  }
-
-  @override
-  Stream<List<PersonalQueueEntity>> findAllPersonalQueueMoviesAsStream(
-      int userId) {
-    return _queryAdapter.queryListStream(
-        'SELECT * FROM personal_queue_table WHERE user_id = ?1 ORDER BY priority',
-        mapper: (Map<String, Object?> row) => PersonalQueueEntity(
-            row['id'] as int?,
-            row['user_id'] as int,
-            row['movie_id'] as int,
-            row['priority'] as int),
-        arguments: [userId],
-        queryableName: 'personal_queue_table',
-        isView: false);
-  }
-
-  @override
-  Future<PersonalQueueEntity?> findPersonalQueueMovie(
-      int userId, int movieId) async {
-    return _queryAdapter.query(
-        'SELECT * FROM personal_queue_tabLE WHERE user_id = ?1 AND movie_id = ?2',
-        mapper: (Map<String, Object?> row) => PersonalQueueEntity(row['id'] as int?, row['user_id'] as int, row['movie_id'] as int, row['priority'] as int),
-        arguments: [userId, movieId]);
-  }
-
-  @override
-  Future<void> clearPersonalQueueMovieTable() async {
-    await _queryAdapter.queryNoReturn('DELETE FROM personal_queue_table');
-  }
-
-  @override
-  Future<void> insertPersonalQueueMovie(PersonalQueueEntity movie) async {
-    await _personalQueueEntityInsertionAdapter.insert(
-        movie, OnConflictStrategy.replace);
-  }
-
-  @override
-  Future<void> insertPersonalQueueListOfMovies(
-      List<PersonalQueueEntity> movies) async {
-    await _personalQueueEntityInsertionAdapter.insertList(
-        movies, OnConflictStrategy.replace);
-  }
-
-  @override
-  Future<void> updatePersonalQueueMovie(PersonalQueueEntity movie) async {
-    await _personalQueueEntityUpdateAdapter.update(
-        movie, OnConflictStrategy.replace);
-  }
-
-  @override
-  Future<void> deletePersonalQueueMovie(PersonalQueueEntity movie) async {
-    await _personalQueueEntityDeletionAdapter.delete(movie);
   }
 }
