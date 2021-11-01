@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:moovi/database/likedMovieEntity.dart';
+import 'package:moovi/database/mainViewModel.dart';
+import 'package:moovi/database/userEntity.dart';
 import 'movie/QueueMenu.dart';
 import 'movie/LikedListMenu.dart';
-import 'movie/FriendsLikedListMenu.dart';
+import 'movie/FriendsListMenu.dart';
+import 'database/MovieEntity.dart';
+import 'database/likedMovieEntity.dart';
+import 'database/friendsEntity.dart';
 
 void main(){
    runApp(const MyApp());
 }
 
+//Sets up the default screen the app goes to (MyStatefulWidge)
 class MyApp extends StatelessWidget{
   const MyApp({Key? key}) : super(key: key);
   @override
@@ -35,7 +42,9 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget>{
   static List<Widget> _widgetOptions = <Widget>[ //List of widgets for the screen
     LikedListMenu().returnMyList(),
     QueueMenu(),
-    FriendsLikedListMenu().returnFriendsList()
+    FriendsListMenu()
+
+
   ];
 
   void _onItemTapped(int index) {
@@ -62,7 +71,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget>{
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            label: 'Friend1 Liked List',
+            label: 'Friends Liked List',
           )
         ],
         currentIndex: _selectedIndex,
