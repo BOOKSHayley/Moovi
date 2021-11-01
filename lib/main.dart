@@ -14,13 +14,14 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final _database = await DatabaseGetter.instance.database;
 
-  // runApp(MyApp(_database));
+
 
   //Users: Hayley (H1), Karley (K1), Aliza (A1)
   //Movies: 2001, Spongebob, Howls moving castle
 
   //IF YOU ARE RUNNING FOR FIRST TIME:
   //1. COMMENT OUT THE RUN APP METHOD
+  runApp(MyApp(_database));
   //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
   // MainViewModel mvm = MainViewModel(_database);
   // await mvm.clearMovieTable();

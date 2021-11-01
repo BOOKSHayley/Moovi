@@ -183,14 +183,13 @@ class MainViewModel extends ChangeNotifier{
 
 
 
-
-  //TODO: Add method to populate a user's personal queue
   //Methods for adding to tables
   Future<bool> addUser(String name, String userName, {String password = ""}) async {
       UserEntity? existingUser = await _userDao.findUserByUsername(userName);
       if(existingUser == null){
         UserEntity user = UserEntity(null, name, userName, password);
         _userDao.insertUser(user);
+        addAllMoviesToUserPersonalQueue(user);
         return true;
       }
       return false;
@@ -230,6 +229,15 @@ class MainViewModel extends ChangeNotifier{
       final user = await getUserbyUsername(username);
       LikedMovieEntity likedMovie = LikedMovieEntity(null, user!.id!, movie.id!);
       _likedMoviesDao.insertLikedMovie(likedMovie);
+  }
+
+  Future<void> addAllMoviesToUserPersonalQueue(UserEntity user) async{
+      final allMovies = await getAllMovies();
+      final List<PersonalQueueEntity> personalQEntities = [];
+      for(int i = 0; i < allMovies.length; i++){
+          personalQEntities.add(PersonalQueueEntity(null, user.id!, allMovies[i].id!, 1));
+      }
+      _personalQueueDao.insertPersonalQueueListOfMovies(personalQEntities);
   }
 
   Future<void> lowerPersonalQueueMoviePriority(String username, MovieEntity movie) async{
