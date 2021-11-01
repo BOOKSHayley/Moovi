@@ -1,172 +1,55 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:moovi/database/database.dart';
+import 'package:moovi/database/movieEntity.dart';
+import 'package:moovi/movie/Movie.dart';
+import 'accounts/login.dart';
+import 'database/DatabaseGetter.dart';
+import 'database/mainViewModel.dart';
 import 'movie/QueueMenu.dart';
 import 'movie/LikedListMenu.dart';
 import 'movie/FriendsLikedListMenu.dart';
 
-void main(){
-   //runApp(const MyApp());
-  runApp(MaterialApp(home:LoginPage()));
-}
 
-class LoginPage extends StatelessWidget{
-  const LoginPage({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Sign In"),
-        ),
-        body: Column(
-            children: [
-              TextField(
-                  decoration: InputDecoration(
-                    hintText: "Your username",
-                    labelText: "Username",
-                    contentPadding: EdgeInsets.all(10),
-                  )
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
-              Row(
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.all(5),
-                  ),
-                  SizedBox(
-                    width: 190,
-                    height: 50,
-                    child: TextButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
-                      child: Align(
-                        alignment: Alignment.center,
 
-                        child: Text(
-                          "No Account? Sign up!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      onPressed: (){
-                        Navigator.push(context, new MaterialPageRoute(
-                          builder: (context) => AccountCreationPage()
-                        ));
-                        //todo: backend code here
-                      },
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  final _database = await DatabaseGetter.instance.database;
+  final MainViewModel mvm = MainViewModel(_database);
 
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(5),
-                  ),
-                  SizedBox(
-                  width: 190,
-                  height: 50,
-                  child: TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blueGrey[700])),
-                    child: Align(
-                      alignment: Alignment.center,
+  // runApp(MyApp(_database));
+  runApp(MaterialApp(home:LoginPage(_database, mvm)));
 
-                      child: Text(
-                        "Sign in",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    onPressed: (){
-                      Navigator.push(context, new MaterialPageRoute(
-                          builder: (context) => MyApp()
-                      ));
-                      //todo: backend code here
-                    },
+  //Users: Hayley (H1), Karley (K1), Aliza (A1)
+  //Movies: 2001, Spongebob, Howls moving castle
 
-                  ),
-                ),
-              ]
-              )
-
-            ]
-        )
-    );
-  }
-
-}
-
-class AccountCreationPage extends StatelessWidget{
-  const AccountCreationPage({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text("Create Account"),
-      ),
-      body: Column(
-        children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Your Name",
-              labelText: "Name",
-              contentPadding: EdgeInsets.all(10),
-            )
-          ),
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Your username",
-              labelText: "Username",
-              contentPadding: EdgeInsets.all(10),
-            )
-          ),
-          Padding(
-              padding: EdgeInsets.all(10),
-          ),
-          SizedBox(
-            width: 200,
-            height: 50,
-            child: TextButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
-              child: Align(
-                alignment: Alignment.center,
-
-                child: Text(
-                  "Sign up",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              onPressed: (){
-                Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => LoginPage()
-                ));
-              },
-
-            ),
-          ),
-        ]
-      )
-    );
-  }
+  //IF YOU ARE RUNNING FOR FIRST TIME:
+  //1. COMMENT OUT THE RUN APP METHOD
+  //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
+  // MainViewModel mvm = MainViewModel(_database);
+  // await mvm.clearMovieTable();
+  // await mvm.clearPersonalQueueTable();
+  // print("Cleared t");
+  // await mvm.addUser("Hayley", "H1");
+  // await mvm.addUser("Karley", "K1");
+  // await mvm.addUser("Aliza", "A1");
+  // print("Added users ");
+  // await mvm.addMovie("2001: A Space Odyssey","https://m.media-amazon.com/images/M/MV5BMmNlYzRiNDctZWNhMi00MzI4LThkZTctMTUzMmZkMmFmNThmXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX67_CR0,0,67,98_AL_.jpg","G",8.3,"149 min","Adventure, Sci-Fi", "After discovering a mysterious artifact buried beneath the Lunar surface, mankind sets off on a quest to find its origins with help from intelligent supercomputer H.A.L. 9000.");
+  // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
+  // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family", "IDK Stupid Spongebob");
+  // print("Added movies");
 
 }
 
 class MyApp extends StatelessWidget{
-  const MyApp({Key? key}) : super(key: key);
+  final db;
+  const MyApp(this.db, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MOOVI',
-      home: MenusStatefulWidget(),
+      home: MenusStatefulWidget(db),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -175,22 +58,28 @@ class MyApp extends StatelessWidget{
 }
 
 class MenusStatefulWidget extends StatefulWidget {
-  const MenusStatefulWidget({Key? key}) : super(key: key);
+  final db;
+  const MenusStatefulWidget(this.db, {Key? key}) : super(key: key);
 
   @override
-  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState();
+  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState(db);
 }
 
-class _MenusStatefulWidgetState extends State<MenusStatefulWidget>{
+class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
+  final db;
   int _selectedIndex = 1;
+  late List<Widget> _widgetOptions;
   static const TextStyle optionStyle =
-    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[ //List of widgets for the screen
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  _MenusStatefulWidgetState(this.db) {
+
+  _widgetOptions = <Widget>[ //List of widgets for the screen
     LikedListMenu().returnMyList(),
-    QueueMenu(),
+    QueueMenu(db),
     FriendsLikedListMenu().returnFriendsList()
   ];
-
+}
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -225,47 +114,3 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget>{
     );
   }
 }
-
-// import "package:flutter/material.dart";
-
-// void main() {
-//   runApp(MyApp());
-// } //void main() => runApp(MyApp());
-
-// //Also a widget
-// class MyApp extends StatefulWidget {
-//   @override
-//     State<StatefulWidget> createState(){
-//        return _MyAppState();
-//     }
-// }
-
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//           //Widget that creates a new page in your app (white background)
-//           appBar: AppBar(
-//             //ToolBar at the top of the screen
-//             title: Text('EasyList'), //Built into Flutter
-//           ),
-//           body: Column(
-//             children: [
-//               Card(
-//                 child: Column(
-//                   children: <Widget>[
-//                     Image.asset('assets/Donuts.jpg'),
-//                     Text('Donuts'),
-//                     Image.asset('assets/Food.jpg'),
-//                     Text('Veggies')
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           )),
-//     );
-//   }
-// }
-
-

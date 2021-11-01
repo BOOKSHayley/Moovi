@@ -1,16 +1,31 @@
 import 'dart:core';
+import 'package:moovi/database/DatabaseGetter.dart';
+import 'package:moovi/database/mainViewModel.dart';
+import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
 
-var likedMovies = <Movie>[];
-var dislikedMovies = <Movie>[];
+var likedMovies = <MovieEntity>[];
+var dislikedMovies = <MovieEntity>[];
 
-void onLikeClicked(Movie movie){
+late MainViewModel mvm;
+
+Future<void> getMvm() async{
+    final _database = await DatabaseGetter.instance.database;
+    mvm = MainViewModel(_database);
+}
+
+void onLikeClicked(String username, MovieEntity movie) async{
+  await getMvm();
   likedMovies.add(movie);
-  //todo: remove movie from Chris's queue
-
+  mvm.addLikedMovieToUser(username, movie);
+  mvm.removePersonalQueueMovie(username, movie);
 }
 
-void onDislikeClicked(Movie movie){
+void onDislikeClicked(String username, MovieEntity movie) async{
+  await getMvm();
   dislikedMovies.add(movie);
-  //todo: remove movie and add back to the end of Chris's queue
+  mvm.removePersonalQueueMovie(username, movie);
+  // mvm.lowerPersonalQueueMoviePriority(username, movie);
 }
+
+
