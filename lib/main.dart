@@ -18,7 +18,6 @@ void main() async{
   final _database = await DatabaseGetter.instance.database;
   final MainViewModel mvm = MainViewModel(_database);
 
-  // runApp(MyApp(_database));
   runApp(MaterialApp(home:LoginPage(_database, mvm)));
 
   //Users: Hayley (H1), Karley (K1), Aliza (A1)

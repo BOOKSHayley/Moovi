@@ -6,6 +6,8 @@ import 'accountCreation.dart';
 
 class LoginPage extends StatefulWidget{
 
+  static late String username; //will hold the username of the currently logged in user
+
   final db;
   final mvm;
   const LoginPage(this.db, this.mvm, {Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class LoginPage extends StatefulWidget{
 
 }
 
-class _MyCustomFormState extends State<AccountCreationPage>{
+class _MyCustomFormState extends State<LoginPage>{
 
   final usernameFieldController = TextEditingController();
 
@@ -96,8 +98,7 @@ class _MyCustomFormState extends State<AccountCreationPage>{
                           ),
                         ),
                         onPressed: (){
-                          String username = usernameFieldController.text;
-                          //todo: pass this value to robert somehow
+                          LoginPage.username = usernameFieldController.text;
 
                           Navigator.push(context, new MaterialPageRoute(
                               builder: (context) => MyApp(widget.db)
