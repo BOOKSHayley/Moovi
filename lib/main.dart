@@ -1,113 +1,115 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(MyApp());
+import 'package:flutter/material.dart';
+import 'package:moovi/database/database.dart';
+import 'package:moovi/database/movieEntity.dart';
+import 'package:moovi/movie/Movie.dart';
+import 'accounts/login.dart';
+import 'database/DatabaseGetter.dart';
+import 'database/mainViewModel.dart';
+import 'movie/QueueMenu.dart';
+import 'movie/LikedListMenu.dart';
+import 'movie/FriendsLikedListMenu.dart';
+
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  final _database = await DatabaseGetter.instance.database;
+  final MainViewModel mvm = MainViewModel(_database);
+
+  runApp(MaterialApp(home:LoginPage(_database, mvm)));
+
+  //Users: Hayley (H1), Karley (K1), Aliza (A1)
+  //Movies: 2001, Spongebob, Howls moving castle
+
+  //IF YOU ARE RUNNING FOR FIRST TIME:
+  //1. COMMENT OUT THE RUN APP METHOD
+  //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
+  // MainViewModel mvm = MainViewModel(_database);
+  // await mvm.clearMovieTable();
+  // await mvm.clearPersonalQueueTable();
+  // print("Cleared t");
+  // await mvm.addUser("Hayley", "H1");
+  // await mvm.addUser("Karley", "K1");
+  // await mvm.addUser("Aliza", "A1");
+  // print("Added users ");
+  // await mvm.addMovie("2001: A Space Odyssey","https://m.media-amazon.com/images/M/MV5BMmNlYzRiNDctZWNhMi00MzI4LThkZTctMTUzMmZkMmFmNThmXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX67_CR0,0,67,98_AL_.jpg","G",8.3,"149 min","Adventure, Sci-Fi", "After discovering a mysterious artifact buried beneath the Lunar surface, mankind sets off on a quest to find its origins with help from intelligent supercomputer H.A.L. 9000.");
+  // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
+  // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family", "IDK Stupid Spongebob");
+  // print("Added movies");
+
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatelessWidget{
+  final db;
+  const MyApp(this.db, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MOOVI',
+      home: MenusStatefulWidget(db),
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class MenusStatefulWidget extends StatefulWidget {
+  final db;
+  const MenusStatefulWidget(this.db, {Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState(db);
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
+  final db;
+  int _selectedIndex = 1;
+  late List<Widget> _widgetOptions;
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  void _incrementCounter() {
+  _MenusStatefulWidgetState(this.db) {
+
+  _widgetOptions = <Widget>[ //List of widgets for the screen
+    LikedListMenu().returnMyList(),
+    QueueMenu(db),
+    FriendsLikedListMenu().returnFriendsList()
+  ];
+}
+  void _onItemTapped(int index) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box),
+            label: 'Liked Movies',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.house),
+            label: 'Home'
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box),
+            label: 'Friend1 Liked List',
+          )
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
