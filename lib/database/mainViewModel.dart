@@ -76,6 +76,22 @@ class MainViewModel extends ChangeNotifier{
       return friendUserEntities;
   }
 
+  Stream<List<UserEntity?>> getAllFriendsOfUserAsStream(String username, bool pendingFriends) async*{
+      final user = await getUserbyUsername(username);
+      List<UserEntity?> friends = [];
+      Stream<List<FriendsEntity>> friendList = _friendsDao.findAllFriendsOfUserAsStream(user!.id!);
+      await for(List<FriendsEntity> friend in friendList){
+        for(int i = 0 ; i < friend.length; i++){
+          if(friend[i].userOneId == user.id!){
+              friends.add(await getUserbyId(friend[i].userTwoId));
+          } else{
+              friends.add(await getUserbyId(friend[i].userOneId));
+          }
+        }
+      }
+      yield friends;
+  }
+
   Future<List<MovieEntity?>> getAllMoviesInPersonalQueue(String username) async{
       return getAllMoviesInPersonalQueueOfGenre(username, "");
   }

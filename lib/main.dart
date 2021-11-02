@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/movieEntity.dart';
+import 'package:moovi/movie/FriendsListMenu.dart';
 import 'package:moovi/movie/Movie.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
@@ -19,11 +20,19 @@ void main() async{
   //Users: Hayley (H1), Karley (K1), Aliza (A1)
   //Movies: 2001, Spongebob, Howls moving castle
 
+  // MainViewModel mvm = MainViewModel(_database);
+  //
+  // final users = await mvm.getLikedMoviesOfUser("H1");
+  // for(int i = 0 ; i < users.length; i++){
+  //   print(users[i]!.title);
+  // }
+  // print("That was H1's friends");
+  // print("Done");
   //IF YOU ARE RUNNING FOR FIRST TIME:
   //1. COMMENT OUT THE RUN APP METHOD
   runApp(MyApp(_database));
   //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
-  // MainViewModel mvm = MainViewModel(_database);
+
   // await mvm.clearMovieTable();
   // await mvm.clearPersonalQueueTable();
   // print("Cleared t");
@@ -35,6 +44,15 @@ void main() async{
   // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
   // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family", "IDK Stupid Spongebob");
   // print("Added movies");
+
+  // final m = await mvm.getMovieByTitle("Howl's Moving Castle");
+  // final m2 = await mvm.getMovieByTitle("2001: A Space Odyssey");
+  // await mvm.addLikedMovieToUser("H1", m!);
+  // await mvm.addLikedMovieToUser("H1", m2!);
+  // await mvm.addLikedMovieToUser("K1", m);
+  //
+  // await mvm.addFriendToUser("H1", "K1", false);
+  // print("done");
 
 
 }
@@ -72,9 +90,10 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   _MenusStatefulWidgetState(this.db) {
 
   _widgetOptions = <Widget>[ //List of widgets for the screen
-    LikedListMenu().returnMyList(),
+    LikedListMenu(db).returnMyList(),
     QueueMenu(db),
-    FriendsLikedListMenu().returnFriendsList()
+    FriendsListMenu(db)
+    // FriendsLikedListMenu().returnFriendsList()
   ];
 }
   void _onItemTapped(int index) {
@@ -101,7 +120,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            label: 'Friend1 Liked List',
+            label: 'Friends',
           )
         ],
         currentIndex: _selectedIndex,
