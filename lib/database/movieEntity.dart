@@ -26,8 +26,14 @@ class MovieEntity {
   @ColumnInfo(name:"genres")
   final String genres;
 
+  @ColumnInfo(name:"year")
+  final int year;
+
+  @ColumnInfo(name:"streaming_service")
+  final String streamingService;
+
   @ColumnInfo(name:"synopsis")
   final String synopsis;
 
-  MovieEntity(this.id, this.title, this.imageUrl, this.mpaa, this.imdb, this.runtime, this.genres, this.synopsis);
+  MovieEntity(this.id, this.title, this.imageUrl, this.mpaa, this.imdb, this.runtime, this.genres, this.year, this.streamingService, this.synopsis);
 }

@@ -41,7 +41,7 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
                   cardsList = generateCardsList(snapshot.data!);
                 }
                 else{
-                  cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://lh3.googleusercontent.com/proxy/kBoNolp24hAlmENDXwRtq2ZvzWBNOS3Dhn1nCBibdbf3PoqYsCHyWbGMBW_kOTV2Rf9mC04m0D6eIUSddob6rP3mWwTl9OSS1M3uxR-yOwvPYdWm2okztGxnD_XueHu1Ap9MYqhnwTkFztBQ", "mpaa", 10, "runtime", "genres", "synopsis"))];
+                  cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
                 }
                 return Stack(
                   children: cardsList,
