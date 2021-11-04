@@ -7,9 +7,9 @@ import 'package:moovi/movie/FriendsListMenu.dart';
 import 'package:moovi/movie/Movie.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
+import 'movie/LikedList.dart';
 import 'movie/QueueMenu.dart';
 import 'movie/LikedListMenu.dart';
-import 'movie/FriendsLikedListMenu.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +44,7 @@ void main() async{
   // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
   // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family", "IDK Stupid Spongebob");
   // print("Added movies");
-
+  //
   // final m = await mvm.getMovieByTitle("Howl's Moving Castle");
   // final m2 = await mvm.getMovieByTitle("2001: A Space Odyssey");
   // await mvm.addLikedMovieToUser("H1", m!);
@@ -90,10 +90,9 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   _MenusStatefulWidgetState(this.db) {
 
   _widgetOptions = <Widget>[ //List of widgets for the screen
-    LikedListMenu(db).returnMyList(),
+    LikedList(db),
     QueueMenu(db),
     FriendsListMenu(db)
-    // FriendsLikedListMenu().returnFriendsList()
   ];
 }
   void _onItemTapped(int index) {

@@ -151,11 +151,13 @@ class MainViewModel extends ChangeNotifier{
 
   Stream<List<MovieEntity?>> getLikedMoviesOfUserAsStream(String username) async*{
       final user = await getUserbyUsername(username);
-      Stream<List<LikedMovieEntity>> likedMovies = _likedMoviesDao.findAllLikedMoviesOfUserAsStream(user!.id!);
       List<MovieEntity?> movies = [];
+      Stream<List<LikedMovieEntity>> likedMovies = _likedMoviesDao.findAllLikedMoviesOfUserAsStream(user!.id!);
       await for (List<LikedMovieEntity> lm in likedMovies){
           for(int i = 0; i < lm.length; i++) {
-             movies.add(await _movieDao.findMovieById(lm[i].movieId));
+            MovieEntity? m = await _movieDao.findMovieById(lm[i].movieId);
+            print(m!.title);
+            movies.add(m);
           }
       }
       yield movies;
@@ -179,22 +181,22 @@ class MainViewModel extends ChangeNotifier{
 
 
   Stream<List<MovieEntity?>> getSharedLikedMoviesAsStream(String currentUserUsername, String friendUsername) async*{
-    Stream<List<MovieEntity?>> currentUserLikedMovies = getLikedMoviesOfUserAsStream(currentUserUsername);
-    Stream<List<MovieEntity?>> friendUserLikedMovies = getLikedMoviesOfUserAsStream(friendUsername);
-    List<MovieEntity?> sharedLikedMovies = [];
-    await for(List<MovieEntity?> currentLM in currentUserLikedMovies){
-        await for(List<MovieEntity?> friendLM in friendUserLikedMovies){
-            for(int i = 0; i < currentLM.length; i++){
-                for(int j = 0; j < friendLM.length; j++) {
-                    if (currentLM[i]!.id! == friendLM[j]!.id!) {
-                      sharedLikedMovies.add(currentLM[i]);
-                    }
-                }
-            }
-        }
-    }
-
-    yield sharedLikedMovies;
+    // Stream<List<MovieEntity?>> currentUserLikedMovies = getLikedMoviesOfUserAsStream(currentUserUsername);
+    // Stream<List<MovieEntity?>> friendUserLikedMovies = getLikedMoviesOfUserAsStream(friendUsername);
+    // List<MovieEntity?> sharedLikedMovies = [];
+    // await for(List<MovieEntity?> currentLM in currentUserLikedMovies){
+    //     await for(List<MovieEntity?> friendLM in friendUserLikedMovies){
+    //         for(int i = 0; i < currentLM.length; i++){
+    //             for(int j = 0; j < friendLM.length; j++) {
+    //                 if (currentLM[i]!.id! == friendLM[j]!.id!) {
+    //                   sharedLikedMovies.add(currentLM[i]);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    //
+    // yield sharedLikedMovies;
   }
 
 

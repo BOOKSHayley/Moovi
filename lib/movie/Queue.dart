@@ -37,6 +37,7 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
               stream: mvm.getMoviesInPersonalQueueAsStream("H1"),
               builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
                 if(snapshot.hasData){
+                  print(snapshot.connectionState);
                   cardsList = generateCardsList(snapshot.data!);
                 }
                 else{

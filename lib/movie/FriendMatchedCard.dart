@@ -4,13 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 
-class FriendMatchedCard extends StatelessWidget{
-  final List<Widget> matchedMovies = <Widget>[];
+class FriendMatchedCard extends StatefulWidget {
+  final friendUsername;
+  final friendName;
+  final MainViewModel mvm;
 
+  const FriendMatchedCard(this.friendUsername, this.friendName, this.mvm, {Key? key}) : super(key: key);
+
+  _FriendMatchedCard createState() => _FriendMatchedCard(friendUsername, friendName, mvm);
+}
+
+class _FriendMatchedCard extends State<FriendMatchedCard>{
   final friendUsername;
   final friendName;
   late final MainViewModel mvm;
-  FriendMatchedCard(this.friendUsername, this.friendName, this.mvm);
+  _FriendMatchedCard(this.friendUsername, this.friendName, this.mvm);
+
+//ListView.builder
 
   @override
   Widget build(BuildContext context){
@@ -27,8 +37,7 @@ class FriendMatchedCard extends StatelessWidget{
         backgroundColor: Colors.lightBlue,
         ),
         body: Center(
-          child: ListView(children: <Widget>[
-            Container(
+            child: Container(
                 child: StreamBuilder<List<MovieEntity?>>(
                     stream: mvm.getSharedLikedMoviesAsStream("H1", friendUsername),
                     builder: (BuildContext context,
@@ -38,12 +47,12 @@ class FriendMatchedCard extends StatelessWidget{
                       } else {
                         cards = [Card(child: ListTile(title: Text("No shared movies yet.")))];
                       }
-                      return Stack(
+                      return ListView(
                         children: cards,
                       );
                     }))
-          ]),
-        ));
+          ),
+    );
   }
 
   List<Card> buildMatchedMovieCards(List<MovieEntity?> movies){
