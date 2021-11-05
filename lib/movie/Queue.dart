@@ -36,16 +36,21 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
         child: StreamBuilder<List<MovieEntity?>>(
               stream: mvm.getMoviesInPersonalQueueAsStream("H1"),
               builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
-                if(snapshot.hasData){
-                  print(snapshot.connectionState);
-                  cardsList = generateCardsList(snapshot.data!);
+                if(snapshot.hasError) { print("ERROR!"); }
+                switch(snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  case ConnectionState.active:
+                    return Center(child: CircularProgressIndicator(),);
+                  case ConnectionState.done:
+                    if(snapshot.hasData){
+                      cardsList = generateCardsList(snapshot.data!);
+                    }
+                    else{
+                      cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
+                    }
+                    return Stack(children: cardsList,);
                 }
-                else{
-                  cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
-                }
-                return Stack(
-                  children: cardsList,
-                );
               }
             ),
     );

@@ -7,8 +7,8 @@ import 'package:moovi/database/database.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
-import 'Movie.dart';
-import 'MovieCard.dart';
+import '../movie/Movie.dart';
+import '../movie/MovieCard.dart';
 
 
 class LikedList extends StatefulWidget {
@@ -26,6 +26,7 @@ class _LikedList extends State<LikedList> {
   _LikedList(this.db){
     mvm = new MainViewModel(db);
   }
+
   late Stream<List<MovieEntity?>> stream;
   @override
   void initState() {
@@ -33,17 +34,6 @@ class _LikedList extends State<LikedList> {
     stream =  mvm.getLikedMoviesOfUserAsStream(username);
   }
 
-  @override
-  void dispose(){
-    super.dispose();
-  }
-
-  //HEY KARLEY!!!
-  //So I know what the issue is but I have no clue how to fix it.
-  //The connectionState is never finishing and reaching a done state.
-  //instead its staying in the waiting state forever even though I know it should have something
-  //If you run it you'll see its waiting and the movie titles being printed
-  //Any help is appreciated. Thank you !! <3
   @override
   Widget build(BuildContext context) {
     List<Card> cardsList;
@@ -55,24 +45,16 @@ class _LikedList extends State<LikedList> {
             if(snapshot.hasError) { print("ERROR!"); }
             switch(snapshot.connectionState){
               case ConnectionState.none:
-                print("Connection state of LikedMovies is None");
-                return Center(child: CircularProgressIndicator(),);
               case ConnectionState.waiting:
-                print("Connection state of LikedMovies is Waiting");
-                return Center(child: CircularProgressIndicator(),);
               case ConnectionState.active:
-                print("Connection state of LikedMovies is Active");
                 return Center(child: CircularProgressIndicator(),);
               case ConnectionState.done:
-                print("Connection state of LikedMovies is Done");
                 if(snapshot.hasData){
-                  print("Has data");
                   cardsList = generateCardsList(snapshot.data!);
                 }
                 else{
-                  print("No data");
                   cardsList = [
-                    new Card(child: ListTile(title: Text("No movies")))
+                    new Card(child: ListTile(title: Text("No liked movies yet. Go back to the Queue and Like some!")))
                   ];
                 }
                 return ListView(
@@ -85,9 +67,6 @@ class _LikedList extends State<LikedList> {
     );
   }
 
-  updateCardsList(){
-    //add the next 10 movies to the back of the list
-  }
 
   generateCardsList(List<MovieEntity?> movieEntities){
     List<Card> cardList = [];

@@ -29,12 +29,13 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_left_rounded),
+          iconSize: 50,
           tooltip: 'Go Back to Friends List',
           onPressed: (){
             Navigator.pop(context);
           },),
-        title: Text(friendUsername + " (" + friendName + ")"),
-        backgroundColor: Colors.lightBlue,
+        title: Text("Shared Movies: " + friendName , style: TextStyle(fontSize: 28),),
+        backgroundColor: Colors.black54,
         ),
         body: Center(
             child: Container(
@@ -42,14 +43,20 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
                     stream: mvm.getSharedLikedMoviesAsStream("H1", friendUsername),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<MovieEntity?>> snapshot) {
-                      if (snapshot.hasData) {
-                        cards = buildMatchedMovieCards(snapshot.data!);
-                      } else {
-                        cards = [Card(child: ListTile(title: Text("No shared movies yet.")))];
+                      if(snapshot.hasError) { print("ERROR!"); }
+                      switch(snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                        case ConnectionState.active:
+                          return Center(child: CircularProgressIndicator(),);
+                        case ConnectionState.done:
+                          if (snapshot.hasData) {
+                            cards = buildMatchedMovieCards(snapshot.data!);
+                          } else {
+                            cards = [Card(child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),)))];
+                          }
+                          return ListView(children: cards,);
                       }
-                      return ListView(
-                        children: cards,
-                      );
                     }))
           ),
     );
@@ -58,7 +65,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
   List<Card> buildMatchedMovieCards(List<MovieEntity?> movies){
       List<Card> cards = [];
       for(int i = 0; i < movies.length; i++){
-          cards.add(Card(child: ListTile(title: Text(movies[i]!.title))));
+          cards.add(Card(child: ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))));
       }
       return cards;
   }
