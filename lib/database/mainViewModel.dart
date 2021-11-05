@@ -1,5 +1,7 @@
 
 
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/friendsEntity.dart';
@@ -12,7 +14,8 @@ import 'package:moovi/database/personalQueueEntity.dart';
 import 'package:moovi/database/personal_queue_dao.dart';
 import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/user_dao.dart';
-import 'package:moovi/movie/Movie.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 
 // CODE TO CREATE THE DATABASE -- BELOW IS WHAT TO ADD TO FILES WHERE YOU WANT TO USE DB
@@ -42,6 +45,12 @@ class MainViewModel extends ChangeNotifier{
   //Methods for getting from tables
   Future<UserEntity?> getUserbyUsername(String username) async{
       return await _userDao.findUserByUsername(username);
+  }
+
+  Future<UserEntity?> getUserbyUsernameAndPass(String username, String password) async{
+      var data = utf8.encode(password);
+      var hashedPass = sha256.convert(data).toString();
+      return await _userDao.findUserByUsernameAndPass(username, hashedPass);
   }
 
   Future<UserEntity?> getUserbyId(int userId) async{
@@ -187,7 +196,10 @@ class MainViewModel extends ChangeNotifier{
   Future<bool> addUser(String name, String userName, {String password = ""}) async {
       UserEntity? existingUser = await _userDao.findUserByUsername(userName);
       if(existingUser == null){
-        UserEntity user = UserEntity(null, name, userName, password);
+        var data = utf8.encode(password);
+        var hashedPass = sha256.convert(data).toString();
+        print(hashedPass);
+        UserEntity user = UserEntity(null, name, userName, hashedPass);
         _userDao.insertUser(user);
         addAllMoviesToUserPersonalQueue(user);
         return true;

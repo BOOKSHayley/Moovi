@@ -361,6 +361,19 @@ class _$UserDao extends UserDao {
   }
 
   @override
+  Future<UserEntity?> findUserByUsernameAndPass(
+      String userName, String pass) async {
+    return _queryAdapter.query(
+        'SELECT * FROM users_table WHERE username = ?1 AND password = ?2',
+        mapper: (Map<String, Object?> row) => UserEntity(
+            row['id'] as int?,
+            row['name'] as String,
+            row['username'] as String,
+            row['password'] as String),
+        arguments: [userName, pass]);
+  }
+
+  @override
   Future<UserEntity?> findUserById(int id) async {
     return _queryAdapter.query('SELECT * FROM users_table WHERE id = ?1',
         mapper: (Map<String, Object?> row) => UserEntity(

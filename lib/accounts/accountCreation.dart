@@ -18,12 +18,17 @@ class _MyCustomFormState extends State<AccountCreationPage> {
 
   final nameFieldController = TextEditingController();
   final usernameFieldController = TextEditingController();
+  final passwordFieldController = TextEditingController();
+  final reenterPasswordFieldController = TextEditingController();
+  String creationProblem = "";
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     nameFieldController.dispose();
     usernameFieldController.dispose();
+    passwordFieldController.dispose();
+    reenterPasswordFieldController.dispose();
     super.dispose();
   }
 
@@ -57,6 +62,27 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                     contentPadding: EdgeInsets.all(10),
                   )
               ),
+              TextField(
+                  obscureText: true,
+                  controller: passwordFieldController,
+                  decoration: InputDecoration(
+                    hintText: "Create a password",
+                    labelText: "Password",
+                    helperText: "Password must be at least 8 characters",
+                    contentPadding: EdgeInsets.all(10),
+                    icon: Icon(Icons.visibility_off),
+                  )
+              ),
+              TextField(
+                  obscureText: true,
+                  controller: reenterPasswordFieldController,
+                  decoration: InputDecoration(
+                    hintText: "Re-Enter your password",
+                    labelText: "ReenterPassword",
+                    contentPadding: EdgeInsets.all(10),
+                    icon: Icon(Icons.visibility_off),
+                  )
+              ),
               Padding(
                 padding: EdgeInsets.all(10),
               ),
@@ -78,21 +104,75 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                     ),
                   ),
                   onPressed: () {
+
                     String name = nameFieldController.text;
                     String username = usernameFieldController.text;
+                    String password = passwordFieldController.text;
+                    String reenteredPassword = reenterPasswordFieldController.text;
+                    creationProblem = "";
 
-                    widget.mvm.addUser(name, username);
-
-                    Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) => LoginPage(widget.db, widget.mvm)
-                    ));
+                    if(!checkPassForCorrectness(password)){
+                        creationProblem = "Password does not meet requirements of at least 8 characters.";
+                        passwordFieldController.clear();
+                        reenterPasswordFieldController.clear();
+                    } else if(password != reenteredPassword){
+                      creationProblem = "Passwords do not match.";
+                      passwordFieldController.clear();
+                      reenterPasswordFieldController.clear();
+                    } else {
+                      bool additionSuccessful = widget.mvm.addUser(name, username, password);
+                      if(!additionSuccessful){
+                        creationProblem = "Someone has already taken this username. PLease try again.";
+                        usernameFieldController.clear();
+                        passwordFieldController.clear();
+                        reenterPasswordFieldController.clear();
+                      } else {
+                        Navigator.push(context, new MaterialPageRoute(
+                            builder: (context) =>
+                                LoginPage(widget.db, widget.mvm)
+                        ));
+                      }
+                    }
                   },
 
                 ),
               ),
+              Card(
+                  child: ListTile(title: Text(creationProblem))
+              )
             ]
         )
     );
   }
+
+  Widget _buildPopupDialog(BuildContext context, String alertText) {
+    return new AlertDialog(
+      title: const Text("Error in creating account:"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(alertText),
+        ],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          style: TextButton.styleFrom(primary: Colors.lightBlue),
+          child: const Text('Close'),
+        ),
+      ],
+    );
+  }
+
+  bool checkPassForCorrectness(String p){
+    if(p.split("").length >= 8){
+      return true;
+    }
+    return false;
+  }
+
 
 }

@@ -20,11 +20,13 @@ class LoginPage extends StatefulWidget{
 class _MyCustomFormState extends State<LoginPage>{
 
   final usernameFieldController = TextEditingController();
+  final passwordFieldController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     usernameFieldController.dispose();
+    passwordFieldController.dispose();
     super.dispose();
   }
 
@@ -42,6 +44,15 @@ class _MyCustomFormState extends State<LoginPage>{
                   decoration: InputDecoration(
                     hintText: "Your username",
                     labelText: "Username",
+                    contentPadding: EdgeInsets.all(10),
+                  )
+              ),
+              TextField(
+                  obscureText: true,
+                  controller: passwordFieldController,
+                  decoration: InputDecoration(
+                    hintText: "Your password",
+                    labelText: "Password",
                     contentPadding: EdgeInsets.all(10),
                   )
               ),
