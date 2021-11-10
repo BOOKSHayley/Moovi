@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:moovi/database/mainViewModel.dart';
+import 'package:moovi/database/userEntity.dart';
 
 import '../main.dart';
 import 'accountCreation.dart';
@@ -9,7 +11,7 @@ class LoginPage extends StatefulWidget{
   static late String username; //will hold the username of the currently logged in user
 
   final db;
-  final mvm;
+  final MainViewModel mvm;
   const LoginPage(this.db, this.mvm, {Key? key}) : super(key: key);
 
   @override
@@ -21,6 +23,10 @@ class _MyCustomFormState extends State<LoginPage>{
 
   final usernameFieldController = TextEditingController();
   final passwordFieldController = TextEditingController();
+  final errorFieldController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  String password = "";
 
   @override
   void dispose() {
@@ -37,92 +43,128 @@ class _MyCustomFormState extends State<LoginPage>{
           centerTitle: true,
           title: Text("Sign In"),
         ),
-        body: Column(
-            children: [
-              TextField(
-                  controller: usernameFieldController,
-                  decoration: InputDecoration(
-                    hintText: "Your username",
-                    labelText: "Username",
-                    contentPadding: EdgeInsets.all(10),
-                  )
-              ),
-              TextField(
-                  obscureText: true,
-                  controller: passwordFieldController,
-                  decoration: InputDecoration(
-                    hintText: "Your password",
-                    labelText: "Password",
-                    contentPadding: EdgeInsets.all(10),
-                  )
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
-              Row(
-                  children: <Widget> [
-                    Padding(
-                      padding: EdgeInsets.all(5),
+        body: Form(
+          key: _formKey,
+          child: Column(
+              children: [
+                TextFormField(
+                    controller: usernameFieldController,
+                    decoration: InputDecoration(
+                      hintText: "Your username",
+                      labelText: "Username",
+                      contentPadding: EdgeInsets.all(10),
                     ),
-                    SizedBox(
-                      width: 190,
-                      height: 50,
-                      child: TextButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
-                        child: Align(
-                          alignment: Alignment.center,
+                  validator: (username){
+                    if(username == null  || username.isEmpty){
+                      usernameFieldController.clear();
+                      passwordFieldController.clear();
+                      return "Please enter your username.";
+                    }
+                    return null;
+                  },
+                  onSaved: (username) => LoginPage.username = username!,
+                ),
+                TextFormField(
+                    obscureText: true,
+                    controller: passwordFieldController,
+                    decoration: InputDecoration(
+                      hintText: "Your password",
+                      labelText: "Password",
+                      contentPadding: EdgeInsets.all(10),
+                    ),
+                  validator: (pass){
+                    if(pass == null  || pass.isEmpty){
+                      passwordFieldController.clear();
+                      return "Please enter your password.";
+                    }
+                    return null;
+                  },
+                  onSaved: (pass) => password = pass!,
+                ),
+                TextField(
+                  controller: errorFieldController,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                ),
+                Row(
+                    children: <Widget> [
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                      ),
+                      SizedBox(
+                        width: 190,
+                        height: 50,
+                        child: TextButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
+                          child: Align(
+                            alignment: Alignment.center,
 
-                          child: Text(
-                            "No Account? Sign up!",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
+                            child: Text(
+                              "No Account? Sign up!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          onPressed: (){
+                            Navigator.push(context, new MaterialPageRoute(
+                                builder: (context) => AccountCreationPage(widget.db, widget.mvm)
+                            ));
+                            //todo: backend code here
+                          },
+
                         ),
-                        onPressed: (){
-                          Navigator.push(context, new MaterialPageRoute(
-                              builder: (context) => AccountCreationPage(widget.db, widget.mvm)
-                          ));
-                          //todo: backend code here
-                        },
-
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5),
-                    ),
-                    SizedBox(
-                      width: 190,
-                      height: 50,
-                      child: TextButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blueGrey[700])),
-                        child: Align(
-                          alignment: Alignment.center,
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                      ),
+                      SizedBox(
+                        width: 190,
+                        height: 50,
+                        child: TextButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blueGrey[700])),
+                          child: Align(
+                            alignment: Alignment.center,
 
-                          child: Text(
-                            "Sign in",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
+                            child: Text(
+                              "Sign in",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          onPressed: () async{
+                            errorFieldController.clear();
+
+                            if(_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              UserEntity? user = await widget.mvm.
+                                  getUserbyUsernameAndPass(LoginPage.username, password);
+
+                              if (user == null) {
+                                usernameFieldController.clear();
+                                passwordFieldController.clear();
+                                errorFieldController.text = "Your username or password was incorrect.";
+                              } else {
+                                Navigator.push(context, new MaterialPageRoute(
+                                    builder: (context) => MyApp(widget.db)
+                                ));
+                              }
+
+                            }
+
+                          },
+
                         ),
-                        onPressed: (){
-                          LoginPage.username = usernameFieldController.text;
-
-                          Navigator.push(context, new MaterialPageRoute(
-                              builder: (context) => MyApp(widget.db)
-                          ));
-                        },
-
                       ),
-                    ),
-                  ]
-              )
+                    ]
+                )
 
-            ]
-        )
+              ]
+        ))
     );
   }
 

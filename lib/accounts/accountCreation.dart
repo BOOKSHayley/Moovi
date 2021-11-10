@@ -127,6 +127,9 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                     return null;
                   },
                 ),
+                TextField(
+                  controller: errorFieldController,
+                ),
                 Padding(
                   padding: EdgeInsets.all(10),
                 ),
@@ -148,16 +151,13 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                       ),
                     ),
                     onPressed: () async{
-
-                      String name = nameFieldController.text;
-                      String username = usernameFieldController.text;
-                      String password = passwordFieldController.text;
-                      // String reenteredPassword = reenterPasswordFieldController.text;
+                      errorFieldController.clear();
 
                       if(_formKey.currentState!.validate()){
                         _formKey.currentState!.save();
                         bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
                         if(userAdded) {
+                          //PopulateDatabase.populateDb();
                           Navigator.push(context, new MaterialPageRoute(
                               builder: (context) =>
                                   LoginPage(widget.db, widget.mvm)
@@ -166,7 +166,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                             usernameFieldController.clear();
                             reenterPasswordFieldController.clear();
                             passwordFieldController.clear();
-                            usernameFieldController.text = "Username already taken";
+                            errorFieldController.text = "Username already taken";
                         }
                       }
 
