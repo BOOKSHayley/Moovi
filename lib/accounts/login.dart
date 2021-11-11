@@ -112,7 +112,6 @@ class _MyCustomFormState extends State<LoginPage>{
                             Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) => AccountCreationPage(widget.db, widget.mvm)
                             ));
-                            //todo: backend code here
                           },
 
                         ),

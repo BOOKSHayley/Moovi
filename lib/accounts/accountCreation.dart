@@ -169,15 +169,6 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                             errorFieldController.text = "Username already taken";
                         }
                       }
-
-                      //   widget.mvm.addUser(name, username, password: password);
-
-                        //   Navigator.push(context, new MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           LoginPage(widget.db, widget.mvm)
-                        //   ));
-                        // }
-                      // }
                     },
 
                   ),
