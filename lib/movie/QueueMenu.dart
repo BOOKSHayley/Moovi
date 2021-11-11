@@ -14,13 +14,14 @@ class QueueMenu extends StatefulWidget {
 
 class _QueueMenuState extends State<QueueMenu> {
   final db;
+  final queueKey = GlobalKey<QueueState>();
   _QueueMenuState(this.db);
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: <Widget>[
-          Queue(db),
+          Queue(db, key: queueKey),
           Padding(
             padding: EdgeInsets.only(top: 8.0),
             child: Row(children: <Widget>[
@@ -28,14 +29,14 @@ class _QueueMenuState extends State<QueueMenu> {
                 child: FloatingActionButton(
                   backgroundColor: Colors.red,
                   child: Icon(Icons.thumb_down),
-                  onPressed: () {},
+                  onPressed: () {queueKey.currentState!.stackSwipe(true);},
                 ),
               ),
               Expanded(
                 child: FloatingActionButton(
                   backgroundColor: Colors.green,
                   child: Icon(Icons.thumb_up),
-                  onPressed: () {},
+                  onPressed: () {queueKey.currentState!.stackSwipe(false);},
                 )
               )
             ]
