@@ -26,22 +26,39 @@ class Profile extends StatelessWidget{
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black,
+                    Colors.black87,
                     Colors.deepPurple,
                   ],
                 )
             ),
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Center(
-                  child: Text(
-                    'username',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
+                Align(
+                    alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            'Name',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            'username',
+                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          ),
+                        ),
+                      ]
+                    ),
+                  )
                 ),
                 Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(30),
                     child: Align(
                       alignment: Alignment.topRight,
                       // child: ConstrainedBox(
@@ -57,18 +74,20 @@ class Profile extends StatelessWidget{
                       //     ),
                       //     label: Text('Elevated Button'),
                       //     onPressed: () {}
-                      child: SizedBox(
-                        height: 80.0,
-                        width: 80.0,
+
                         child: PopupMenuButton(
                           itemBuilder: (context) => [
                             PopupMenuItem(
-                              child: Text("First"),
+                              child: Text("Logout"),
                               value: 1,
                             ),
                             PopupMenuItem(
-                              child: Text("Second"),
+                              child: Text("Edit Profile"),
                               value: 2,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Settings"),
+                              value: 3,
                             )
                           ],
                           shape: RoundedRectangleBorder(
@@ -82,7 +101,6 @@ class Profile extends StatelessWidget{
                         ),
                       ),
                     )
-                )
 
               ]
 
@@ -93,37 +111,6 @@ class Profile extends StatelessWidget{
               children: cardList
             )
           ),
-
-        Padding(
-        padding: const EdgeInsets.all(20),
-          child: Align(
-            alignment: Alignment.topRight,
-              child: SizedBox(
-                height: 80.0,
-                width: 80.0,
-                child: PopupMenuButton(
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        child: Text("First"),
-                        value: 1,
-                      ),
-                      PopupMenuItem(
-                        child: Text("Second"),
-                        value: 2,
-                      )
-                    ],
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15.0))
-                  ),
-                  child: Icon(
-                      Icons.more_vert,
-                      size: 70,
-                      color: Colors.white
-                  ),
-                ),
-              ),
-            )
-        )
         ],
       ),
     );
