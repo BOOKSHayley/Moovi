@@ -32,6 +32,8 @@ void main() async{
   // print("Cleared t");
   // List<MovieEntity?> movies = await mvm.getAllMovies();
   // print(movies.length);
+
+
 }
 
 class MyApp extends StatelessWidget{

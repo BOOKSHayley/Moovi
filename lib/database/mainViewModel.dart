@@ -168,8 +168,8 @@ class MainViewModel extends ChangeNotifier{
         var hashedPass = sha256.convert(data).toString();
         print(hashedPass);
         UserEntity user = UserEntity(null, name, userName, hashedPass);
-        _userDao.insertUser(user);
-        addAllMoviesToUserPersonalQueue(user);
+        int id = await _userDao.insertUser(user);
+        addAllMoviesToUserPersonalQueue(id);
         return true;
       }
       return false;
@@ -211,11 +211,11 @@ class MainViewModel extends ChangeNotifier{
       _likedMoviesDao.insertLikedMovie(likedMovie);
   }
 
-  Future<void> addAllMoviesToUserPersonalQueue(UserEntity user) async{
+  Future<void> addAllMoviesToUserPersonalQueue(int userId) async{
       final allMovies = await getAllMovies();
       final List<PersonalQueueEntity> personalQEntities = [];
       for(int i = 0; i < allMovies.length; i++){
-          personalQEntities.add(PersonalQueueEntity(null, user.id!, allMovies[i].id!, 1));
+          personalQEntities.add(PersonalQueueEntity(null, userId, allMovies[i].id!, 1));
       }
       _personalQueueDao.insertPersonalQueueListOfMovies(personalQEntities);
   }

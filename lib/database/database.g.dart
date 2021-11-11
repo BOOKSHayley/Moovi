@@ -406,8 +406,9 @@ class _$UserDao extends UserDao {
   }
 
   @override
-  Future<void> insertUser(UserEntity user) async {
-    await _userEntityInsertionAdapter.insert(user, OnConflictStrategy.abort);
+  Future<int> insertUser(UserEntity user) {
+    return _userEntityInsertionAdapter.insertAndReturnId(
+        user, OnConflictStrategy.abort);
   }
 
   @override

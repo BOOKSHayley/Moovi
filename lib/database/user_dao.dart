@@ -18,7 +18,7 @@ abstract class UserDao {
   Future<UserEntity?> findUserById(int id);
 
   @Insert(onConflict: OnConflictStrategy.abort)
-  Future<void> insertUser(UserEntity user);
+  Future<int> insertUser(UserEntity user);
 
   @delete
   Future<void> deleteUser(UserEntity user);
