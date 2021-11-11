@@ -42,11 +42,7 @@ class QueueState extends State<Queue> with SingleTickerProviderStateMixin {
                   cardsList = generateCardsList(snapshot.data!);
                 }
                 else{
-                  //cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
-                  cardsList = [
-                    new MovieCard(username, new MovieEntity(1, "Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min", "Animation, Adventure, Family", 1999, "Hulu","When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.")),
-                    new MovieCard(username, new MovieEntity(2, "Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min", "Animation, Adventure, Family", 1999, "Hulu","When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle."))
-                  ];
+                  cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
                 }
                 return MovieCardStack(cardsList);
               }
