@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
+import 'Profile/profile.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
 import 'movie/QueueMenu.dart';
@@ -21,7 +22,7 @@ void main() async{
 
   //IF YOU ARE RUNNING FOR FIRST TIME:
   //1. COMMENT OUT THE RUN APP METHOD
-  runApp(MyApp(_database));
+  runApp(MaterialApp(home:Profile(), theme: ThemeData(brightness: Brightness.dark)));
   //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
   // MainViewModel mvm = MainViewModel(_database);
   // await mvm.clearMovieTable();
