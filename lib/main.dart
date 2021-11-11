@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/movieEntity.dart';
+import 'package:moovi/profile/FriendsListMenu.dart';
 import 'package:moovi/movie/Movie.dart';
 import 'accounts/login.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
+import 'profile/UserProfile.dart';
 import 'movie/QueueMenu.dart';
-import 'movie/LikedListMenu.dart';
-import 'movie/FriendsLikedListMenu.dart';
 
 
 
@@ -22,17 +22,23 @@ void main() async{
 
   //Users: Hayley (H1), Karley (K1), Aliza (A1)
   //Movies: 2001, Spongebob, Howls moving castle
-
+  //
+//   final users = await mvm.getAllFriendsOfUser("H1", false);
+//   for(int i = 0 ; i < users.length; i++){
+//     print(users[i]!.name);
+//   }
+//   print("That was H1's friends");
+//   // print("Done");
   //IF YOU ARE RUNNING FOR FIRST TIME:
   //1. COMMENT OUT THE RUN APP METHOD
   //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
-  // MainViewModel mvm = MainViewModel(_database);
   // await mvm.clearAllTables();
   // print("Cleared t");
   // await mvm.addMovie("2001: A Space Odyssey","https://m.media-amazon.com/images/M/MV5BMmNlYzRiNDctZWNhMi00MzI4LThkZTctMTUzMmZkMmFmNThmXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX67_CR0,0,67,98_AL_.jpg","G",8.3,"149 min","Adventure, Sci-Fi", "After discovering a mysterious artifact buried beneath the Lunar surface, mankind sets off on a quest to find its origins with help from intelligent supercomputer H.A.L. 9000.");
   // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
   // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family", "IDK Stupid Spongebob");
   // print("Added movies");
+
 
 }
 
@@ -69,9 +75,9 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   _MenusStatefulWidgetState(this.db) {
 
   _widgetOptions = <Widget>[ //List of widgets for the screen
-    LikedListMenu().returnMyList(),
+    LikedList(db),
     QueueMenu(db),
-    FriendsLikedListMenu().returnFriendsList()
+    FriendsListMenu(db)
   ];
 }
   void _onItemTapped(int index) {
@@ -98,7 +104,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            label: 'Friend1 Liked List',
+            label: 'Friends',
           )
         ],
         currentIndex: _selectedIndex,

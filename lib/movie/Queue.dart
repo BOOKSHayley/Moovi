@@ -36,15 +36,21 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
         child: StreamBuilder<List<MovieEntity?>>(
               stream: mvm.getMoviesInPersonalQueueAsStream("H1"),
               builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
-                if(snapshot.hasData){
-                  cardsList = generateCardsList(snapshot.data!);
+                if(snapshot.hasError) { print("ERROR!"); }
+                switch(snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  case ConnectionState.active:
+                    return Center(child: CircularProgressIndicator(),);
+                  case ConnectionState.done:
+                    if(snapshot.hasData){
+                      cardsList = generateCardsList(snapshot.data!);
+                    }
+                    else{
+                      cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
+                    }
+                    return Stack(children: cardsList,);
                 }
-                else{
-                  cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://lh3.googleusercontent.com/proxy/kBoNolp24hAlmENDXwRtq2ZvzWBNOS3Dhn1nCBibdbf3PoqYsCHyWbGMBW_kOTV2Rf9mC04m0D6eIUSddob6rP3mWwTl9OSS1M3uxR-yOwvPYdWm2okztGxnD_XueHu1Ap9MYqhnwTkFztBQ", "mpaa", 10, "runtime", "genres", "synopsis"))];
-                }
-                return Stack(
-                  children: cardsList,
-                );
               }
             ),
     );

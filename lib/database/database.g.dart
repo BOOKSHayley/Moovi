@@ -89,7 +89,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `movie_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `image` TEXT NOT NULL, `MPAA_rating` TEXT NOT NULL, `IMDB_rating` REAL NOT NULL, `runtime` TEXT NOT NULL, `genres` TEXT NOT NULL, `synopsis` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `movie_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `image` TEXT NOT NULL, `MPAA_rating` TEXT NOT NULL, `IMDB_rating` REAL NOT NULL, `runtime` TEXT NOT NULL, `genres` TEXT NOT NULL, `year` INTEGER NOT NULL, `streaming_service` TEXT NOT NULL, `synopsis` TEXT NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `users_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `username` TEXT NOT NULL, `password` TEXT NOT NULL)');
         await database.execute(
@@ -147,6 +147,8 @@ class _$MovieDao extends MovieDao {
                   'IMDB_rating': item.imdb,
                   'runtime': item.runtime,
                   'genres': item.genres,
+                  'year': item.year,
+                  'streaming_service': item.streamingService,
                   'synopsis': item.synopsis
                 }),
         _movieEntityUpdateAdapter = UpdateAdapter(
@@ -161,6 +163,8 @@ class _$MovieDao extends MovieDao {
                   'IMDB_rating': item.imdb,
                   'runtime': item.runtime,
                   'genres': item.genres,
+                  'year': item.year,
+                  'streaming_service': item.streamingService,
                   'synopsis': item.synopsis
                 }),
         _movieEntityDeletionAdapter = DeletionAdapter(
@@ -175,6 +179,8 @@ class _$MovieDao extends MovieDao {
                   'IMDB_rating': item.imdb,
                   'runtime': item.runtime,
                   'genres': item.genres,
+                  'year': item.year,
+                  'streaming_service': item.streamingService,
                   'synopsis': item.synopsis
                 });
 
@@ -201,6 +207,8 @@ class _$MovieDao extends MovieDao {
             row['IMDB_rating'] as double,
             row['runtime'] as String,
             row['genres'] as String,
+            row['year'] as int,
+            row['streaming_service'] as String,
             row['synopsis'] as String));
   }
 
@@ -215,6 +223,8 @@ class _$MovieDao extends MovieDao {
             row['IMDB_rating'] as double,
             row['runtime'] as String,
             row['genres'] as String,
+            row['year'] as int,
+            row['streaming_service'] as String,
             row['synopsis'] as String),
         arguments: [title]);
   }
@@ -230,6 +240,8 @@ class _$MovieDao extends MovieDao {
             row['IMDB_rating'] as double,
             row['runtime'] as String,
             row['genres'] as String,
+            row['year'] as int,
+            row['streaming_service'] as String,
             row['synopsis'] as String),
         arguments: [id]);
   }
@@ -246,6 +258,8 @@ class _$MovieDao extends MovieDao {
             row['IMDB_rating'] as double,
             row['runtime'] as String,
             row['genres'] as String,
+            row['year'] as int,
+            row['streaming_service'] as String,
             row['synopsis'] as String),
         arguments: [id, genre]);
   }
@@ -262,6 +276,8 @@ class _$MovieDao extends MovieDao {
             row['IMDB_rating'] as double,
             row['runtime'] as String,
             row['genres'] as String,
+            row['year'] as int,
+            row['streaming_service'] as String,
             row['synopsis'] as String),
         arguments: [genre]);
   }

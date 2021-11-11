@@ -41,8 +41,26 @@ class MainViewModel extends ChangeNotifier{
   }
 
 
+  //Methods for getting Stream data from tables
+  Stream<List<UserEntity?>> getAllFriendsOfUserAsStream(String username, bool pendingFriends) async*{
+    yield await getAllFriendsOfUser(username, pendingFriends);
+  }
 
-  //Methods for getting from tables
+  Stream<List<MovieEntity?>> getMoviesInPersonalQueueAsStream(String username, {genre = ""}) async*{
+    yield await getAllMoviesInPersonalQueueOfGenre(username, genre);
+  }
+
+  Stream<List<MovieEntity?>> getLikedMoviesOfUserAsStream(String username) async*{
+    yield await getLikedMoviesOfUser(username);
+  }
+
+  Stream<List<MovieEntity?>> getSharedLikedMoviesAsStream(String currentUserUsername, String friendUsername) async*{
+    yield await getSharedLikedMovies(currentUserUsername, friendUsername);
+  }
+
+
+
+  //Methods for getting Future data from tables
   Future<UserEntity?> getUserbyUsername(String username) async{
       return await _userDao.findUserByUsername(username);
   }
@@ -72,7 +90,6 @@ class MainViewModel extends ChangeNotifier{
       }
 
       List<UserEntity?> friendUserEntities = [];
-
       for(var i = 0; i < friendEntities.length;i++){
           int friendId = friendEntities[i].userOneId;
           if(friendId == user.id){
@@ -101,23 +118,6 @@ class MainViewModel extends ChangeNotifier{
       return movies;
   }
 
-  Stream<List<MovieEntity?>> getMoviesInPersonalQueueAsStream(String username) async*{
-      yield await getAllMoviesInPersonalQueueOfGenre(username, "");
-  }
-
-  Stream<List<MovieEntity?>> getAllMoviesInPersonalQueueOfGenreAsStream(String username, String genre) async*{
-    final user = await getUserbyUsername(username);
-    List<MovieEntity?> movies = [];
-    genre = "%" + genre + "%";
-    Stream<List<PersonalQueueEntity>> queue = _personalQueueDao.findAllPersonalQueueMoviesAsStream(user!.id!);
-    await for(List<PersonalQueueEntity> queueList in queue){
-      for(int i = 0 ; i < queueList.length; i++){
-        movies.add(await _movieDao.findMovieByIdAndGenre(queueList[i].movieId, genre));
-      }
-    }
-    yield movies;
-  }
-
   Future<List<MovieEntity>> getAllMovies() async{
       return await _movieDao.findAllMovies();
   }
@@ -142,18 +142,6 @@ class MainViewModel extends ChangeNotifier{
       return movies;
   }
 
-  Stream<List<MovieEntity?>> getLikedMoviesOfUserAsStream(String username) async*{
-      final user = await getUserbyUsername(username);
-      Stream<List<LikedMovieEntity>> likedMovies = _likedMoviesDao.findAllLikedMoviesOfUserAsStream(user!.id!);
-      List<MovieEntity?> movies = [];
-      await for (List<LikedMovieEntity> lm in likedMovies){
-          for(int i = 0; i < lm.length; i++) {
-             movies.add(await _movieDao.findMovieById(lm[i].movieId));
-          }
-      }
-      yield movies;
-  }
-
   Future<List<MovieEntity?>> getSharedLikedMovies(String currentUserUsername, String friendUsername) async {
     List<MovieEntity?> currentUserLikedMovies = await getLikedMoviesOfUser(currentUserUsername);
     List<MovieEntity?> friendUserLikedMovies = await getLikedMoviesOfUser(friendUsername);
@@ -168,26 +156,6 @@ class MainViewModel extends ChangeNotifier{
     }
 
     return sharedLikedMovies;
-  }
-
-
-  Stream<List<MovieEntity?>> getSharedLikedMoviesAsStream(String currentUserUsername, String friendUsername) async*{
-    Stream<List<MovieEntity?>> currentUserLikedMovies = getLikedMoviesOfUserAsStream(currentUserUsername);
-    Stream<List<MovieEntity?>> friendUserLikedMovies = getLikedMoviesOfUserAsStream(friendUsername);
-    List<MovieEntity?> sharedLikedMovies = [];
-    await for(List<MovieEntity?> currentLM in currentUserLikedMovies){
-        await for(List<MovieEntity?> friendLM in friendUserLikedMovies){
-            for(int i = 0; i < currentLM.length; i++){
-                for(int j = 0; j < friendLM.length; j++) {
-                    if (currentLM[i]!.id! == friendLM[j]!.id!) {
-                      sharedLikedMovies.add(currentLM[i]);
-                    }
-                }
-            }
-        }
-    }
-
-    yield sharedLikedMovies;
   }
 
 
@@ -207,8 +175,8 @@ class MainViewModel extends ChangeNotifier{
       return false;
   }
 
-  Future<void> addMovie(String title, String imageUrl, String mpaaRating, double imdbRating, String runtime, String genres, String synopsis) async {
-      MovieEntity movie = MovieEntity(null, title, imageUrl, mpaaRating, imdbRating, runtime, genres, synopsis);
+  Future<void> addMovie(String title, String imageUrl, String mpaaRating, double imdbRating, String runtime, String genres, int year, String streamingService, String synopsis) async {
+      MovieEntity movie = MovieEntity(null, title, imageUrl, mpaaRating, imdbRating, runtime, genres, year, streamingService, synopsis);
       int movieId = await _movieDao.insertMovie(movie);
       _addMovieToPersonalQueue(movieId);
   }
