@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/database/mainViewModel.dart';
 
+import 'PopulateDatabase.dart';
 import 'login.dart';
 
 class AccountCreationPage extends StatefulWidget {
@@ -129,6 +130,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                 ),
                 TextField(
                   controller: errorFieldController,
+                  readOnly: true,
                 ),
                 Padding(
                   padding: EdgeInsets.all(10),
@@ -157,7 +159,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                         _formKey.currentState!.save();
                         bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
                         if(userAdded) {
-                          //PopulateDatabase.populateDb();
+                          PopulateDatabase.populateDb(widget.mvm);
                           Navigator.push(context, new MaterialPageRoute(
                               builder: (context) =>
                                   LoginPage(widget.db, widget.mvm)

@@ -178,10 +178,10 @@ class MainViewModel extends ChangeNotifier{
   Future<void> addMovie(String title, String imageUrl, String mpaaRating, double imdbRating, String runtime, String genres, int year, String streamingService, String synopsis) async {
       MovieEntity movie = MovieEntity(null, title, imageUrl, mpaaRating, imdbRating, runtime, genres, year, streamingService, synopsis);
       int movieId = await _movieDao.insertMovie(movie);
-      _addMovieToPersonalQueue(movieId);
+      _addMovieToPersonalQueues(movieId);
   }
 
-  Future<void> _addMovieToPersonalQueue(int movieId) async{
+  Future<void> _addMovieToPersonalQueues(int movieId) async{
       List<UserEntity?> users = await getAllUsers();
       for(int i = 0 ; i < users.length; i++){
         PersonalQueueEntity pqe = new PersonalQueueEntity(null, users[i]!.id!, movieId, 1);

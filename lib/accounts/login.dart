@@ -83,6 +83,7 @@ class _MyCustomFormState extends State<LoginPage>{
                 ),
                 TextField(
                   controller: errorFieldController,
+                  readOnly: true,
                 ),
                 Padding(
                   padding: EdgeInsets.all(10),
