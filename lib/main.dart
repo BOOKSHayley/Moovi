@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget{
       title: 'MOOVI',
       home: MenusStatefulWidget(db),
       theme: ThemeData(
+        brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
     );
