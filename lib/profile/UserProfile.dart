@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
+import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/DatabaseGetter.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/mainViewModel.dart';
@@ -21,7 +22,7 @@ class LikedList extends StatefulWidget {
 
 class _LikedList extends State<LikedList> {
   final db;
-  final username = "H1";
+  final username = LoginPage.username;
   late MainViewModel mvm;
   _LikedList(this.db){
     mvm = new MainViewModel(db);

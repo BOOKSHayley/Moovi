@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
 import 'FriendMatchedCard.dart';
@@ -27,7 +28,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
         ),
         body: Container(
         child: StreamBuilder<List<UserEntity?>>(
-            stream: mvm.getAllFriendsOfUserAsStream("H1", false),
+            stream: mvm.getAllFriendsOfUserAsStream(LoginPage.username, false),
             builder: (BuildContext context,
                 AsyncSnapshot<List<UserEntity?>> snapshot) {
               if(snapshot.hasError) { print("ERROR!"); }

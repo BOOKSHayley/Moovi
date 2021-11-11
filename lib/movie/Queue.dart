@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
+import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/DatabaseGetter.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/mainViewModel.dart';
@@ -21,7 +22,7 @@ class Queue extends StatefulWidget {
 
 class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
   final db;
-  final username = "H1";
+  final username = LoginPage.username;
   late MainViewModel mvm;
   _QueueState(this.db){
     mvm = new MainViewModel(db);
@@ -34,7 +35,7 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
     return Container(
         width: MediaQuery.of(context).size.width * 0.9, height: MediaQuery.of(context).size.height * 0.8,
         child: StreamBuilder<List<MovieEntity?>>(
-              stream: mvm.getMoviesInPersonalQueueAsStream("H1"),
+              stream: mvm.getMoviesInPersonalQueueAsStream(username),
               builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
                 if(snapshot.hasError) { print("ERROR!"); }
                 switch(snapshot.connectionState) {

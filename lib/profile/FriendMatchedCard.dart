@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 
@@ -40,7 +41,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
         body: Center(
             child: Container(
                 child: StreamBuilder<List<MovieEntity?>>(
-                    stream: mvm.getSharedLikedMoviesAsStream("H1", friendUsername),
+                    stream: mvm.getSharedLikedMoviesAsStream(LoginPage.username, friendUsername),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<MovieEntity?>> snapshot) {
                       if(snapshot.hasError) { print("ERROR!"); }
