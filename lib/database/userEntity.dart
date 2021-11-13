@@ -18,4 +18,5 @@ class UserEntity {
   final String password;
 
   UserEntity(this.id, this.name, this.userName, this.password);
+
 }
