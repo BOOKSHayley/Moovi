@@ -3,29 +3,35 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/movieEntity.dart';
+import 'package:moovi/profile/FriendsListMenu.dart';
 import 'package:moovi/movie/Movie.dart';
+import 'accounts/login.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
+import 'profile/UserProfile.dart';
 import 'movie/QueueMenu.dart';
-import 'movie/LikedListMenu.dart';
-import 'movie/FriendsLikedListMenu.dart';
+
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final _database = await DatabaseGetter.instance.database;
+  final MainViewModel mvm = MainViewModel(_database);
 
-  runApp(MyApp(_database));
+  //TODO: Clean up main.dart
+  //Get rid of database stuff
+  //Move the Material App stuff so only the ref to Login is here. Move rest into another dart file
+  runApp(MaterialApp(home:LoginPage(_database, mvm), theme: ThemeData(brightness: Brightness.dark),));
 
-  //Users: Hayley (H1), Karley (K1), Aliza (A1)
-  //Movies: 2001, Spongebob, Howls moving castle
 
   //IF YOU ARE RUNNING FOR FIRST TIME:
   //1. COMMENT OUT THE RUN APP METHOD
   //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
-  // MainViewModel mvm = MainViewModel(_database);
-  //await mvm.clearMovieTable();
-  //await mvm.clearPersonalQueueTable();
-  //print("Cleared t");
+
+  // await mvm.clearAllTables();
+  // print("Cleared t");
+
+  //UNNECESSARY
   //await mvm.addUser("Hayley", "H1");
   // await mvm.addUser("Karley", "K1");
   // await mvm.addUser("Aliza", "A1");
@@ -34,7 +40,7 @@ void main() async{
   // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family",0000,"Netflix", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
   // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family",0000,"Netflix", "IDK Stupid Spongebob");
   // print("Added movies");
-}
+
 
 class MyApp extends StatelessWidget{
   final db;
@@ -70,9 +76,9 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   _MenusStatefulWidgetState(this.db) {
 
   _widgetOptions = <Widget>[ //List of widgets for the screen
-    LikedListMenu().returnMyList(),
+    LikedList(db),
     QueueMenu(db),
-    FriendsLikedListMenu().returnFriendsList()
+    FriendsListMenu(db)
   ];
 }
   void _onItemTapped(int index) {
@@ -101,22 +107,23 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
 
       ),
       bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.grey[900],
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            label: 'Liked Movies',
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
             label: 'Home'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Friend1 Liked List',
+            icon: Icon(Icons.people),
+            label: 'Friends',
           )
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.deepPurpleAccent,
         onTap: _onItemTapped,
       ),
     );
