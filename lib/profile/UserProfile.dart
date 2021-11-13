@@ -171,6 +171,7 @@ class UserProfile extends StatelessWidget{
                           },
 
                           shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.grey[900]!, width: 2),
                               borderRadius: BorderRadius.all(Radius.circular(15.0))
                           ),
                           child: Icon(

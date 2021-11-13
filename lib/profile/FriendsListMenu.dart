@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
-import 'FriendMatchedCard.dart';
+import 'FriendProfile.dart';
 import 'package:moovi/friends/pendingFriendsList.dart';
 
 class FriendsListMenu extends StatefulWidget {
