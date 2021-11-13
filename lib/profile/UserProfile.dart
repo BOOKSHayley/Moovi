@@ -41,7 +41,7 @@ class _LikedList extends State<LikedList> {
   Widget build(BuildContext context) {
     var username = LoginPage.username;
     UserEntity userEntity = mvm.getUserbyUsername(username) as UserEntity;
-    String name;
+    String name = "Name"; //dummy value
     List<Card> cardsList;
     return Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
@@ -124,7 +124,7 @@ class UserProfile extends StatelessWidget{
                               children: [
                                 Center(
                                   child: Text(
-                                    "Name",
+                                    name,
                                     style: TextStyle(color: Colors.white, fontSize: 20),
                                   ),
                                 ),
