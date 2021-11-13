@@ -8,6 +8,7 @@ import 'package:moovi/database/database.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
+import 'package:moovi/movie/MovieCardStack.dart';
 import 'Movie.dart';
 import 'MovieCard.dart';
 
@@ -17,14 +18,17 @@ class Queue extends StatefulWidget {
   const Queue(this.db, {Key? key}) : super(key: key);
 
   @override
-  _QueueState createState() => _QueueState(db);
+  QueueState createState() => QueueState(db);
 }
 
-class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
+class QueueState extends State<Queue> with SingleTickerProviderStateMixin {
   final db;
+
   final user = LoginPage.user;
+  final stackKey = GlobalKey<MovieCardStackState>();
+
   late MainViewModel mvm;
-  _QueueState(this.db){
+  QueueState(this.db){
     mvm = new MainViewModel(db);
   }
   late AnimationController _controller;
@@ -52,13 +56,19 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
                     }
                     return Stack(children: cardsList,);
                 }
+                else{
+                  cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
+                }
+                return MovieCardStack(cardsList);
+
               }
             ),
     );
   }
 
-  updateCardsList(){
-    //add the next 10 movies to the back of the list
+  stackSwipe(bool leftSwipe){
+    stackKey.currentState!.popMovieCard().autoSwipe(leftSwipe);
+    stackKey.currentState!.stackRefresh();
   }
 
   generateCardsList(List<MovieEntity?> movieEntities){
