@@ -27,48 +27,170 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
   Widget build(BuildContext context){
     List<Card> cards = [];
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_left_rounded),
-          iconSize: 50,
-          tooltip: 'Go Back to Friends List',
-          onPressed: (){
-            Navigator.pop(context);
-          },),
-        title: Text("Shared Movies: " + friendName , style: TextStyle(fontSize: 28),),
-        backgroundColor: Colors.black54,
-        ),
-        body: Center(
-            child: Container(
-                child: StreamBuilder<List<MovieEntity?>>(
-                    stream: mvm.getSharedLikedMoviesAsStream(LoginPage.user, friendUsername),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<MovieEntity?>> snapshot) {
-                      if(snapshot.hasError) { print("ERROR!"); }
-                      switch(snapshot.connectionState){
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                        case ConnectionState.active:
-                          return Center(child: CircularProgressIndicator(),);
-                        case ConnectionState.done:
-                          if (snapshot.hasData) {
-                            cards = buildMatchedMovieCards(snapshot.data!);
-                          } else {
-                            cards = [Card(child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),)))];
-                          }
-                          return ListView(children: cards,);
-                      }
-                    }))
-          ),
+      body: Center(
+          child: Container(
+              child: StreamBuilder<List<MovieEntity?>>(
+                  stream: mvm.getSharedLikedMoviesAsStream(LoginPage.user, friendUsername),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<MovieEntity?>> snapshot) {
+                    if(snapshot.hasError) { print("ERROR!"); }
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                      case ConnectionState.active:
+                        return Center(child: CircularProgressIndicator(),);
+                      case ConnectionState.done:
+                        if (snapshot.hasData) {
+                          cards = buildMatchedMovieCards(snapshot.data!);
+                        } else {
+                          cards = [Card(child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),)))];
+                        }
+                        return FriendProfile(mvm, widget.friendUsername, widget.friendName, cards);
+                    }
+                  }))
+      ),
     );
   }
 
   List<Card> buildMatchedMovieCards(List<MovieEntity?> movies){
-      List<Card> cards = [];
-      for(int i = 0; i < movies.length; i++){
-          cards.add(Card(child: ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))));
-      }
-      return cards;
+    List<Card> cards = [];
+    for(int i = 0; i < movies.length; i++){
+      cards.add(Card(child: ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))));
+    }
+    return cards;
+  }
+
+
+}
+
+class FriendProfile extends StatelessWidget{
+  final friendUsername;
+  final name;
+  final cardList;
+  final MainViewModel mvm;
+  const FriendProfile(this.mvm, this.friendUsername, this.name, this.cardList, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Container(
+              height: 200,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black87,
+                      Colors.deepPurple,
+                      Colors.deepPurpleAccent
+                    ],
+                  )
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: IconButton(
+                                icon: const Icon(Icons.arrow_left_rounded),
+                                iconSize: 50,
+                                tooltip: 'Go Back to Friends List',
+                                onPressed: (){
+                                  Navigator.pop(context);
+                                },),
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          name,
+                                          style: TextStyle(color: Colors.white, fontSize: 20),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          friendUsername,
+                                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                                        ),
+                                      ),
+                                    ]
+                                ),
+                              )
+                          ),
+                        ]
+
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: Align(
+                        alignment: Alignment.topRight,
+
+                        child: PopupMenuButton(
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              child: Text("Remove Friend"),
+                              value: 1,
+                            )
+                          ],
+
+                          onSelected: (result) {
+                            if (result == 1) {
+                              mvm.removeFriendFromUser(LoginPage.user, friendUsername);
+                              Navigator.pop(context);
+                            }
+
+                          },
+
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(15.0))
+                          ),
+                          child: Icon(
+                              Icons.more_vert,
+                              size: 30,
+                              color: Colors.white
+                          ),
+                        ),
+                      ),
+                    )
+
+                  ]
+
+              )
+          ),
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  child: Text(
+                    'Your shared movies',
+                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                  ),
+                ),
+              )
+          ),
+          Expanded(
+              child: ListView(
+                  children: cardList
+              )
+          ),
+        ],
+      ),
+    );
+
   }
 
 
