@@ -98,7 +98,7 @@ class UserProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-              height: 200,
+              height: 175,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey[900]!, width: 5),
                   gradient: LinearGradient(
@@ -114,12 +114,38 @@ class UserProfile extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Align(
-                        alignment: Alignment.centerLeft,
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                          child: Container(),
+                      )
+
+                    ),
+                    Align(
+                        alignment: Alignment.center,
                         child: Padding(
                           padding: const EdgeInsets.all(30),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: CircleAvatar(
+                                    radius: 27,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.grey[900],
+                                        radius: 25,
+                                        child: Icon(
+                                            Icons.person_rounded,
+                                            size: 23,
+                                            color: Colors.grey
+                                        )
+                                    ),
+
+                                  ),
+                                ),
+
                                 Center(
                                   child: Text(
                                     name,
@@ -128,7 +154,7 @@ class UserProfile extends StatelessWidget{
                                 ),
                                 Center(
                                   child: Text(
-                                    username,
+                                    "@" + username,
                                     style: TextStyle(color: Colors.grey, fontSize: 16),
                                   ),
                                 ),

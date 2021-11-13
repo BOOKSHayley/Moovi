@@ -88,15 +88,16 @@ class _MyCustomFormState extends State<LoginPage>{
                   readOnly: true,
                 ),
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top: 10),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget> [
                       Padding(
                         padding: EdgeInsets.all(5),
                       ),
                       SizedBox(
-                        width: 190,
+                        width: 160,
                         height: 50,
                         child: TextButton(
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
@@ -123,7 +124,7 @@ class _MyCustomFormState extends State<LoginPage>{
                         padding: EdgeInsets.all(5),
                       ),
                       SizedBox(
-                        width: 190,
+                        width: 160,
                         height: 50,
                         child: TextButton(
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blueGrey[700])),

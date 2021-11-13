@@ -77,7 +77,7 @@ class FriendProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-              height: 200,
+              height: 175,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey[900]!, width: 5),
                   gradient: LinearGradient(
@@ -92,46 +92,58 @@ class FriendProfile extends StatelessWidget{
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                icon: const Icon(Icons.arrow_left_rounded),
-                                iconSize: 50,
-                                tooltip: 'Go Back to Friends List',
-                                onPressed: (){
-                                  Navigator.pop(context);
-                                },),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Center(
-                                        child: Text(
-                                          name,
-                                          style: TextStyle(color: Colors.white, fontSize: 20),
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          friendUsername,
-                                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                                        ),
-                                      ),
-                                    ]
-                                ),
-                              )
-                          ),
-                        ]
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_left_rounded),
+                          iconSize: 50,
+                          tooltip: 'Go Back to Friends List',
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: CircleAvatar(
+                                    radius: 27,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.grey[900],
+                                        radius: 25,
+                                        child: Icon(
+                                            Icons.person_rounded,
+                                            size: 15,
+                                            color: Colors.grey
+                                        )
+                                    ),
 
+                                  ),
+                                ),
+                                Center(
+                                  child: Text(
+                                    name,
+                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                  ),
+                                ),
+                                Center(
+                                  child: Text(
+                                    "@" + friendUsername,
+                                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                                  ),
+                                ),
+                              ]
+                          ),
+                        )
                     ),
                     Padding(
                       padding: const EdgeInsets.all(30),
