@@ -137,7 +137,7 @@ class _MyCustomFormState extends State<AddFriend>{
           onPressed: () {
             String username = LoginPage.username;
             String friendUsername = usernameFieldController.text;
-            widget.mvm.addFriendToUser(username, friendUsername, false);
+            widget.mvm.addFriendToUser(username, friendUsername, true);
             Navigator.of(context).pop();
           },
         ),
