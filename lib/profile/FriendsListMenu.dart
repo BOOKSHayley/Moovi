@@ -4,6 +4,7 @@ import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
 import 'FriendMatchedCard.dart';
+import 'package:moovi/friends/pendingFriendsList.dart';
 
 class FriendsListMenu extends StatefulWidget {
   final db;
@@ -11,6 +12,7 @@ class FriendsListMenu extends StatefulWidget {
 
   _FriendsListMenu createState() => _FriendsListMenu(db);
 }
+
 class _FriendsListMenu extends State<FriendsListMenu> {
   late MainViewModel mvm;
   final db;
@@ -52,7 +54,17 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                   }
                   return ListView(children: cards,);
               }
-            })));
+            })),
+            floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                        Navigator.of(context)
+                        .push(
+                            MaterialPageRoute(builder: (context) => PendingFriendsList())
+                        );
+                    },
+                    child: const Icon(Icons.person_add),
+                    backgroundColor: Colors.green,)
+    );
   }
 
   List<InkWell> buildFriendCards(List<UserEntity?> friends, BuildContext context) {
