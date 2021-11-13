@@ -54,12 +54,12 @@ class QueueState extends State<Queue> with SingleTickerProviderStateMixin {
                     else{
                       cardsList = [new MovieCard(user.userName, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
                     }
-                    return Stack(children: cardsList,);
+                    return MovieCardStack(cardsList);
                 }
-                else{
-                  cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
-                }
-                return MovieCardStack(cardsList);
+                // else{
+                //   cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
+                // }
+                // return MovieCardStack(cardsList);
 
               }
             ),

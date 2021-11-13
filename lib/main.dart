@@ -13,7 +13,7 @@ import 'movie/QueueMenu.dart';
 
 
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final _database = await DatabaseGetter.instance.database;
   final MainViewModel mvm = MainViewModel(_database);
@@ -21,7 +21,8 @@ void main() async{
   //TODO: Clean up main.dart
   //Get rid of database stuff
   //Move the Material App stuff so only the ref to Login is here. Move rest into another dart file
-  runApp(MaterialApp(home:LoginPage(_database, mvm), theme: ThemeData(brightness: Brightness.dark),));
+  runApp(MaterialApp(home: LoginPage(_database, mvm),
+    theme: ThemeData(brightness: Brightness.dark),));
 
 
   //IF YOU ARE RUNNING FOR FIRST TIME:
@@ -41,6 +42,7 @@ void main() async{
   // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family",0000,"Netflix", "IDK Stupid Spongebob");
   // print("Added movies");
 
+}
 
 class MyApp extends StatelessWidget{
   final db;
