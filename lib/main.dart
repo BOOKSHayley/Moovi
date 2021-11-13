@@ -88,22 +88,23 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.grey[900],
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            label: 'Liked Movies',
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
             label: 'Home'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
+            icon: Icon(Icons.people),
             label: 'Friends',
           )
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.deepPurpleAccent,
         onTap: _onItemTapped,
       ),
     );
