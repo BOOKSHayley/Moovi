@@ -6,6 +6,7 @@ import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/DatabaseGetter.dart';
 import 'package:moovi/database/database.dart';
+import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
@@ -39,8 +40,7 @@ class _LikedList extends State<LikedList> {
   @override
   Widget build(BuildContext context) {
     var username = LoginPage.username;
-    var userEntitiy = mvm.getUserbyUsername(username);
-    var name;
+    var userEntity = mvm.getUserbyUsername(username);
     List<Card> cardsList;
     return Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
