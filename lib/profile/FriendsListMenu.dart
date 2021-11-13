@@ -50,7 +50,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
             )
           ),
         StreamBuilder<List<UserEntity?>>(
-            stream: mvm.getAllFriendsOfUserAsStream(LoginPage.username, false),
+            stream: mvm.getAllFriendsOfUserAsStream(LoginPage.user, false),
             builder: (BuildContext context,
                 AsyncSnapshot<List<UserEntity?>> snapshot) {
               if(snapshot.hasError) { print("ERROR!"); }
@@ -144,9 +144,8 @@ class _MyCustomFormState extends State<AddFriend>{
         TextButton(
           child: const Text('Add'),
           onPressed: () {
-            String username = LoginPage.username;
             String friendUsername = usernameFieldController.text;
-            widget.mvm.addFriendToUser(username, friendUsername, true);
+            widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
             Navigator.of(context).pop();
           },
         ),

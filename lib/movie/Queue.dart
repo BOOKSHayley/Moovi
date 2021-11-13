@@ -22,7 +22,7 @@ class Queue extends StatefulWidget {
 
 class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
   final db;
-  final username = LoginPage.username;
+  final user = LoginPage.user;
   late MainViewModel mvm;
   _QueueState(this.db){
     mvm = new MainViewModel(db);
@@ -35,7 +35,7 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
     return Container(
         width: MediaQuery.of(context).size.width * 0.9, height: MediaQuery.of(context).size.height * 0.8,
         child: StreamBuilder<List<MovieEntity?>>(
-              stream: mvm.getMoviesInPersonalQueueAsStream(username),
+              stream: mvm.getMoviesInPersonalQueueAsStream(user),
               builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
                 if(snapshot.hasError) { print("ERROR!"); }
                 switch(snapshot.connectionState) {
@@ -45,10 +45,10 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
                     return Center(child: CircularProgressIndicator(),);
                   case ConnectionState.done:
                     if(snapshot.hasData){
-                      cardsList = generateCardsList(snapshot.data!);
+                      cardsList = generateCardsList(snapshot.data!.take(10).toList());
                     }
                     else{
-                      cardsList = [new MovieCard(username, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
+                      cardsList = [new MovieCard(user.userName, new MovieEntity(null, "Error", "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg", "mpaa", 10, "runtime", "genres", 0000, "None", "synopsis"))];
                     }
                     return Stack(children: cardsList,);
                 }
@@ -67,7 +67,7 @@ class _QueueState extends State<Queue> with SingleTickerProviderStateMixin {
         if(movieEntities[i] == null){
           continue;
         }
-        cardList.add(new MovieCard(username, movieEntities[i]!));
+        cardList.add(new MovieCard(user.userName, movieEntities[i]!));
     }
     return cardList;
   }

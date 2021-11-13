@@ -24,29 +24,27 @@ class LikedList extends StatefulWidget {
 
 class _LikedList extends State<LikedList> {
   final db;
-  final username = LoginPage.username;
   late MainViewModel mvm;
   _LikedList(this.db){
     mvm = new MainViewModel(db);
   }
 
   late Stream<List<MovieEntity?>> stream;
-  @override
-  void initState() {
-    super.initState();
-    stream =  mvm.getLikedMoviesOfUserAsStream(username);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   stream =  ;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    var username = LoginPage.username;
-    UserEntity userEntity = mvm.getUserbyUsername(username) as UserEntity;
-    String name = "Name"; //dummy value
+    var user = LoginPage.user;
+    String name = user.name; //dummy value
     List<Card> cardsList;
     return Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
       child: StreamBuilder<List<MovieEntity?>>(
-          stream: stream,
+          stream: mvm.getLikedMoviesOfUserAsStream(LoginPage.user),
           builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
             if(snapshot.hasError) { print("ERROR!"); }
             switch(snapshot.connectionState){
@@ -63,7 +61,7 @@ class _LikedList extends State<LikedList> {
                     new Card(child: ListTile(title: Text("No liked movies yet. Go back to the Queue and Like some!")))
                   ];
                 }
-                return UserProfile(db, mvm, username, name, cardsList);
+                return UserProfile(db, mvm, user.userName, name, cardsList);
             }
 
           }

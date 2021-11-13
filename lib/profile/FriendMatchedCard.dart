@@ -41,7 +41,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
         body: Center(
             child: Container(
                 child: StreamBuilder<List<MovieEntity?>>(
-                    stream: mvm.getSharedLikedMoviesAsStream(LoginPage.username, friendUsername),
+                    stream: mvm.getSharedLikedMoviesAsStream(LoginPage.user, friendUsername),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<MovieEntity?>> snapshot) {
                       if(snapshot.hasError) { print("ERROR!"); }

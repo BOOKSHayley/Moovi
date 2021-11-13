@@ -42,20 +42,20 @@ class MainViewModel extends ChangeNotifier{
 
 
   //Methods for getting Stream data from tables
-  Stream<List<UserEntity?>> getAllFriendsOfUserAsStream(String username, bool pendingFriends) async*{
-    yield await getAllFriendsOfUser(username, pendingFriends);
+  Stream<List<UserEntity?>> getAllFriendsOfUserAsStream(UserEntity user, bool pendingFriends) async*{
+    yield await getAllFriendsOfUser(user, pendingFriends);
   }
 
-  Stream<List<MovieEntity?>> getMoviesInPersonalQueueAsStream(String username, {genre = ""}) async*{
-    yield await getAllMoviesInPersonalQueueOfGenre(username, genre);
+  Stream<List<MovieEntity?>> getMoviesInPersonalQueueAsStream(UserEntity user, {genre = ""}) async*{
+    yield await getAllMoviesInPersonalQueueOfGenre(user, genre);
   }
 
-  Stream<List<MovieEntity?>> getLikedMoviesOfUserAsStream(String username) async*{
-    yield await getLikedMoviesOfUser(username);
+  Stream<List<MovieEntity?>> getLikedMoviesOfUserAsStream(UserEntity user) async*{
+    yield await getLikedMoviesOfUser(user);
   }
 
-  Stream<List<MovieEntity?>> getSharedLikedMoviesAsStream(String currentUserUsername, String friendUsername) async*{
-    yield await getSharedLikedMovies(currentUserUsername, friendUsername);
+  Stream<List<MovieEntity?>> getSharedLikedMoviesAsStream(UserEntity currentUser, String friendUsername) async*{
+    yield await getSharedLikedMovies(currentUser, friendUsername);
   }
 
 
@@ -79,14 +79,13 @@ class MainViewModel extends ChangeNotifier{
       return await _userDao.findAllUsers();
   }
 
-  Future<List<UserEntity?>> getAllFriendsOfUser(String username, bool pendingFriends) async{
-      final user = await getUserbyUsername(username);
+  Future<List<UserEntity?>> getAllFriendsOfUser(UserEntity user, bool pendingFriends) async{
       List<FriendsEntity> friendEntities = [];
 
       if(pendingFriends){
-          friendEntities = await _friendsDao.findAllPendingFriendsOf(user!.id!);
+          friendEntities = await _friendsDao.findAllPendingFriendsOf(user.id!);
       } else {
-          friendEntities = await _friendsDao.findAllFriendsOf(user!.id!);
+          friendEntities = await _friendsDao.findAllFriendsOf(user.id!);
       }
 
       List<UserEntity?> friendUserEntities = [];
@@ -102,13 +101,12 @@ class MainViewModel extends ChangeNotifier{
       return friendUserEntities;
   }
 
-  Future<List<MovieEntity?>> getAllMoviesInPersonalQueue(String username) async{
-      return getAllMoviesInPersonalQueueOfGenre(username, "");
+  Future<List<MovieEntity?>> getAllMoviesInPersonalQueue(UserEntity user) async{
+      return getAllMoviesInPersonalQueueOfGenre(user, "");
   }
 
-  Future<List<MovieEntity?>> getAllMoviesInPersonalQueueOfGenre(String username, String genre) async{
-      final user = await getUserbyUsername(username);
-      final queue = await _personalQueueDao.findAllPersonalQueueMovies(user!.id!);
+  Future<List<MovieEntity?>> getAllMoviesInPersonalQueueOfGenre(UserEntity user, String genre) async{
+      final queue = await _personalQueueDao.findAllPersonalQueueMovies(user.id!);
 
       genre = "%" + genre + "%";
       List<MovieEntity?> movies = [];
@@ -131,9 +129,8 @@ class MainViewModel extends ChangeNotifier{
     return await _movieDao.findMovieByTitle(title);
   }
 
-  Future<List<MovieEntity?>> getLikedMoviesOfUser(String username) async{
-      final user = await _userDao.findUserByUsername(username);
-      List<LikedMovieEntity?> likedMovieEntities = await _likedMoviesDao.findAllLikedMoviesOf(user!.id!);
+  Future<List<MovieEntity?>> getLikedMoviesOfUser(UserEntity user) async{
+      List<LikedMovieEntity?> likedMovieEntities = await _likedMoviesDao.findAllLikedMoviesOf(user.id!);
 
       List<MovieEntity?> movies = [];
       for(int i = 0; i < likedMovieEntities.length; i++){
@@ -142,9 +139,10 @@ class MainViewModel extends ChangeNotifier{
       return movies;
   }
 
-  Future<List<MovieEntity?>> getSharedLikedMovies(String currentUserUsername, String friendUsername) async {
-    List<MovieEntity?> currentUserLikedMovies = await getLikedMoviesOfUser(currentUserUsername);
-    List<MovieEntity?> friendUserLikedMovies = await getLikedMoviesOfUser(friendUsername);
+  Future<List<MovieEntity?>> getSharedLikedMovies(UserEntity currentUser, String friendUsername) async {
+    List<MovieEntity?> currentUserLikedMovies = await getLikedMoviesOfUser(currentUser);
+    UserEntity? friendUser = await getUserbyUsername(friendUsername);
+    List<MovieEntity?> friendUserLikedMovies = await getLikedMoviesOfUser(friendUser!);
 
     List<MovieEntity?> sharedLikedMovies = [];
     for(int i = 0; i < currentUserLikedMovies.length; i++){
@@ -189,25 +187,22 @@ class MainViewModel extends ChangeNotifier{
       }
   }
 
-  Future<void> addFriendToUser(String currentUserUsername, String friendUsername, bool pendingFriend) async {
-      UserEntity? user = await getUserbyUsername(currentUserUsername);
+  Future<void> addFriendToUser(UserEntity currentUser, String friendUsername, bool pendingFriend) async {
       UserEntity? friend = await getUserbyUsername(friendUsername);
-      FriendsEntity friendEntity = FriendsEntity(null, user!.id!, friend!.id!, pendingFriend);
+      FriendsEntity friendEntity = FriendsEntity(null, currentUser.id!, friend!.id!, pendingFriend);
       _friendsDao.insertFriend(friendEntity);
   }
 
-  Future<void> updateFriendOfUserFromPending(String currentUserUsername, String friendUsername) async{
-      final user = await getUserbyUsername(currentUserUsername);
+  Future<void> updateFriendOfUserFromPending(UserEntity currentUser, String friendUsername) async{
       final friend = await getUserbyUsername(friendUsername);
-      final friendEntity = await _friendsDao.findFriendOfUser(user!.id!, friend!.id!);
+      final friendEntity = await _friendsDao.findFriendOfUser(currentUser.id!, friend!.id!);
       final updatedFriendEntity = FriendsEntity(friendEntity!.id!, friendEntity.userOneId, friendEntity.userTwoId, false);
       _friendsDao.deleteFriend(friendEntity);
       _friendsDao.insertFriend(updatedFriendEntity);
   }
 
-  Future<void> addLikedMovieToUser(String username, MovieEntity movie) async{
-      final user = await getUserbyUsername(username);
-      LikedMovieEntity likedMovie = LikedMovieEntity(null, user!.id!, movie.id!);
+  Future<void> addLikedMovieToUser(UserEntity user, MovieEntity movie) async{
+      LikedMovieEntity likedMovie = LikedMovieEntity(null, user.id!, movie.id!);
       _likedMoviesDao.insertLikedMovie(likedMovie);
   }
 
@@ -220,9 +215,8 @@ class MainViewModel extends ChangeNotifier{
       _personalQueueDao.insertPersonalQueueListOfMovies(personalQEntities);
   }
 
-  Future<void> lowerPersonalQueueMoviePriority(String username, MovieEntity movie) async{
-      final user = await getUserbyUsername(username);
-      final pqMovie = await _personalQueueDao.findPersonalQueueMovie(user!.id!, movie.id!);
+  Future<void> lowerPersonalQueueMoviePriority(UserEntity user, MovieEntity movie) async{
+      final pqMovie = await _personalQueueDao.findPersonalQueueMovie(user.id!, movie.id!);
       final oldPriority = pqMovie!.priority;
       final newMovie = PersonalQueueEntity(pqMovie.id!, pqMovie.userId, pqMovie.movieId, oldPriority+1);
       await _personalQueueDao.deletePersonalQueueMovie(pqMovie);
@@ -232,38 +226,32 @@ class MainViewModel extends ChangeNotifier{
 
 
   //Methods for removing from tables
-  Future<void> removeUser(String username) async{
-      final user = await getUserbyUsername(username);
-      _userDao.deleteUser(user!);
+  Future<void> removeUser(UserEntity user) async{
+      _userDao.deleteUser(user);
   }
 
-  Future<void> removeFriendFromUser(String currentUserUsername, String friendUsername) async{
-      final currentUser = await getUserbyUsername(currentUserUsername);
+  Future<void> removeFriendFromUser(UserEntity currentUser, String friendUsername) async{
       final friendUser = await getUserbyUsername(friendUsername);
-      final friendEntity = await _friendsDao.findFriendOfUser(currentUser!.id!, friendUser!.id!);
+      final friendEntity = await _friendsDao.findFriendOfUser(currentUser.id!, friendUser!.id!);
       _friendsDao.deleteFriend(friendEntity!);
   }
 
-  Future<void> removeLikedMovieFromUser(String username, MovieEntity movie) async{
-      final user = await getUserbyUsername(username);
-      final likedMovie = await _likedMoviesDao.findLikedMovie(user!.id!, movie.id!);
+  Future<void> removeLikedMovieFromUser(UserEntity user, MovieEntity movie) async{
+      final likedMovie = await _likedMoviesDao.findLikedMovie(user.id!, movie.id!);
       _likedMoviesDao.deleteLikedMovie(likedMovie!);
   }
 
-  Future<void> removePersonalQueueMovie(String username, MovieEntity movie) async{
-      UserEntity? user = await getUserbyUsername(username);
-      PersonalQueueEntity? pqe = await _personalQueueDao.findPersonalQueueMovie(user!.id!, movie.id!);
+  Future<void> removePersonalQueueMovie(UserEntity user, MovieEntity movie) async{
+      PersonalQueueEntity? pqe = await _personalQueueDao.findPersonalQueueMovie(user.id!, movie.id!);
       _personalQueueDao.deletePersonalQueueMovie(pqe!);
   }
 
-  Future<void> deleteAllFriendsOfUser(String username) async{
-      final user = await getUserbyUsername(username);
-      _friendsDao.deleteAllFriendsOfUser(user!.id!);
+  Future<void> deleteAllFriendsOfUser(UserEntity user) async{
+      _friendsDao.deleteAllFriendsOfUser(user.id!);
   }
 
-  Future<void> deleteAllLikedMoviesOfUser(String username) async{
-      final user = await getUserbyUsername(username);
-      _likedMoviesDao.deleteAllLikedMoviesFromUser(user!.id!);
+  Future<void> deleteAllLikedMoviesOfUser(UserEntity user) async{
+      _likedMoviesDao.deleteAllLikedMoviesFromUser(user.id!);
   }
 
 

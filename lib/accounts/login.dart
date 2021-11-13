@@ -8,7 +8,8 @@ import 'accountCreation.dart';
 
 class LoginPage extends StatefulWidget{
 
-  static late String username; //will hold the username of the currently logged in user
+  // static late String username;
+  static late UserEntity user; //will hold the userEntity of the currently logged in user
 
   final db;
   final MainViewModel mvm;
@@ -27,6 +28,7 @@ class _MyCustomFormState extends State<LoginPage>{
   final _formKey = GlobalKey<FormState>();
 
   String password = "";
+  String username = "";
 
   @override
   void dispose() {
@@ -62,7 +64,7 @@ class _MyCustomFormState extends State<LoginPage>{
                     }
                     return null;
                   },
-                  onSaved: (username) => LoginPage.username = username!,
+                  onSaved: (_username) => username = _username!,
                 ),
                 TextFormField(
                     obscureText: true,
@@ -142,13 +144,14 @@ class _MyCustomFormState extends State<LoginPage>{
                             if(_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               UserEntity? user = await widget.mvm.
-                                  getUserbyUsernameAndPass(LoginPage.username, password);
+                                  getUserbyUsernameAndPass(username, password);
 
                               if (user == null) {
                                 usernameFieldController.clear();
                                 passwordFieldController.clear();
                                 errorFieldController.text = "Your username or password was incorrect.";
                               } else {
+                                LoginPage.user = user;
                                 Navigator.push(context, new MaterialPageRoute(
                                     builder: (context) => MyApp(widget.db)
                                 ));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
+import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
 import 'Movie.dart';
@@ -83,8 +84,8 @@ class MovieCard extends StatelessWidget {
           )
       ),
       verticalSwipe: false,
-      onSwipeLeft: (position){onDislikeClicked(username, movie);},
-      onSwipeRight: (position){onLikeClicked(username, movie);},
+      onSwipeLeft: (position){onDislikeClicked(LoginPage.user, movie);},
+      onSwipeRight: (position){onLikeClicked(LoginPage.user, movie);},
       //onSwipeLeft: (position){onDislikeClicked(m);}, *********************************
     );
   }
