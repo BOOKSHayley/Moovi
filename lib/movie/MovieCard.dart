@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:moovi/database/movieEntity.dart';
-import 'package:moovi/movie/Movie.dart';
-import 'Movie.dart';
 import 'likeDislikeBackend.dart';
 import 'package:flip_card/flip_card.dart';
+import 'dart:math';
 
 class MovieCard extends StatelessWidget {
   final MovieEntity movie;
   final username;
+  final StreamController<double> _controller = StreamController<double>();
   MovieCard(this.username, this.movie);
   //final MovieEntity m; **********************************************************
   //MovieCard(this.m); ************************************************************
@@ -85,7 +87,17 @@ class MovieCard extends StatelessWidget {
       verticalSwipe: false,
       onSwipeLeft: (position){onDislikeClicked(username, movie);},
       onSwipeRight: (position){onLikeClicked(username, movie);},
+      swipe: _controller.stream,
       //onSwipeLeft: (position){onDislikeClicked(m);}, *********************************
     );
+  }
+
+  autoSwipe(bool leftSwipe){
+    double swipeAngle;
+    if (leftSwipe)
+      swipeAngle = pi;
+    else
+      swipeAngle = 0;
+    _controller.add(swipeAngle);
   }
 }

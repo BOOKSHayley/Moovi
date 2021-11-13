@@ -14,29 +14,26 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final _database = await DatabaseGetter.instance.database;
 
-
+  runApp(MyApp(_database));
 
   //Users: Hayley (H1), Karley (K1), Aliza (A1)
   //Movies: 2001, Spongebob, Howls moving castle
 
   //IF YOU ARE RUNNING FOR FIRST TIME:
   //1. COMMENT OUT THE RUN APP METHOD
-  runApp(MyApp(_database));
   //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
   // MainViewModel mvm = MainViewModel(_database);
-  // await mvm.clearMovieTable();
-  // await mvm.clearPersonalQueueTable();
-  // print("Cleared t");
-  // await mvm.addUser("Hayley", "H1");
+  //await mvm.clearMovieTable();
+  //await mvm.clearPersonalQueueTable();
+  //print("Cleared t");
+  //await mvm.addUser("Hayley", "H1");
   // await mvm.addUser("Karley", "K1");
   // await mvm.addUser("Aliza", "A1");
   // print("Added users ");
-  // await mvm.addMovie("2001: A Space Odyssey","https://m.media-amazon.com/images/M/MV5BMmNlYzRiNDctZWNhMi00MzI4LThkZTctMTUzMmZkMmFmNThmXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX67_CR0,0,67,98_AL_.jpg","G",8.3,"149 min","Adventure, Sci-Fi", "After discovering a mysterious artifact buried beneath the Lunar surface, mankind sets off on a quest to find its origins with help from intelligent supercomputer H.A.L. 9000.");
-  // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
-  // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family", "IDK Stupid Spongebob");
+  // await mvm.addMovie("2001: A Space Odyssey","https://m.media-amazon.com/images/M/MV5BMmNlYzRiNDctZWNhMi00MzI4LThkZTctMTUzMmZkMmFmNThmXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX67_CR0,0,67,98_AL_.jpg","G",8.3,"149 min","Adventure, Sci-Fi", 0000,"Netflix", "After discovering a mysterious artifact buried beneath the Lunar surface, mankind sets off on a quest to find its origins with help from intelligent supercomputer H.A.L. 9000.");
+  // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family",0000,"Netflix", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
+  // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family",0000,"Netflix", "IDK Stupid Spongebob");
   // print("Added movies");
-
-
 }
 
 class MyApp extends StatelessWidget{
@@ -87,8 +84,21 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(child: Text("Filter by:")),
+            CheckboxListTile(
+                title: Text("Action"),
+                value: false,
+                onChanged: (bool){})
+          ]
+        )
+      ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(_selectedIndex)
+
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
