@@ -40,7 +40,8 @@ class _LikedList extends State<LikedList> {
   @override
   Widget build(BuildContext context) {
     var username = LoginPage.username;
-    var userEntity = mvm.getUserbyUsername(username);
+    UserEntity userEntity = mvm.getUserbyUsername(username) as UserEntity;
+    String name;
     List<Card> cardsList;
     return Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
@@ -62,7 +63,7 @@ class _LikedList extends State<LikedList> {
                     new Card(child: ListTile(title: Text("No liked movies yet. Go back to the Queue and Like some!")))
                   ];
                 }
-                return UserProfile(db, mvm, username, cardsList);
+                return UserProfile(db, mvm, username, name, cardsList);
             }
 
           }
@@ -86,10 +87,11 @@ class _LikedList extends State<LikedList> {
 
 class UserProfile extends StatelessWidget{
   final username;
+  final name;
   final cardList;
   final db;
   final mvm;
-  const UserProfile(this.db, this.mvm, this.username, this.cardList, {Key? key}) : super(key: key);
+  const UserProfile(this.db, this.mvm, this.username, this.name, this.cardList, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -122,7 +124,7 @@ class UserProfile extends StatelessWidget{
                               children: [
                                 Center(
                                   child: Text(
-                                    'Name',
+                                    "Name",
                                     style: TextStyle(color: Colors.white, fontSize: 20),
                                   ),
                                 ),
@@ -212,6 +214,7 @@ class UserProfile extends StatelessWidget{
 
 }
 
+//todo: for future implementation
 class Settings extends StatelessWidget{
   const Settings({Key? key}) : super(key: key);
 
