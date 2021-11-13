@@ -133,24 +133,34 @@ class _MyCustomFormState extends State<AddFriend>{
   @override
   Widget build(BuildContext context){
 
-    return AlertDialog(
-      title: Text('Add a Friend'),
-      content: TextField(
-        onChanged: (value) { },
-        controller: usernameFieldController,
-        decoration: InputDecoration(hintText: "Enter your friend's username"),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('Add'),
-          onPressed: () {
-            String friendUsername = usernameFieldController.text;
-            widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+        body: AlertDialog(
+          title: Text('Add a Friend'),
+          content: TextField(
+            onChanged: (value) { },
+            controller: usernameFieldController,
+            decoration: InputDecoration(hintText: "Enter your friend's username"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+              Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Add'),
+              onPressed: () {
+                String friendUsername = usernameFieldController.text;
+                widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        )
     );
+
 
   }
 

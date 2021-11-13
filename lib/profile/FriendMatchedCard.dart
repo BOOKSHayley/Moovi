@@ -79,13 +79,13 @@ class FriendProfile extends StatelessWidget{
           Container(
               height: 200,
               decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[900]!, width: 5),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.black87,
+                      const Color(0xff19194d),
                       Colors.deepPurple,
-                      Colors.deepPurpleAccent
                     ],
                   )
               ),
