@@ -81,7 +81,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                     onPressed: () {
                         Navigator.of(context)
                         .push(
-                            MaterialPageRoute(builder: (context) => PendingFriendsList())
+                            MaterialPageRoute(builder: (context) => PendingFriendsList(db))
                         );
                     },
                     child: const Icon(Icons.person_add),

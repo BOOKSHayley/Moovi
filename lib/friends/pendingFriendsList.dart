@@ -1,21 +1,29 @@
 
 import "package:flutter/material.dart";
+import "package:moovi/database/mainViewModel.dart";
+import 'package:moovi/database/userEntity.dart';
+import 'package:moovi/accounts/login.dart';
 //import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 class PendingFriendsList extends StatefulWidget{
-  const PendingFriendsList({ Key? key }) : super(key: key);
+  final db;
+  const PendingFriendsList(this.db, { Key? key }) : super(key: key);
 
   @override
-  State<PendingFriendsList> createState() => _PendingFriendsList();
+  State<PendingFriendsList> createState() => _PendingFriendsList(db);
 
 }
 
 class _PendingFriendsList extends State<PendingFriendsList>{
-  List<Widget> pendingFriends = <Widget>[]; 
+  late MainViewModel mvm;
+  final db;
+  _PendingFriendsList(this.db){
+    mvm = MainViewModel(db);
+  }
 
   @override
    Widget build(BuildContext context){
-     addPendingFriends();
+     List<Card> pendingFriendsList;
      return Scaffold(
        appBar: AppBar(
         leading: IconButton(
@@ -27,188 +35,109 @@ class _PendingFriendsList extends State<PendingFriendsList>{
         title: Text('My Pending Friends'),
         backgroundColor: Colors.blueAccent,
       ),
-      body: Center(child: ListView(children: pendingFriends)
+      body: Container(
+      width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
+      child: StreamBuilder<List<UserEntity?>>(
+          stream: mvm.getAllFriendsOfUserAsStream(LoginPage.user, true),
+          builder: (BuildContext context, AsyncSnapshot<List<UserEntity?>> snapshot){
+            if(snapshot.hasError) { print("ERROR!"); }
+            switch(snapshot.connectionState){
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+                return Center(child: CircularProgressIndicator(),);
+              case ConnectionState.done:
+                if(snapshot.hasData){
+                  pendingFriendsList = generatePendingFriendsCardsList(snapshot.data!);
+                }
+                else{
+                  pendingFriendsList = [
+                    new Card(child: ListTile(title: Text("No pending friends")))
+                  ];
+                }
+                return ListView(children: pendingFriendsList);}}
       )
-      );
+      ));
    }
 
-
-   void removePendingFriend(ObjectKey key, Widget element){
-      setState(() {
-        pendingFriends.removeWhere((element) => element.key == key);
-      });
-   }
-
-   void addPendingFriends(){
-     pendingFriends.add(Card(
-        key: ObjectKey('Lucas'),
-        child: Row(
+   generatePendingFriendsCardsList(List<UserEntity?> pendingFriendsEntities){
+    List<Card> pendingFriendsList = [];
+    for(int i = 0; i < pendingFriendsEntities.length; i++){
+      if(pendingFriendsEntities[i] == null){
+        continue;
+      }
+      pendingFriendsList.add(new Card(key: ObjectKey(pendingFriendsEntities[i]!.userName),
+         child: Row(
               children: <Widget>[
-                  Text('Lucas Colegrove'),
+                  Text(pendingFriendsEntities[i]!.name),
                   ButtonBar(
                     children: <Widget>[
                       IconButton(
                         icon: const Icon(Icons.check),
                         tooltip: 'Accept',
                         onPressed: (){
-                          //TODO
+                          mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                          mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+
                         },),
                         IconButton(
-                        icon: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 30,
-                              child: Icon(Icons.add),
-                              ),
+                        icon: const Icon(Icons.clear),
                         tooltip: 'Decline',
                         onPressed: (){
-                          //TODO
+                            mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
                         },)
                     ]
-                  )
-              ],)
-       ));
-     Card(child: ListTile(title: Text('Chris Bowen')));
-     Card(child: ListTile(title: Text('Robert Fahey')));
+                  )])));
+    }
+    return pendingFriendsList;
+  }
+
+
+
+
+  //  void removePendingFriend(ObjectKey key, Widget element){
+  //     setState(() {
+  //       pendingFriends.removeWhere((element) => element.key == key);
+  //     });
+  //  }
+
+  //  void addPendingFriends(){
+  //    pendingFriends.add(Card(
+  //       key: ObjectKey('Lucas'),
+  //       child: Row(
+  //             children: <Widget>[
+  //                 Text('Lucas Colegrove'),
+  //                 ButtonBar(
+  //                   children: <Widget>[
+  //                     IconButton(
+  //                       icon: const Icon(Icons.check),
+  //                       tooltip: 'Accept',
+  //                       onPressed: (){
+  //                           setState(() {
+  //                             //add friend to list of user's friends
+  //                             //Need to update the state of the friends list
+  //                             pendingFriends.removeWhere((element) => element.key == ObjectKey('Lucas'));
+  //                           });
+  //                       },),
+  //                       IconButton(
+  //                       icon: const Icon(Icons.clear),
+  //                       tooltip: 'Decline',
+  //                       onPressed: (){
+  //                           setState(() {
+  //                             pendingFriends.removeWhere((element) => element.key == ObjectKey('Lucas'));
+  //                           });
+  //                       },)
+  //                   ]
+  //                 )
+  //             ],)
+  //      ));
+  //    Card(child: ListTile(title: Text('Chris Bowen')));
+  //    Card(child: ListTile(title: Text('Robert Fahey')));
      
 
-   }
+  //  }
 
 }
 
 
 
-// class _PendingFriendsList extends State<PendingFriendsList> {
-//   static const historyLength = 5;
-//   List<String> _searchHistory = [
-//       'fuchsia',
-//       'flutter',
-//       'widgets',
-//       'resocoder',
-//   ];
-
-//   String selectedTerm;
-
-//   List<String> filteredSearchHistory;
-
-//   List<String> filterSearchTerms({
-//     @required String filter;
-//   }){
-//       if(filter != null && filter.isNotEmpty){
-//         return _searchHistory.reversed.where((term) => term.startsWith(filter))
-//         .toList();
-//       }
-//       else{
-//         return _searchHistory.reversed.toList();
-//       }
-//   }
-
-//   void addSearchTerm(String term){
-//     if (_searchHistory.contains(term)){
-//       putSearchTermFirst(term);
-//       return;
-//     }
-//     _searchHistory.add(term);
-//     if(_searchHistory.length > historyLength){
-//       _searchHistory.removeRange(0, _searchHistory.length-historyLength);
-//     }
-
-//     filteredSearchHistory = filterSearchTerms(filter: null);
-//   }
-
-//   void deleteSearchTerm(String term){
-//     _searchHistory.removeWhere((t) => t == term);
-//     filteredSearchHistory  = filterSearchTerms(filter: null);
-//   }
-
-//   void putSearchTermFirst(String term){
-//     deleteSearchTerm(term);
-//     addSearchTerm(term);
-//   }
-
-//   FloatingSearchBarController controller;
-
-//   @override
-//   void initState(){
-//     super.initState();
-//     controller = FloatingSearchBarController();
-//     filteredSearchHistory = filterSearchTerms(filter: null);
-//   }
-
-
-//   @override 
-//   void dispose(){
-//     controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//    Widget build(BuildContext context){
-//      return Scaffold(
-//        body: FloatingSearchBar(
-//          controller: controller,
-//          body: FloatingSearchBarScrollNotifier(
-//            child: SearchResultsListView(
-//               searchTerm: null,
-//          ),
-//          ),
-//          transition: CircularFloatingSearchBarTransition(),
-//          physics: BouncingScrollPhysics(),
-//          title: Text(
-//            selectedTerm ?? 'Friend Name',
-//            style: Theme.of(context).textTheme.headline6
-//          ),
-//          hint: 'Friend Name...',
-//          actions: [
-//            FloatingSearchBarAction.searchToClear(),
-//          ],
-//          onQueryChanged: (query){
-//            setState(setState(() {
-//              filteredSearchHistory = filterSearchTerms(filter: query);
-//            });
-//            },
-
-//            onSubmitted: (query){
-//              setState((setState(() {
-//                addSearchTerm(query);
-//                selectedTerm = query;
-//              });
-
-//          controller.close();
-//              },
-
-//           builder: (context, transition){
-//             return ClipRRect(
-//               borderRadius: BorderRadius.circular(8),
-//               child: Material(
-//                 color: Colors.white,
-//                 elevation: 4,
-//                 child: Placeholder(fallbackHeight: 200,),
-//               )
-//             );
-//           }
-//              )
-//            },
-//          },
-//      );
-//       // return Scaffold(
-//       //   appBar: AppBar(
-//       //   leading: IconButton(
-//       //       icon: const Icon(Icons.arrow_left_rounded),
-//       //       tooltip: 'Go Back to Friends List',
-//       //       onPressed: (){
-//       //         Navigator.pop(context);
-//       //       },),
-//       //       title: Text('Add Friends'),
-//       //       backgroundColor: Colors.blueAccent,),
-//       //   // body: FloatingSearchBar(
-//       //   //   controller: controller,
-//       //   //   body: SearchResultsListView()
-//       //   //     searchTerm: null,
-//       //   // ) 
-//       // );
-// }}
-
-// // class SearchResultsListView extends StatefulWidget{
-// //   final String searchTerm;
-
-// // }
