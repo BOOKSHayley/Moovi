@@ -65,6 +65,8 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                   validator: (name){
                       if(name == null  || name.isEmpty){
                         return "Please enter some text";
+                      }else if(name.length > 10){
+                        return "Name must not exceed 10 characters";
                       }
                       return null;
                   },
@@ -80,6 +82,8 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                   validator: (username) {
                     if(username == null  || username.isEmpty){
                       return "Please enter a username.";
+                    }else if(username.length > 10){
+                      return "Username must not exceed 10 characters";
                     }
                     return null;
                   },

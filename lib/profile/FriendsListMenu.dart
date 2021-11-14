@@ -25,30 +25,13 @@ class _FriendsListMenu extends State<FriendsListMenu> {
   Widget build(BuildContext context) {
     List<InkWell> cards = [];
     return Scaffold(
+        appBar: AppBar(
+          title: Text('Friends List'),
+          backgroundColor: Colors.grey[900],
+        ),
         body: Column(
         children: [
-          Container(
-            height: 60,
-            decoration: BoxDecoration(
-                color: Colors.grey[900],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  iconSize: 35,
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) => AddFriend(db, mvm)
-                    ));
-                  },
-                )
 
-              ),
-            )
-          ),
         StreamBuilder<List<UserEntity?>>(
             stream: mvm.getAllFriendsOfUserAsStream(LoginPage.user, false),
             builder: (BuildContext context,
@@ -108,61 +91,3 @@ class _FriendsListMenu extends State<FriendsListMenu> {
   }
 }
 
-class AddFriend extends StatefulWidget{
-  final db;
-  final MainViewModel mvm;
-
-  AddFriend(this.db, this.mvm, {Key? key}) : super(key: key);
-
-  @override
-  _MyCustomFormState createState() => _MyCustomFormState();
-
-}
-
-class _MyCustomFormState extends State<AddFriend>{
-
-  final usernameFieldController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    usernameFieldController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context){
-
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-        body: AlertDialog(
-          title: Text('Add a Friend'),
-          content: TextField(
-            onChanged: (value) { },
-            controller: usernameFieldController,
-            decoration: InputDecoration(hintText: "Enter your friend's username"),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-              Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Add'),
-              onPressed: () {
-                String friendUsername = usernameFieldController.text;
-                widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        )
-    );
-
-
-  }
-
-
-}

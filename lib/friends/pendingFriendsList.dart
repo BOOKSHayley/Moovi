@@ -31,7 +31,19 @@ class _PendingFriendsList extends State<PendingFriendsList>{
             tooltip: 'Go Back to Friends List',
             onPressed: (){
               Navigator.pop(context);
-            },),
+            },
+        ),
+        actions: [
+          IconButton(
+            iconSize: 35,
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => AddFriend(db, mvm)
+              ));
+            },
+          )
+        ],
         title: Text('Add Friends'),
         backgroundColor: Colors.grey[900],
       ),
@@ -89,32 +101,45 @@ class _PendingFriendsList extends State<PendingFriendsList>{
       }
       pendingFriendsList.add(new Card(key: ObjectKey(pendingFriendsEntities[i]!.userName),
          child: Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                  Text(pendingFriendsEntities[i]!.name),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      pendingFriendsEntities[i]!.name,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
                   ButtonBar(
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.check),
-                        tooltip: 'Accept',
-                        onPressed: (){
-                          mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => super.widget));
-                        },),
-                        IconButton(
-                        icon: const Icon(Icons.clear),
-                        tooltip: 'Decline',
-                        onPressed: (){
-                          mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => super.widget));
-                        },)
-                    ]
-                  )])));
+                        alignment: MainAxisAlignment.end,
+                        children: <Widget>[
+
+                          IconButton(
+                            icon: const Icon(Icons.check),
+                            tooltip: 'Accept',
+                            onPressed: (){
+                              mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) => super.widget));
+                            },),
+                          IconButton(
+                            icon: const Icon(Icons.clear),
+                            tooltip: 'Decline',
+                            onPressed: (){
+                              mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) => super.widget));
+                            },)
+                        ]
+                    )
+              ]
+         )
+      )
+      );
     }
     return pendingFriendsList;
   }
@@ -163,6 +188,65 @@ class _PendingFriendsList extends State<PendingFriendsList>{
      
 
   //  }
+
+}
+
+class AddFriend extends StatefulWidget{
+  final db;
+  final MainViewModel mvm;
+
+  AddFriend(this.db, this.mvm, {Key? key}) : super(key: key);
+
+  @override
+  _MyCustomFormState createState() => _MyCustomFormState();
+
+}
+
+class _MyCustomFormState extends State<AddFriend>{
+
+  final usernameFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    usernameFieldController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context){
+
+    return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: AlertDialog(
+          title: Text('Add a Friend'),
+          content: TextField(
+            onChanged: (value) { },
+            controller: usernameFieldController,
+            decoration: InputDecoration(hintText: "Enter your friend's username"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Add'),
+              onPressed: () {
+                String friendUsername = usernameFieldController.text;
+                widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        )
+    );
+
+
+  }
+
 
 }
 
