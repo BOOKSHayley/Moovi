@@ -27,13 +27,13 @@ class _PendingFriendsList extends State<PendingFriendsList>{
      return Scaffold(
        appBar: AppBar(
         leading: IconButton(
-            icon: const Icon(Icons.arrow_left_rounded),
+            icon: const Icon(Icons.arrow_left_rounded, size: 45),
             tooltip: 'Go Back to Friends List',
             onPressed: (){
               Navigator.pop(context);
             },),
-        title: Text('My Pending Friends'),
-        backgroundColor: Colors.blueAccent,
+        title: Text('Add Friends'),
+        backgroundColor: Colors.grey[900],
       ),
       body: Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
@@ -55,7 +55,28 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                     new Card(child: ListTile(title: Text("No pending friends")))
                   ];
                 }
-                return ListView(children: pendingFriendsList);}}
+                return Column(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            child: Text(
+                              'Your pending friends',
+                              style: TextStyle(color: Colors.grey, fontSize: 14),
+                            ),
+                          ),
+                        )
+                    ),
+                    Expanded(
+                        child: ListView(children: pendingFriendsList)
+                    )
+                  ]
+                );
+            }
+
+          }
       )
       ));
    }
