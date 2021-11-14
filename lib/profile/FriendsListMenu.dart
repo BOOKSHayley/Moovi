@@ -90,4 +90,3 @@ class _FriendsListMenu extends State<FriendsListMenu> {
     return cards;
   }
 }
-
