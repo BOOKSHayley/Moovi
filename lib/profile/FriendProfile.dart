@@ -43,7 +43,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
                         if (snapshot.hasData) {
                           cards = buildMatchedMovieCards(snapshot.data!);
                         } else {
-                          cards = [Card(child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),)))];
+                          cards = [ noMovies() ];
                         }
                         return FriendProfile(mvm, widget.friendUsername, widget.friendName, cards);
                     }
@@ -54,10 +54,18 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
 
   List<Card> buildMatchedMovieCards(List<MovieEntity?> movies){
     List<Card> cards = [];
-    for(int i = 0; i < movies.length; i++){
-      cards.add(Card(child: ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))));
+    if(movies.length == 0){
+      cards = [ noMovies() ];
+    } else {
+      for (int i = 0; i < movies.length; i++) {
+        cards.add(Card(child: ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))));
+      }
     }
     return cards;
+  }
+
+  Card noMovies(){
+    return Card(child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),)));
   }
 
 

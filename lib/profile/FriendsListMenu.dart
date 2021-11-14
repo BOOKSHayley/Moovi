@@ -46,14 +46,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                   if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     cards = buildFriendCards(snapshot.data!, context);
                   } else {
-                    cards = [
-                      InkWell(
-                          child: Container(
-                              child: Card(
-                                  child: ListTile(
-                                      title: Text("No friends added. Click on the button in the corner to add some!",
-                                          style: TextStyle(fontSize: 20))))))
-                    ];
+                    cards = [ noFriends() ];
                   }
                   return Expanded(
                       child: ListView(children: cards)
@@ -74,19 +67,34 @@ class _FriendsListMenu extends State<FriendsListMenu> {
 
   List<InkWell> buildFriendCards(List<UserEntity?> friends, BuildContext context) {
     List<InkWell> cards = [];
-    for (int i = 0; i < friends.length; i++) {
-      cards.add(InkWell(
-          child: Card(
-              child: ListTile(
-                  title: Text(friends[i]!.name,
-                      style: TextStyle(fontSize: 20)))),
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FriendMatchedCard(
-                    friends[i]!.userName, friends[i]!.name, mvm)));
-          }));
+
+    if(friends.length == 0){
+      cards = [ noFriends() ];
+    } else {
+      for (int i = 0; i < friends.length; i++) {
+        cards.add(InkWell(
+            child: Card(
+                child: ListTile(
+                    title: Text(friends[i]!.name,
+                        style: TextStyle(fontSize: 20)))),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      FriendMatchedCard(
+                          friends[i]!.userName, friends[i]!.name, mvm)));
+            }));
+      }
     }
 
     return cards;
+  }
+
+  InkWell noFriends(){
+      return InkWell(
+          child: Container(
+              child: Card(
+                  child: ListTile(
+                      title: Text("No friends added. Click on the button in the corner to add some!",
+                          style: TextStyle(fontSize: 20))))));
   }
 }

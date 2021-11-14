@@ -57,9 +57,7 @@ class _LikedList extends State<LikedList> {
                   cardsList = generateCardsList(snapshot.data!);
                 }
                 else{
-                  cardsList = [
-                    new Card(child: ListTile(title: Text("No liked movies yet. Go back to the Queue and Like some!")))
-                  ];
+                  cardsList = [ noMovies() ];
                 }
                 return UserProfile(db, mvm, user.userName, name, cardsList);
             }
@@ -72,13 +70,19 @@ class _LikedList extends State<LikedList> {
 
   generateCardsList(List<MovieEntity?> movieEntities){
     List<Card> cardList = [];
-    for(int i = 0; i < movieEntities.length; i++){
-      if(movieEntities[i] == null){
-        continue;
+    if(movieEntities.length == 0){
+      cardList = [ noMovies() ];
+    } else {
+      for (int i = 0; i < movieEntities.length; i++) {
+        if (movieEntities[i] == null) { continue; }
+        cardList.add(new Card(child: ListTile(title: Text(movieEntities[i]!.title))));
       }
-      cardList.add(new Card(child: ListTile(title: Text(movieEntities[i]!.title))));
     }
     return cardList;
+  }
+
+  Card noMovies(){
+    return Card(child: ListTile(title: Text("No liked movies yet. Go back to the Queue and Like some!")));
   }
 
 }
