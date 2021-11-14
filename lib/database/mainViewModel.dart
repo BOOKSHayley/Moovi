@@ -187,10 +187,14 @@ class MainViewModel extends ChangeNotifier{
       }
   }
 
-  Future<void> addFriendToUser(UserEntity currentUser, String friendUsername, bool pendingFriend) async {
+  Future<bool> addFriendToUser(UserEntity currentUser, String friendUsername, bool pendingFriend) async {
       UserEntity? friend = await getUserbyUsername(friendUsername);
-      FriendsEntity friendEntity = FriendsEntity(null, currentUser.id!, friend!.id!, pendingFriend);
+      if(friend == null){ return false; }
+      final existingFriend = await _friendsDao.findFriendOfUser(currentUser.id!, friend.id!);
+      if(existingFriend != null){ return false; }
+      FriendsEntity friendEntity = FriendsEntity(null, currentUser.id!, friend.id!, pendingFriend);
       _friendsDao.insertFriend(friendEntity);
+      return true;
   }
 
   Future<void> updateFriendOfUserFromPending(UserEntity currentUser, String friendUsername) async{

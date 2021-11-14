@@ -122,6 +122,7 @@ class AddFriend extends StatefulWidget{
 class _MyCustomFormState extends State<AddFriend>{
 
   final usernameFieldController = TextEditingController();
+  final errorFieldController = TextEditingController();
 
   @override
   void dispose() {
@@ -151,12 +152,23 @@ class _MyCustomFormState extends State<AddFriend>{
             ),
             TextButton(
               child: const Text('Add'),
-              onPressed: () {
+              onPressed: () async {
                 String friendUsername = usernameFieldController.text;
-                widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
-                Navigator.of(context).pop();
+                bool successful = await widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
+                if(successful) {
+                  Navigator.of(context).pop();
+                } else{
+                  UserEntity? userExists = await widget.mvm.getUserbyUsername(friendUsername);
+                  if(userExists != null) { errorFieldController.text = "This user has already been added as a friend"; }
+                  else{ errorFieldController.text = friendUsername + " does not exist"; }
+                  usernameFieldController.clear();
+                }
               },
             ),
+            TextField(
+              controller: errorFieldController,
+              readOnly: true,
+            )
           ],
         )
     );
