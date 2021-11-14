@@ -495,15 +495,19 @@ class _$FriendsDao extends FriendsDao {
   @override
   Future<List<FriendsEntity>> findAllPendingFriendsOf(int userId) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM friends_table WHERE (user_one_id = ?1 OR user_two_id = ?1) AND pending = 1',
-        mapper: (Map<String, Object?> row) => FriendsEntity(row['id'] as int?, row['user_one_id'] as int, row['user_two_id'] as int, (row['pending'] as int) != 0),
+        'SELECT * FROM friends_table WHERE user_two_id = ?1 AND pending = 1',
+        mapper: (Map<String, Object?> row) => FriendsEntity(
+            row['id'] as int?,
+            row['user_one_id'] as int,
+            row['user_two_id'] as int,
+            (row['pending'] as int) != 0),
         arguments: [userId]);
   }
 
   @override
   Stream<List<FriendsEntity>> findAllPendingFriendsOfUserAsStream(int userId) {
     return _queryAdapter.queryListStream(
-        'SELECT * FROM friends_table WHERE (user_one_id = ?1 OR user_two_id = ?1) AND pending = 1',
+        'SELECT * FROM friends_table WHERE user_two_id = ?1 AND pending = 1',
         mapper: (Map<String, Object?> row) => FriendsEntity(
             row['id'] as int?,
             row['user_one_id'] as int,

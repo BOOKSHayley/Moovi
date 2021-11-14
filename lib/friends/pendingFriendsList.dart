@@ -77,14 +77,20 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                         tooltip: 'Accept',
                         onPressed: (){
                           mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
-                          mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
-
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => super.widget));
                         },),
                         IconButton(
                         icon: const Icon(Icons.clear),
                         tooltip: 'Decline',
                         onPressed: (){
-                            mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                          mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => super.widget));
                         },)
                     ]
                   )])));
