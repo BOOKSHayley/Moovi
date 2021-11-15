@@ -70,6 +70,8 @@ class MenusStatefulWidget extends StatefulWidget {
 
 class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   final db;
+  bool actionChecked = false; bool adventureChecked = false; bool comedyChecked = false; bool crimeChecked = false; bool dramaChecked = false;
+  bool fantasyChecked = false; bool horrorChecked = false; bool romanceChecked = false; bool scifiChecked = false; bool thrillerChecked = false;
   int _selectedIndex = 1;
   late List<Widget> _widgetOptions;
   static const TextStyle optionStyle =
@@ -93,14 +95,116 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer:  Drawer(
-        child: ListView(
+          child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(child: Text("Filter by:")),
+
+            DrawerHeader(child:
+            Text("Filter by:",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)
+            )
+            ),
+
             CheckboxListTile(
                 title: Text("Action"),
-                value: false,
-                onChanged: (bool){})
+              value: actionChecked,
+                onChanged: (value){
+                  setState(() {
+                    actionChecked = value!;
+                  });
+                },
+            ),
+
+            CheckboxListTile(
+              title: Text("Adventure"),
+              value: adventureChecked,
+              onChanged: (value){
+                setState(() {
+                  adventureChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+              title: Text("Comedy"),
+              value: comedyChecked,
+              onChanged: (value){
+                setState(() {
+                  comedyChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+              title: Text("Crime"),
+              value: crimeChecked,
+              onChanged: (value){
+                setState(() {
+                  crimeChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+                title: Text("Drama"),
+              value: dramaChecked,
+              onChanged: (value){
+                setState(() {
+                  dramaChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+                title: Text("Fantasy"),
+              value: fantasyChecked,
+              onChanged: (value){
+                setState(() {
+                  fantasyChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+                title: Text("Horror"),
+              value: horrorChecked,
+              onChanged: (value){
+                setState(() {
+                  horrorChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+                title: Text("Romance"),
+              value: romanceChecked,
+              onChanged: (value){
+                setState(() {
+                  romanceChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+                title: Text("Sci-Fi"),
+              value: scifiChecked,
+              onChanged: (value){
+                setState(() {
+                  scifiChecked = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+                title: Text("Thriller"),
+              value: thrillerChecked,
+              onChanged: (value){
+                setState(() {
+                  thrillerChecked = value!;
+                });
+              },
+            ),
+
           ]
         )
       ),
