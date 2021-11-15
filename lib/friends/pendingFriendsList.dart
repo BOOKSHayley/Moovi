@@ -118,7 +118,10 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                             icon: const Icon(Icons.check),
                             tooltip: 'Accept',
                             onPressed: (){
-                              mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                              setState(() {
+                                mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                              });
+
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -128,7 +131,10 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                             icon: const Icon(Icons.clear),
                             tooltip: 'Decline',
                             onPressed: (){
-                              mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                              setState(() {
+                                mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                              });
+
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -205,11 +211,13 @@ class AddFriend extends StatefulWidget{
 class _MyCustomFormState extends State<AddFriend>{
 
   final usernameFieldController = TextEditingController();
+  final errorFieldController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     usernameFieldController.dispose();
+    errorFieldController.dispose();
     super.dispose();
   }
 
@@ -234,12 +242,26 @@ class _MyCustomFormState extends State<AddFriend>{
             ),
             TextButton(
               child: const Text('Add'),
-              onPressed: () {
+              onPressed: () async {
                 String friendUsername = usernameFieldController.text;
-                widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
-                Navigator.of(context).pop();
+                bool successful = await widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
+                if(successful) {
+                  Navigator.of(context).pop();
+                } else{
+                  usernameFieldController.clear();
+                  UserEntity? exists = await widget.mvm.getUserbyUsername(friendUsername);
+                  if(exists != null){
+                    errorFieldController.text = "You've already added this person as a friend.";
+                  } else{
+                    errorFieldController.text = "Invalid username.";
+                  }
+                }
               },
             ),
+            TextField(
+              controller: errorFieldController,
+              readOnly: true,
+            )
           ],
         )
     );
