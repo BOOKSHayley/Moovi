@@ -19,7 +19,7 @@ class MovieCardStackState extends State<MovieCardStack>{
   }
 
   popMovieCard(){
-    return cardsArray[cardsArray.length-1];;
+    return cardsArray[cardsArray.length-1];
   }
 
   stackRefresh(){

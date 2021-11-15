@@ -67,13 +67,14 @@ class QueueState extends State<Queue> with SingleTickerProviderStateMixin {
   }
 
   stackSwipe(bool leftSwipe){
-    stackKey.currentState!.popMovieCard().autoSwipe(leftSwipe);
-    stackKey.currentState!.stackRefresh();
+    stackKey.currentState?.popMovieCard().autoSwipe(leftSwipe);
+    stackKey.currentState?.stackRefresh();
   }
 
+  //only generates 20 cards
   generateCardsList(List<MovieEntity?> movieEntities){
     List<MovieCard> cardList = [];
-    for(int i = 0; i < movieEntities.length; i++){
+    for(int i = 0; i < 10; i++){
         if(movieEntities[i] == null){
           continue;
         }

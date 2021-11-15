@@ -29,8 +29,8 @@ void main() async {
   //1. COMMENT OUT THE RUN APP METHOD
   //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
 
-  // await mvm.clearAllTables();
-  // print("Cleared t");
+   //await mvm.clearAllTables();
+   //print("Cleared t");
 
   //UNNECESSARY
   //await mvm.addUser("Hayley", "H1");
