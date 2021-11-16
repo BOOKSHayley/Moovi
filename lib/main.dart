@@ -100,13 +100,14 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           child: ListView(
           padding: EdgeInsets.zero,
           children: [
-
-            DrawerHeader(child:
-            Text("Filter by:",
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)
-            )
+            Container(
+              height: 100,
+              child:  DrawerHeader(child:
+              Text("Filter by:",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)
+              )
+              ),
             ),
-
             CheckboxListTile(
                 title: Text("Action"),
               value: actionChecked,
