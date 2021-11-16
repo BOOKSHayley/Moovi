@@ -46,8 +46,9 @@ class MainViewModel extends ChangeNotifier{
     yield await getAllFriendsOfUser(user, pendingFriends);
   }
 
-  Stream<List<MovieEntity?>> getMoviesInPersonalQueueAsStream(UserEntity user, {genre = ""}) async*{
-    yield await getAllMoviesInPersonalQueueOfGenre(user, genre);
+  Stream<List<MovieEntity?>> getMoviesInPersonalQueueAsStream(UserEntity user, List<String>? genres) async*{
+    if(genres == null) { genres = [""]; }
+    yield await getAllMoviesInPersonalQueueOfGenre(user, genres);
   }
 
   Stream<List<MovieEntity?>> getLikedMoviesOfUserAsStream(UserEntity user) async*{
@@ -102,17 +103,24 @@ class MainViewModel extends ChangeNotifier{
   }
 
   Future<List<MovieEntity?>> getAllMoviesInPersonalQueue(UserEntity user) async{
-      return getAllMoviesInPersonalQueueOfGenre(user, "");
+      return getAllMoviesInPersonalQueueOfGenre(user, [""]);
   }
 
-  Future<List<MovieEntity?>> getAllMoviesInPersonalQueueOfGenre(UserEntity user, String genre) async{
+  Future<List<MovieEntity?>> getAllMoviesInPersonalQueueOfGenre(UserEntity user, List<String> genres) async{
       final queue = await _personalQueueDao.findAllPersonalQueueMovies(user.id!);
 
-      genre = "%" + genre + "%";
       List<MovieEntity?> movies = [];
       for(int i = 0 ; i < queue.length; i++){
-          movies.add(await _movieDao.findMovieByIdAndGenre(queue[i].movieId, genre));
+          for(int j = 0; j < genres.length; j++){
+              String genre = "%" + genres[j] + "%";
+              MovieEntity? m = await _movieDao.findMovieByIdAndGenre(queue[i].movieId, genre);
+              if(m != null){
+                movies.add(m);
+                break;
+              }
+          }
       }
+
       return movies;
   }
 
@@ -120,9 +128,14 @@ class MainViewModel extends ChangeNotifier{
       return await _movieDao.findAllMovies();
   }
 
-  Future<List<MovieEntity>> getMoviesOfGenre(String genre) async{
-      genre = "%" + genre + "%";
-      return await _movieDao.findMoviesOfGenre(genre);
+  Future<List<MovieEntity>> getMoviesOfGenre(List<String> genres) async{
+      List<MovieEntity> movies = [];
+      for(int i = 0; i < genres.length; i++){
+        String genre = "%" + genres[i] + "%";
+        movies.addAll(await _movieDao.findMoviesOfGenre(genre));
+      }
+
+      return movies;
   }
 
   Future<MovieEntity?> getMovieByTitle(String title) async{

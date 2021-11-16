@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget{
 }
 
 class MenusStatefulWidget extends StatefulWidget {
+  static List<String> genres = [""];
   final db;
   const MenusStatefulWidget(this.db, {Key? key}) : super(key: key);
 
@@ -111,6 +112,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
                 onChanged: (value){
                   setState(() {
                     actionChecked = value!;
+                    setGenres(value, "Action");
                   });
                 },
             ),
@@ -121,6 +123,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   adventureChecked = value!;
+                  setGenres(value, "Adventure");
                 });
               },
             ),
@@ -131,6 +134,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   comedyChecked = value!;
+                  setGenres(value, "Comedy");
                 });
               },
             ),
@@ -141,6 +145,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   crimeChecked = value!;
+                  setGenres(value, "Crime");
                 });
               },
             ),
@@ -151,6 +156,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   dramaChecked = value!;
+                  setGenres(value, "Drama");
                 });
               },
             ),
@@ -161,6 +167,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   fantasyChecked = value!;
+                  setGenres(value, "Fantasy");
                 });
               },
             ),
@@ -171,6 +178,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   horrorChecked = value!;
+                  setGenres(value, "Horror");
                 });
               },
             ),
@@ -181,6 +189,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   romanceChecked = value!;
+                  setGenres(value, "Romance");
                 });
               },
             ),
@@ -191,6 +200,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   scifiChecked = value!;
+                  setGenres(value, "Sci-Fi");
                 });
               },
             ),
@@ -201,6 +211,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
               onChanged: (value){
                 setState(() {
                   thrillerChecked = value!;
+                  setGenres(value, "Thriller");
                 });
               },
             ),
@@ -217,15 +228,15 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            label: 'Profile',
+            label: "Profile"
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
-            label: 'Home'
+            label: "Home"
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
-            label: 'Friends',
+            label: "Friends"
           )
         ],
         currentIndex: _selectedIndex,
@@ -233,5 +244,14 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         onTap: _onItemTapped,
       ),
     );
+
+  }
+
+  void setGenres(value, text){
+    if(value && !MenusStatefulWidget.genres.contains(text)){
+      MenusStatefulWidget.genres.add(text);
+    } else if(!value){ //value is false
+      MenusStatefulWidget.genres.remove(text);
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:moovi/database/DatabaseGetter.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
+import 'package:moovi/main.dart';
 import 'package:moovi/movie/Movie.dart';
 import 'package:moovi/movie/MovieCardStack.dart';
 import 'Movie.dart';
@@ -39,7 +40,7 @@ class QueueState extends State<Queue> with SingleTickerProviderStateMixin {
     return Container(
         width: MediaQuery.of(context).size.width * 0.9, height: MediaQuery.of(context).size.height * 0.8,
         child: StreamBuilder<List<MovieEntity?>>(
-              stream: mvm.getMoviesInPersonalQueueAsStream(user),
+              stream: mvm.getMoviesInPersonalQueueAsStream(user, MenusStatefulWidget.genres),
               builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
                 if(snapshot.hasError) { print("ERROR!"); }
                 switch(snapshot.connectionState) {
