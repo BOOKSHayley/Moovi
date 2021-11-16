@@ -81,15 +81,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
         cards.add(InkWell(
             child: Padding(
               padding: EdgeInsets.all(5),
-              child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.yellowAccent),
-                borderRadius: BorderRadius.circular(10.0)
-              ),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget> [
-                    Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
@@ -109,27 +101,36 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                           )
                       ),
                       Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                          friends[i]!.name,
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                    ]),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(FriendsListMenu.numSharedMovies[i].toString()),
-                          Text("Shared Movies")
-                        ],
-                      ),
-                    )
+                        padding: EdgeInsets.only(left: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                              child: Text(
+                                friends[i]!.name,
+                                style: TextStyle(fontSize: 26),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(FriendsListMenu.numSharedMovies[i].toString(), style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 3),
+                                  child: Text("Shared Movies", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                                )
 
-                  ]
-              )
-              )
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+
+
+                    ]),
+
             ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
