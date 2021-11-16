@@ -189,9 +189,10 @@ class UserProfile extends StatelessWidget{
 
                           onSelected: (result) {
                             if (result == 1) {
-                              Navigator.push(
+                              Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(builder: (context) => LoginPage(db, mvm)),
+                                  (_) => false
                               );
                             } else if (result == 2){
                               //todo: create an 'edit profile' page and use navigator

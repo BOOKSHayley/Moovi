@@ -1,7 +1,4 @@
 
-
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/friendsEntity.dart';
@@ -16,6 +13,8 @@ import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/user_dao.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+
+import 'package:moovi/profile/FriendsListMenu.dart';
 
 
 // CODE TO CREATE THE DATABASE -- BELOW IS WHAT TO ADD TO FILES WHERE YOU WANT TO USE DB
@@ -82,6 +81,7 @@ class MainViewModel extends ChangeNotifier{
 
   Future<List<UserEntity?>> getAllFriendsOfUser(UserEntity user, bool pendingFriends) async{
       List<FriendsEntity> friendEntities = [];
+      FriendsListMenu.numSharedMovies.clear();
 
       if(pendingFriends){
           friendEntities = await _friendsDao.findAllPendingFriendsOf(user.id!);
@@ -91,6 +91,7 @@ class MainViewModel extends ChangeNotifier{
 
       List<UserEntity?> friendUserEntities = [];
       for(var i = 0; i < friendEntities.length;i++){
+          FriendsListMenu.numSharedMovies.add(friendEntities[i].numSharedMovies);
           int friendId = friendEntities[i].userOneId;
           if(friendId == user.id){
             friendId = friendEntities[i].userTwoId;
@@ -100,6 +101,11 @@ class MainViewModel extends ChangeNotifier{
       }
 
       return friendUserEntities;
+  }
+
+  Future<FriendsEntity?> getFriendOfUser(UserEntity currentUser, String friendUsername) async{
+    UserEntity? friendUser = await getUserbyUsername(friendUsername);
+    return await _friendsDao.findFriendOfUser(currentUser.id!, friendUser!.id!);
   }
 
   Future<List<MovieEntity?>> getAllMoviesInPersonalQueue(UserEntity user) async{
@@ -178,7 +184,7 @@ class MainViewModel extends ChangeNotifier{
         var data = utf8.encode(password);
         var hashedPass = sha256.convert(data).toString();
         print(hashedPass);
-        UserEntity user = UserEntity(null, name, userName, hashedPass);
+        UserEntity user = UserEntity(null, name, userName, hashedPass, 0);
         int id = await _userDao.insertUser(user);
         addAllMoviesToUserPersonalQueue(id);
         return true;
@@ -203,24 +209,17 @@ class MainViewModel extends ChangeNotifier{
   Future<bool> addFriendToUser(UserEntity currentUser, String friendUsername, bool pendingFriend) async {
       UserEntity? friend = await getUserbyUsername(friendUsername);
       if(friend == null){ return false; }
-      final existingFriend = await _friendsDao.findFriendOfUser(currentUser.id!, friend.id!);
+      final existingFriend = await getFriendOfUser(currentUser, friendUsername);
       if(existingFriend != null){ return false; }
-      FriendsEntity friendEntity = FriendsEntity(null, currentUser.id!, friend.id!, pendingFriend);
+      FriendsEntity friendEntity = FriendsEntity(null, currentUser.id!, friend.id!, pendingFriend, 0);
       _friendsDao.insertFriend(friendEntity);
       return true;
-  }
-
-  Future<void> updateFriendOfUserFromPending(UserEntity currentUser, String friendUsername) async{
-      final friend = await getUserbyUsername(friendUsername);
-      final friendEntity = await _friendsDao.findFriendOfUser(currentUser.id!, friend!.id!);
-      final updatedFriendEntity = FriendsEntity(friendEntity!.id!, friendEntity.userOneId, friendEntity.userTwoId, false);
-      _friendsDao.deleteFriend(friendEntity);
-      _friendsDao.insertFriend(updatedFriendEntity);
   }
 
   Future<void> addLikedMovieToUser(UserEntity user, MovieEntity movie) async{
       LikedMovieEntity likedMovie = LikedMovieEntity(null, user.id!, movie.id!);
       _likedMoviesDao.insertLikedMovie(likedMovie);
+      _updateAllFriendCounts(user, movie);
   }
 
   Future<void> addAllMoviesToUserPersonalQueue(int userId) async{
@@ -240,6 +239,38 @@ class MainViewModel extends ChangeNotifier{
       _personalQueueDao.insertPersonalQueueMovie(newMovie);
   }
 
+
+  //Methods for updating rows
+  Future<void> updateFriendOfUserFromPending(UserEntity currentUser, String friendUsername) async{
+    final friendEntity = await getFriendOfUser(currentUser, friendUsername);
+    final updatedFriendEntity = FriendsEntity(friendEntity!.id!, friendEntity.userOneId, friendEntity.userTwoId, false, 0);
+    _friendsDao.deleteFriend(friendEntity);
+    _friendsDao.insertFriend(updatedFriendEntity);
+  }
+
+  Future<void> updateUserClicks(UserEntity user, int clicks) async{
+    user.numClicks += clicks;
+    return await _userDao.updateUser(user);
+  }
+
+  Future<void> updateFriendSharedMovieCount(UserEntity currentUser, UserEntity friend, int count) async{
+    FriendsEntity? friendEntity = await getFriendOfUser(currentUser, friend.userName);
+    friendEntity!.numSharedMovies += count;
+    return await _friendsDao.updateFriend(friendEntity);
+  }
+
+  Future<void> _updateAllFriendCounts(UserEntity currentUser, MovieEntity likedMovie) async{
+    List<UserEntity?> friends = await getAllFriendsOfUser(currentUser, false);
+    for(int i = 0; i < friends.length; i++){
+      if(friends[i] == null) { continue; }
+
+      LikedMovieEntity? sharedMovie = await _likedMoviesDao.findLikedMovie(friends[i]!.id!, likedMovie.id!);
+      if(sharedMovie != null){
+        updateFriendSharedMovieCount(currentUser, friends[i]!, 1);
+      }
+
+    }
+  }
 
 
   //Methods for removing from tables

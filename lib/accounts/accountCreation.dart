@@ -164,6 +164,10 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                         bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
                         if(userAdded) {
                           PopulateDatabase.populateDb(widget.mvm);
+                          nameFieldController.clear();
+                          usernameFieldController.clear();
+                          passwordFieldController.clear();
+                          reenterPasswordFieldController.clear();
                           Navigator.push(context, new MaterialPageRoute(
                               builder: (context) =>
                                   LoginPage(widget.db, widget.mvm)

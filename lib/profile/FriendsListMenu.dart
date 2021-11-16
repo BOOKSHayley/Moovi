@@ -7,6 +7,7 @@ import 'FriendProfile.dart';
 import 'package:moovi/friends/pendingFriendsList.dart';
 
 class FriendsListMenu extends StatefulWidget {
+  static List<int> numSharedMovies = [];
   final db;
   const FriendsListMenu(this.db, {Key? key}) : super(key: key);
 
@@ -26,7 +27,8 @@ class _FriendsListMenu extends State<FriendsListMenu> {
     List<InkWell> cards = [];
     return Scaffold(
         appBar: AppBar(
-          title: Text('Friends List'),
+          title: Text('Friends List', style: TextStyle(fontSize: 26),),
+
         ),
         body: Column(
         children: [
@@ -64,18 +66,72 @@ class _FriendsListMenu extends State<FriendsListMenu> {
     );
   }
 
-  List<InkWell> buildFriendCards(List<UserEntity?> friends, BuildContext context) {
+  List<InkWell> buildFriendCards(List<UserEntity?> friends, BuildContext context){
     List<InkWell> cards = [];
+
+    if(friends.length != FriendsListMenu.numSharedMovies.length){
+      FriendsListMenu.numSharedMovies.fillRange(0, FriendsListMenu.numSharedMovies.length, 0);
+      print("Error getting shared movie number");
+    }
 
     if(friends.length == 0){
       cards = [ noFriends() ];
     } else {
       for (int i = 0; i < friends.length; i++) {
         cards.add(InkWell(
-            child: Card(
-                child: ListTile(
-                    title: Text(friends[i]!.name,
-                        style: TextStyle(fontSize: 20)))),
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                      padding: EdgeInsets.only(left: 10),
+                          child: CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                                backgroundColor: Colors.grey[900],
+                                radius: 20,
+                                child: Icon(
+                                    Icons.person_rounded,
+                                    size: 22,
+                                    color: Colors.grey
+                                )
+                            ),
+                          )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                              child: Text(
+                                friends[i]!.name,
+                                style: TextStyle(fontSize: 26),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(FriendsListMenu.numSharedMovies[i].toString(), style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 3),
+                                  child: Text("Shared Movies", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                                )
+
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+
+
+                    ]),
+
+            ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
@@ -91,9 +147,16 @@ class _FriendsListMenu extends State<FriendsListMenu> {
   InkWell noFriends(){
       return InkWell(
           child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.yellowAccent),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
               child: Card(
                   child: ListTile(
                       title: Text("No friends added. Click on the button in the corner to add some!",
-                          style: TextStyle(fontSize: 20))))));
+                          style: TextStyle(fontSize: 22))))));
   }
 }
+
+
+

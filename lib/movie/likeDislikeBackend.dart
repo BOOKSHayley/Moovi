@@ -20,12 +20,14 @@ void onLikeClicked(UserEntity user, MovieEntity movie) async{
   likedMovies.add(movie);
   mvm.addLikedMovieToUser(user, movie);
   mvm.removePersonalQueueMovie(user, movie);
+  mvm.updateUserClicks(user, 1);
 }
 
 void onDislikeClicked(UserEntity user, MovieEntity movie) async{
   await getMvm();
   dislikedMovies.add(movie);
   mvm.removePersonalQueueMovie(user, movie);
+  mvm.updateUserClicks(user, 1);
   // mvm.lowerPersonalQueueMoviePriority(username, movie);
 }
 
