@@ -26,7 +26,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
     List<InkWell> cards = [];
     return Scaffold(
         appBar: AppBar(
-          title: Text('Friends List'),
+          title: Text('Friends List', style: TextStyle(fontSize: 26),),
           backgroundColor: Colors.grey[900],
         ),
         body: Column(
@@ -73,10 +73,43 @@ class _FriendsListMenu extends State<FriendsListMenu> {
     } else {
       for (int i = 0; i < friends.length; i++) {
         cards.add(InkWell(
-            child: Card(
-                child: ListTile(
-                    title: Text(friends[i]!.name,
-                        style: TextStyle(fontSize: 20)))),
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.yellowAccent),
+                borderRadius: BorderRadius.circular(10.0)
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                    padding: EdgeInsets.only(left: 10),
+                        child: CircleAvatar(
+                          radius: 22,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                              backgroundColor: Colors.grey[900],
+                              radius: 20,
+                              child: Icon(
+                                  Icons.person_rounded,
+                                  size: 22,
+                                  color: Colors.grey
+                              )
+                          ),
+                        )
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        friends[i]!.name,
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ]
+              )
+              )
+            ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
@@ -92,9 +125,37 @@ class _FriendsListMenu extends State<FriendsListMenu> {
   InkWell noFriends(){
       return InkWell(
           child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.yellowAccent),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
               child: Card(
                   child: ListTile(
                       title: Text("No friends added. Click on the button in the corner to add some!",
-                          style: TextStyle(fontSize: 20))))));
+                          style: TextStyle(fontSize: 22))))));
   }
+
+  // InkWell f(){
+  //   return InkWell(
+  //       child: Padding(
+  //           padding: EdgeInsets.all(5),
+  //           child: Container(
+  //               decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.yellowAccent),
+  //                   borderRadius: BorderRadius.circular(10.0)
+  //               ),
+  //               child: Card(
+  //                   child: ListTile(
+  //                       title: Text(friends[i]!.name,
+  //                           style: TextStyle(fontSize: 20)))))),
+  //       onTap: () {
+  //         Navigator.of(context).push(MaterialPageRoute(
+  //             builder: (context) =>
+  //                 FriendMatchedCard(
+  //                     friends[i]!.userName, friends[i]!.name, mvm)));
+  //       });
+  //}
 }
+
+
+

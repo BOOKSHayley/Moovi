@@ -44,7 +44,7 @@ class _PendingFriendsList extends State<PendingFriendsList>{
             },
           )
         ],
-        title: Text('Add Friends'),
+        title: Text('Add Friends', style: TextStyle(fontSize: 26)),
         backgroundColor: Colors.grey[900],
       ),
       body: Container(
@@ -76,7 +76,7 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                           child: Container(
                             child: Text(
                               'Your pending friends',
-                              style: TextStyle(color: Colors.grey, fontSize: 14),
+                              style: TextStyle(color: Colors.grey, fontSize: 22),
                             ),
                           ),
                         )
@@ -100,100 +100,84 @@ class _PendingFriendsList extends State<PendingFriendsList>{
         continue;
       }
       pendingFriendsList.add(new Card(key: ObjectKey(pendingFriendsEntities[i]!.userName),
-         child: Row(
-           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      pendingFriendsEntities[i]!.name,
-                      style: TextStyle(fontSize: 18),
+         child:
+         Container(
+           decoration: BoxDecoration(
+             border: Border.all(color: Colors.yellowAccent),
+             borderRadius: BorderRadius.circular(10.0)
+           ),
+           child: Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                            child: CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                                backgroundColor: Colors.grey[900],
+                                radius: 20,
+                                child: Icon(
+                                    Icons.person_rounded,
+                                    size: 22,
+                                    color: Colors.grey
+                                )
+                            ),
+                          )
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            pendingFriendsEntities[i]!.name,
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  ButtonBar(
-                        alignment: MainAxisAlignment.end,
-                        children: <Widget>[
+                    ButtonBar(
+                          alignment: MainAxisAlignment.end,
+                          children: <Widget>[
 
-                          IconButton(
-                            icon: const Icon(Icons.check),
-                            tooltip: 'Accept',
-                            onPressed: (){
-                              setState(() {
-                                mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
-                              });
+                            IconButton(
+                              icon: const Icon(Icons.check),
+                              color: Colors.green,
+                              tooltip: 'Accept',
+                              onPressed: (){
+                                setState(() {
+                                  mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                                });
 
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) => super.widget));
-                            },),
-                          IconButton(
-                            icon: const Icon(Icons.clear),
-                            tooltip: 'Decline',
-                            onPressed: (){
-                              setState(() {
-                                mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
-                              });
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) => super.widget));
+                              },),
+                            IconButton(
+                              icon: const Icon(Icons.clear),
+                              color: Colors.red,
+                              tooltip: 'Decline',
+                              onPressed: (){
+                                setState(() {
+                                  mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                                });
 
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) => super.widget));
-                            },)
-                        ]
-                    )
-              ]
-         )
-      )
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) => super.widget));
+                              },)
+                          ]
+                      )
+                ]
+           )
+      ))
       );
     }
     return pendingFriendsList;
   }
-
-
-
-
-  //  void removePendingFriend(ObjectKey key, Widget element){
-  //     setState(() {
-  //       pendingFriends.removeWhere((element) => element.key == key);
-  //     });
-  //  }
-
-  //  void addPendingFriends(){
-  //    pendingFriends.add(Card(
-  //       key: ObjectKey('Lucas'),
-  //       child: Row(
-  //             children: <Widget>[
-  //                 Text('Lucas Colegrove'),
-  //                 ButtonBar(
-  //                   children: <Widget>[
-  //                     IconButton(
-  //                       icon: const Icon(Icons.check),
-  //                       tooltip: 'Accept',
-  //                       onPressed: (){
-  //                           setState(() {
-  //                             //add friend to list of user's friends
-  //                             //Need to update the state of the friends list
-  //                             pendingFriends.removeWhere((element) => element.key == ObjectKey('Lucas'));
-  //                           });
-  //                       },),
-  //                       IconButton(
-  //                       icon: const Icon(Icons.clear),
-  //                       tooltip: 'Decline',
-  //                       onPressed: (){
-  //                           setState(() {
-  //                             pendingFriends.removeWhere((element) => element.key == ObjectKey('Lucas'));
-  //                           });
-  //                       },)
-  //                   ]
-  //                 )
-  //             ],)
-  //      ));
-  //    Card(child: ListTile(title: Text('Chris Bowen')));
-  //    Card(child: ListTile(title: Text('Robert Fahey')));
-     
-
-  //  }
 
 }
 
