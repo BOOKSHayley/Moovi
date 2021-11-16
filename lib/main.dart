@@ -22,7 +22,10 @@ void main() async {
   //Get rid of database stuff
   //Move the Material App stuff so only the ref to Login is here. Move rest into another dart file
   runApp(MaterialApp(home: LoginPage(_database, mvm),
-    theme: ThemeData(brightness: Brightness.dark),));
+    debugShowCheckedModeBanner: false,
+    theme: CustomTheme.darkTheme,
+  )
+  );
 
 
   //IF YOU ARE RUNNING FOR FIRST TIME:
@@ -50,12 +53,10 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'MOOVI',
+      theme: CustomTheme.darkTheme,
       home: MenusStatefulWidget(db),
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
-      ),
     );
   }
 }
@@ -224,23 +225,34 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
 
       ),
       bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.grey[900],
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
+            icon: Icon(
+                Icons.account_box,
+                size: 30,
+            ),
             label: "Profile"
+
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.house),
+            icon: Icon(
+              Icons.house,
+              size: 30,
+            ),
             label: "Home"
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
+            icon: Icon(
+              Icons.people,
+              size: 30,
+            ),
             label: "Friends"
           )
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurpleAccent,
+        selectedItemColor: Colors.yellow,
         onTap: _onItemTapped,
       ),
     );
@@ -253,5 +265,22 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
     } else if(!value){ //value is false
       MenusStatefulWidget.genres.remove(text);
     }
+  }
+}
+
+class CustomTheme {
+  static ThemeData get darkTheme { //1
+    return ThemeData( //2
+        primaryColor: const Color(0xffffffff),
+        cardColor: const Color(0xff31353b),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xff1a1d21),
+        fontFamily: 'Montserrat', //3
+        textTheme: ThemeData.dark().textTheme,
+        buttonTheme: ButtonThemeData( // 4
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+          buttonColor: Colors.yellow,
+        )
+    );
   }
 }

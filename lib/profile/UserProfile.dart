@@ -109,8 +109,8 @@ class UserProfile extends StatelessWidget{
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color(0xff19194d),
-                      Colors.deepPurple,
+                      const Color(0xffff7300),
+                      Colors.yellow,
                     ],
                   )
               ),

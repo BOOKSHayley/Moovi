@@ -27,7 +27,6 @@ class _FriendsListMenu extends State<FriendsListMenu> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Friends List'),
-          backgroundColor: Colors.grey[900],
         ),
         body: Column(
         children: [
