@@ -39,5 +39,8 @@ class FriendsEntity {
   @ColumnInfo(name:"pending")
   final bool pending;
 
-  FriendsEntity(this.id, this.userOneId, this.userTwoId, this.pending);
+  @ColumnInfo(name:"num_shared_movies")
+  int numSharedMovies;
+
+  FriendsEntity(this.id, this.userOneId, this.userTwoId, this.pending, this.numSharedMovies);
 }

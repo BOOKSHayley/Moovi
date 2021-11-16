@@ -249,9 +249,18 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
 
   void setGenres(value, text){
     if(value && !MenusStatefulWidget.genres.contains(text)){
-      MenusStatefulWidget.genres.add(text);
+      if(MenusStatefulWidget.genres[0] == ""){
+        MenusStatefulWidget.genres[0] = text;
+      } else {
+        MenusStatefulWidget.genres.add(text);
+      }
     } else if(!value){ //value is false
       MenusStatefulWidget.genres.remove(text);
+      if(MenusStatefulWidget.genres.length == 0){
+        MenusStatefulWidget.genres.add("");
+      }
     }
+
+    print(MenusStatefulWidget.genres[0]);
   }
 }

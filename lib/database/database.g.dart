@@ -91,9 +91,9 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `movie_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `image` TEXT NOT NULL, `MPAA_rating` TEXT NOT NULL, `IMDB_rating` REAL NOT NULL, `runtime` TEXT NOT NULL, `genres` TEXT NOT NULL, `year` INTEGER NOT NULL, `streaming_service` TEXT NOT NULL, `synopsis` TEXT NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `users_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `username` TEXT NOT NULL, `password` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `users_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `username` TEXT NOT NULL, `password` TEXT NOT NULL, `number_of_clicks` INTEGER NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `friends_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_one_id` INTEGER NOT NULL, `user_two_id` INTEGER NOT NULL, `pending` INTEGER NOT NULL, FOREIGN KEY (`user_one_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`user_two_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE)');
+            'CREATE TABLE IF NOT EXISTS `friends_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_one_id` INTEGER NOT NULL, `user_two_id` INTEGER NOT NULL, `pending` INTEGER NOT NULL, `num_shared_movies` INTEGER NOT NULL, FOREIGN KEY (`user_one_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`user_two_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `liked_movies_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` INTEGER NOT NULL, `movie_id` INTEGER NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`movie_id`) REFERENCES `movie_table` (`id`) ON UPDATE CASCADE ON DELETE CASCADE)');
         await database.execute(
@@ -320,7 +320,8 @@ class _$UserDao extends UserDao {
                   'id': item.id,
                   'name': item.name,
                   'username': item.userName,
-                  'password': item.password
+                  'password': item.password,
+                  'number_of_clicks': item.numClicks
                 }),
         _userEntityUpdateAdapter = UpdateAdapter(
             database,
@@ -330,7 +331,8 @@ class _$UserDao extends UserDao {
                   'id': item.id,
                   'name': item.name,
                   'username': item.userName,
-                  'password': item.password
+                  'password': item.password,
+                  'number_of_clicks': item.numClicks
                 }),
         _userEntityDeletionAdapter = DeletionAdapter(
             database,
@@ -340,7 +342,8 @@ class _$UserDao extends UserDao {
                   'id': item.id,
                   'name': item.name,
                   'username': item.userName,
-                  'password': item.password
+                  'password': item.password,
+                  'number_of_clicks': item.numClicks
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -362,7 +365,8 @@ class _$UserDao extends UserDao {
             row['id'] as int?,
             row['name'] as String,
             row['username'] as String,
-            row['password'] as String));
+            row['password'] as String,
+            row['number_of_clicks'] as int));
   }
 
   @override
@@ -372,7 +376,8 @@ class _$UserDao extends UserDao {
             row['id'] as int?,
             row['name'] as String,
             row['username'] as String,
-            row['password'] as String),
+            row['password'] as String,
+            row['number_of_clicks'] as int),
         arguments: [userName]);
   }
 
@@ -385,7 +390,8 @@ class _$UserDao extends UserDao {
             row['id'] as int?,
             row['name'] as String,
             row['username'] as String,
-            row['password'] as String),
+            row['password'] as String,
+            row['number_of_clicks'] as int),
         arguments: [userName, pass]);
   }
 
@@ -396,7 +402,8 @@ class _$UserDao extends UserDao {
             row['id'] as int?,
             row['name'] as String,
             row['username'] as String,
-            row['password'] as String),
+            row['password'] as String,
+            row['number_of_clicks'] as int),
         arguments: [id]);
   }
 
@@ -432,7 +439,8 @@ class _$FriendsDao extends FriendsDao {
                   'id': item.id,
                   'user_one_id': item.userOneId,
                   'user_two_id': item.userTwoId,
-                  'pending': item.pending ? 1 : 0
+                  'pending': item.pending ? 1 : 0,
+                  'num_shared_movies': item.numSharedMovies
                 },
             changeListener),
         _friendsEntityUpdateAdapter = UpdateAdapter(
@@ -443,7 +451,8 @@ class _$FriendsDao extends FriendsDao {
                   'id': item.id,
                   'user_one_id': item.userOneId,
                   'user_two_id': item.userTwoId,
-                  'pending': item.pending ? 1 : 0
+                  'pending': item.pending ? 1 : 0,
+                  'num_shared_movies': item.numSharedMovies
                 },
             changeListener),
         _friendsEntityDeletionAdapter = DeletionAdapter(
@@ -454,7 +463,8 @@ class _$FriendsDao extends FriendsDao {
                   'id': item.id,
                   'user_one_id': item.userOneId,
                   'user_two_id': item.userTwoId,
-                  'pending': item.pending ? 1 : 0
+                  'pending': item.pending ? 1 : 0,
+                  'num_shared_movies': item.numSharedMovies
                 },
             changeListener);
 
@@ -474,7 +484,7 @@ class _$FriendsDao extends FriendsDao {
   Future<List<FriendsEntity>> findAllFriendsOf(int userId) async {
     return _queryAdapter.queryList(
         'SELECT * FROM friends_table WHERE (user_one_id = ?1 OR user_two_id = ?1) AND pending = 0',
-        mapper: (Map<String, Object?> row) => FriendsEntity(row['id'] as int?, row['user_one_id'] as int, row['user_two_id'] as int, (row['pending'] as int) != 0),
+        mapper: (Map<String, Object?> row) => FriendsEntity(row['id'] as int?, row['user_one_id'] as int, row['user_two_id'] as int, (row['pending'] as int) != 0, row['num_shared_movies'] as int),
         arguments: [userId]);
   }
 
@@ -486,7 +496,8 @@ class _$FriendsDao extends FriendsDao {
             row['id'] as int?,
             row['user_one_id'] as int,
             row['user_two_id'] as int,
-            (row['pending'] as int) != 0),
+            (row['pending'] as int) != 0,
+            row['num_shared_movies'] as int),
         arguments: [userId],
         queryableName: 'friends_table',
         isView: false);
@@ -500,7 +511,8 @@ class _$FriendsDao extends FriendsDao {
             row['id'] as int?,
             row['user_one_id'] as int,
             row['user_two_id'] as int,
-            (row['pending'] as int) != 0),
+            (row['pending'] as int) != 0,
+            row['num_shared_movies'] as int),
         arguments: [userId]);
   }
 
@@ -512,7 +524,8 @@ class _$FriendsDao extends FriendsDao {
             row['id'] as int?,
             row['user_one_id'] as int,
             row['user_two_id'] as int,
-            (row['pending'] as int) != 0),
+            (row['pending'] as int) != 0,
+            row['num_shared_movies'] as int),
         arguments: [userId],
         queryableName: 'friends_table',
         isView: false);
@@ -522,7 +535,7 @@ class _$FriendsDao extends FriendsDao {
   Future<FriendsEntity?> findFriendOfUser(int userId, int friendId) async {
     return _queryAdapter.query(
         'SELECT * FROM friends_table WHERE (user_one_id = ?1 AND user_two_id = ?2) OR (user_one_id = ?2 AND user_two_id = ?1)',
-        mapper: (Map<String, Object?> row) => FriendsEntity(row['id'] as int?, row['user_one_id'] as int, row['user_two_id'] as int, (row['pending'] as int) != 0),
+        mapper: (Map<String, Object?> row) => FriendsEntity(row['id'] as int?, row['user_one_id'] as int, row['user_two_id'] as int, (row['pending'] as int) != 0, row['num_shared_movies'] as int),
         arguments: [userId, friendId]);
   }
 
