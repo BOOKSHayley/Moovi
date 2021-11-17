@@ -10,6 +10,7 @@ import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
+import '../MooviProgressIndicator.dart';
 import '../movie/Movie.dart';
 import '../movie/MovieCard.dart';
 
@@ -51,7 +52,7 @@ class _LikedList extends State<LikedList> {
               case ConnectionState.none:
               case ConnectionState.waiting:
               case ConnectionState.active:
-                return Center(child: CircularProgressIndicator(),);
+                return MooviProgressIndicator();
               case ConnectionState.done:
                 if(snapshot.hasData){
                   cardsList = generateCardsList(snapshot.data!);

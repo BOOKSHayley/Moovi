@@ -1,5 +1,6 @@
 
 import "package:flutter/material.dart";
+import 'package:moovi/MooviProgressIndicator.dart';
 import "package:moovi/database/mainViewModel.dart";
 import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/accounts/login.dart';
@@ -57,7 +58,7 @@ class _PendingFriendsList extends State<PendingFriendsList>{
               case ConnectionState.none:
               case ConnectionState.waiting:
               case ConnectionState.active:
-                return Center(child: CircularProgressIndicator(),);
+                return MooviProgressIndicator();
               case ConnectionState.done:
                 if(snapshot.hasData){
                   pendingFriendsList = generatePendingFriendsCardsList(snapshot.data!);
@@ -115,16 +116,12 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                         Padding(
                           padding: EdgeInsets.only(left: 10),
                             child: CircleAvatar(
-                            radius: 22,
+                            radius: 24,
                             backgroundColor: Colors.white,
                             child: CircleAvatar(
                                 backgroundColor: Colors.grey[900],
-                                radius: 20,
-                                child: Icon(
-                                    Icons.person_rounded,
-                                    size: 22,
-                                    color: Colors.grey
-                                )
+                                radius: 22,
+                                child: Image.asset("assets/MooviCow.png")
                             ),
                           )
                         ),

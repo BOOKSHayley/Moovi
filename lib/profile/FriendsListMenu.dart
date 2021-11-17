@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
+import '../MooviProgressIndicator.dart';
 import 'FriendProfile.dart';
 import 'package:moovi/friends/pendingFriendsList.dart';
 
@@ -42,7 +45,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                 case ConnectionState.none:
                 case ConnectionState.waiting:
                 case ConnectionState.active:
-                  return Center(child: CircularProgressIndicator(),);
+                  return MooviProgressIndicator();
                 case ConnectionState.done:
                   if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     cards = buildFriendCards(snapshot.data!, context);
@@ -87,16 +90,12 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                       Padding(
                       padding: EdgeInsets.only(left: 10),
                           child: CircleAvatar(
-                            radius: 22,
+                            radius: 24,
                             backgroundColor: Colors.white,
                             child: CircleAvatar(
                                 backgroundColor: Colors.grey[900],
-                                radius: 20,
-                                child: Icon(
-                                    Icons.person_rounded,
-                                    size: 22,
-                                    color: Colors.grey
-                                )
+                                radius: 22,
+                                child:Image.asset("assets/MooviCow.png")
                             ),
                           )
                       ),
