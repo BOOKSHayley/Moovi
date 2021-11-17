@@ -10,6 +10,7 @@ import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
 import 'profile/UserProfile.dart';
 import 'movie/QueueMenu.dart';
+import 'package:moovi/Theme/ThemeData.dart';
 
 
 
@@ -226,6 +227,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
 
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xff2a3038),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
@@ -278,19 +280,4 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   }
 }
 
-class CustomTheme {
-  static ThemeData get darkTheme { //1
-    return ThemeData( //2
-        primaryColor: const Color(0xffffffff),
-        cardColor: const Color(0xff31353b),
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xff1a1d21),
-        fontFamily: 'Montserrat', //3
-        textTheme: ThemeData.dark().textTheme,
-        buttonTheme: ButtonThemeData( // 4
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-          buttonColor: Colors.yellow,
-        )
-    );
-  }
-}
+
