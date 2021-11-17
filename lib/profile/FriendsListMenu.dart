@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:moovi/accounts/login.dart';
@@ -85,47 +86,66 @@ class _FriendsListMenu extends State<FriendsListMenu> {
             child: Padding(
               padding: EdgeInsets.all(5),
               child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Padding(
-                      padding: EdgeInsets.only(left: 10),
-                          child: CircleAvatar(
-                            radius: 24,
-                            backgroundColor: Colors.white,
-                            child: CircleAvatar(
-                                backgroundColor: Colors.grey[900],
-                                radius: 22,
-                                child:Image.asset("assets/MooviCow.png")
-                            ),
-                          )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                friends[i]!.name,
-                                style: TextStyle(fontSize: 26),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(FriendsListMenu.numSharedMovies[i].toString(), style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: CircleAvatar(
+                                radius: 24,
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                    backgroundColor: Colors.grey[900],
+                                    radius: 22,
+                                    child:Image.asset("assets/MooviCow.png")
+                                ),
+                              )
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
                                 Padding(
-                                  padding: EdgeInsets.only(left: 3),
-                                  child: Text("Shared Movies", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
-                                )
+                                  padding: EdgeInsets.all(5),
+                                  child: Text(
+                                    friends[i]!.userName,
+                                    style: TextStyle(fontSize: 26),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(FriendsListMenu.numSharedMovies[i].toString(), style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 3),
+                                      child: Text("Shared Movies", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                                    )
+                                  ],
+                                ),
 
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          FavoriteButton(
+                            valueChanged: (_isFave){ },
+                          )
+                        ],
                       )
+
+                      // Padding(
+                      //     padding: EdgeInsets.only(left: 150),
+                      //     child:
+                      // )
+
 
 
                     ]),
