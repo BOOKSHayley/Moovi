@@ -23,6 +23,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
   final reenterPasswordFieldController = TextEditingController();
   final errorFieldController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _hasError = false;
 
   String _name = "";
   String _username = "";
@@ -42,149 +43,204 @@ class _MyCustomFormState extends State<AccountCreationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text("Create Account"),
+          title: Text("Create Account", style: TextStyle(fontSize: 24),),
         ),
-        body: Form(
-          key: _formKey,
-          child: Column(
+        body: SingleChildScrollView(
+          reverse: true,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: _bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                TextFormField(
-                    controller: nameFieldController,
-                    decoration: InputDecoration(
-                      hintText: "Your Name",
-                      labelText: "Name",
-                      contentPadding: EdgeInsets.all(10),
-                    ),
-                  validator: (name){
-                      if(name == null  || name.isEmpty){
-                        return "Please enter some text";
-                      }else if(name.length > 10){
-                        return "Name must not exceed 10 characters";
-                      }
-                      return null;
-                  },
-                  onSaved: (name)=> _name = name!,
-                ),
-                TextFormField(
-                    controller: usernameFieldController,
-                    decoration: InputDecoration(
-                      hintText: "Your username",
-                      labelText: "Username",
-                      contentPadding: EdgeInsets.all(10),
-                    ),
-                  validator: (username) {
-                    if(username == null  || username.isEmpty){
-                      return "Please enter a username.";
-                    }else if(username.length > 10){
-                      return "Username must not exceed 10 characters";
-                    }
-                    return null;
-                  },
-                  onSaved: (username)=> _username = username!,
-                ),
-                TextFormField(
-                    obscureText: true,
-                    controller: passwordFieldController,
-                    decoration: InputDecoration(
-                      hintText: "Create a password",
-                      labelText: "Password",
-                      helperText: "Password must be at least 8 characters",
-                      suffixIcon: Icon(Icons.lock),
-                      contentPadding: EdgeInsets.all(10),
-                      icon: Icon(Icons.visibility_off),
-                    ),
-                  validator: (pass){
-                    if(pass == null  || pass.isEmpty){
-                      return "Please create a password";
-                    } else if(!checkPassForCorrectness(pass)){
-                      reenterPasswordFieldController.clear();
-                      passwordFieldController.clear();
-                      return "Password must be at least 8 characters";
-                    }
-                    return null;
-                  },
-                  onSaved: (pass)=> _password = pass!,
-                ),
-                TextFormField(
-                    obscureText: true,
-                    controller: reenterPasswordFieldController,
-                    decoration: InputDecoration(
-                      hintText: "Re-Enter your password",
-                      labelText: "ReenterPassword",
-                      contentPadding: EdgeInsets.all(10),
-                      icon: Icon(Icons.visibility_off),
-                    ),
-                  validator: (pass){
-                    if(pass == null  || pass.isEmpty){
-                      return "Please reenter your password";
-                    } else if(pass != passwordFieldController.text){
-                      reenterPasswordFieldController.clear();
-                      passwordFieldController.clear();
-                      return "Passwords do not match.";
-                    }
-                    return null;
-                  },
-                ),
-                TextField(
-                  controller: errorFieldController,
-                  readOnly: true,
-                ),
                 Padding(
-                  padding: EdgeInsets.all(10),
-                ),
-                SizedBox(
-                  width: 200,
-                  height: 50,
-                  child: TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(
-                        Colors.blue[800])),
-                    child: Align(
-                      alignment: Alignment.center,
-
-                      child: Text(
-                        "Sign up",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    onPressed: () async{
-                      errorFieldController.clear();
-
-                      if(_formKey.currentState!.validate()){
-                        _formKey.currentState!.save();
-                        bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
-                        if(userAdded) {
-                          PopulateDatabase.populateDb(widget.mvm);
-                          nameFieldController.clear();
-                          usernameFieldController.clear();
-                          passwordFieldController.clear();
-                          reenterPasswordFieldController.clear();
-                          Navigator.push(context, new MaterialPageRoute(
-                              builder: (context) =>
-                                  LoginPage(widget.db, widget.mvm)
-                          ));
-                        } else{
-                            usernameFieldController.clear();
-                            reenterPasswordFieldController.clear();
-                            passwordFieldController.clear();
-                            errorFieldController.text = "Username already taken";
-                        }
-                      }
-                    },
-
+                  padding: EdgeInsets.only(top: 20),
+                  child: Container(
+                    height: 100,
+                    child: Image.asset("assets/MooviCow.png"),
                   ),
-                )
-              ]
-          ))
+                ),
+                Form(
+                    key: _formKey,
+                    child: Column(
+                        children: [
+                          TextFormField(
+                            controller: nameFieldController,
+                            style: TextStyle(fontSize: 20),
+                            textInputAction: TextInputAction.next,
+                            cursorColor: Colors.yellowAccent,
+                            cursorWidth: 3,
+                            decoration: InputDecoration(
+                              hintText: "Your Name",
+                              labelText: "Name",
+                              labelStyle: TextStyle(fontSize: 20),
+                              errorStyle: TextStyle(fontSize: 16),
+                              contentPadding: EdgeInsets.all(10),
+                            ),
+                            validator: (name){
+                              if(name == null  || name.isEmpty){
+                                return "Please enter your name";
+                              }else if(name.length > 10){
+                                return "Name cannot exceed 10 characters";
+                              }
+                              return null;
+                            },
+                            onSaved: (name)=> _name = name!,
+                          ),
+                          TextFormField(
+                            controller: usernameFieldController,
+                            style: TextStyle(fontSize: 20),
+                            textInputAction: TextInputAction.next,
+                            cursorColor: Colors.yellowAccent,
+                            cursorWidth: 3,
+                            decoration: InputDecoration(
+                              hintText: "Your username",
+                              labelText: "Username",
+                              labelStyle: TextStyle(fontSize: 20),
+                              errorStyle: TextStyle(fontSize: 16),
+                              contentPadding: EdgeInsets.all(10),
+                            ),
+                            validator: (username) {
+                              if(username == null  || username.isEmpty){
+                                return "Please create a username.";
+                              }else if(username.length > 10){
+                                return "Username must not exceed 10 characters";
+                              }
+                              return null;
+                            },
+                            onSaved: (username)=> _username = username!,
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            controller: passwordFieldController,
+                            style: TextStyle(fontSize: 20),
+                            textInputAction: TextInputAction.next,
+                            cursorColor: Colors.yellowAccent,
+                            cursorWidth: 3,
+                            decoration: InputDecoration(
+                              hintText: "Create a password",
+                              labelText: "Password",
+                              labelStyle: TextStyle(fontSize: 20),
+                              helperText: "Password must be at least 8 characters",
+                              helperStyle: TextStyle(fontSize: 18),
+                              suffixIcon: Icon(Icons.lock),
+                              errorStyle: TextStyle(fontSize: 16),
+                              contentPadding: EdgeInsets.all(10),
+                              icon: Icon(Icons.visibility_off),
+                            ),
+                            validator: (pass){
+                              if(pass == null  || pass.isEmpty){
+                                return "Please create a password";
+                              } else if(!checkPassForCorrectness(pass)){
+                                reenterPasswordFieldController.clear();
+                                passwordFieldController.clear();
+                                return "Password must be at least 8 characters";
+                              }
+                              return null;
+                            },
+                            onSaved: (pass)=> _password = pass!,
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            controller: reenterPasswordFieldController,
+                            style: TextStyle(fontSize: 20),
+                            cursorColor: Colors.yellowAccent,
+                            cursorWidth: 3,
+                            decoration: InputDecoration(
+                              hintText: "Re-Enter your password",
+                              labelText: "ReenterPassword",
+                              labelStyle: TextStyle(fontSize: 20),
+                              errorStyle: TextStyle(fontSize: 16),
+                              contentPadding: EdgeInsets.all(10),
+                              icon: Icon(Icons.visibility_off),
+                            ),
+                            validator: (pass){
+                              if(pass == null  || pass.isEmpty){
+                                return "Please reenter your password";
+                              } else if(pass != passwordFieldController.text){
+                                reenterPasswordFieldController.clear();
+                                passwordFieldController.clear();
+                                return "Passwords do not match.";
+                              }
+                              return null;
+                            },
+                          ),
+                          Visibility(
+                            child: TextField(
+                              controller: errorFieldController,
+                              readOnly: true,
+                              style: TextStyle(color: Colors.red, fontSize: 20),
+                            ),
+                            visible: _hasError,
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          SizedBox(
+                            width: 200,
+                            height: 50,
+                            child: TextButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(
+                                  Colors.yellow)),
+                              child: Align(
+                                alignment: Alignment.center,
+
+                                child: Text(
+                                  "Sign up",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ),
+                              onPressed: () async{
+                                errorFieldController.clear();
+
+                                if(_formKey.currentState!.validate()){
+                                  _formKey.currentState!.save();
+                                  bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
+                                  if(userAdded) {
+                                    PopulateDatabase.populateDb(widget.mvm);
+                                    nameFieldController.clear();
+                                    usernameFieldController.clear();
+                                    passwordFieldController.clear();
+                                    reenterPasswordFieldController.clear();
+                                    Navigator.push(context, new MaterialPageRoute(
+                                        builder: (context) =>
+                                            LoginPage(widget.db, widget.mvm)
+                                    ));
+                                  } else{
+                                    usernameFieldController.clear();
+                                    reenterPasswordFieldController.clear();
+                                    passwordFieldController.clear();
+                                    setState(() { _hasError = true; });
+                                    errorFieldController.text = "Username already taken";
+                                  }
+                                }
+                              },
+
+                            ),
+                          )
+                        ]
+                    ))
+              ],
+            ),
+          )
+        )
+
+
+
     );
   }
 
