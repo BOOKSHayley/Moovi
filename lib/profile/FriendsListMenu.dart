@@ -66,7 +66,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                         );
                     },
                     child: const Icon(Icons.person_add),
-                    backgroundColor: Colors.green,)
+                    backgroundColor: Colors.yellow,)
     );
   }
 
