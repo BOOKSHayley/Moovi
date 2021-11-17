@@ -105,7 +105,7 @@ class UserProfile extends StatelessWidget{
           Container(
               height: 175,
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[900]!, width: 5),
+                  border: Border.all(color: Color(0xff353d47), width: 5),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -118,57 +118,83 @@ class UserProfile extends StatelessWidget{
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(30),
-                          child: Container(),
-                      )
-
-                    ),
-                    Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: CircleAvatar(
-                                    radius: 27,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                        backgroundColor: Colors.grey[900],
-                                        radius: 25,
-                                        child: Icon(
-                                            Icons.person_rounded,
-                                            size: 23,
-                                            color: Colors.grey
-                                        )
-                                    ),
-
-                                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: CircleAvatar(
+                              radius: 40,
+                              backgroundColor: Colors.black,
+                              child: CircleAvatar(
+                                radius: 38,
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                    backgroundColor: Colors.grey[900],
+                                    radius: 36,
+                                    child: Icon(
+                                        Icons.person_rounded,
+                                        size: 23,
+                                        color: Colors.grey
+                                    )
                                 ),
-
-                                Center(
-                                  child: Text(
-                                    name,
-                                    style: TextStyle(color: Colors.white, fontSize: 20),
-                                  ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    "@" + username,
-                                    style: TextStyle(color: Colors.grey, fontSize: 16),
-                                  ),
-                                ),
-                              ]
+                              ),
+                            ),
                           ),
-                        )
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      name,
+                                      style: TextStyle(
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                            offset: Offset(3, 3),
+                                            blurRadius: 5,
+                                            color: Color.fromARGB(
+                                                255, 33, 10, 6),
+                                          ),
+                                        ],
+                                        color: Colors.white,
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      "@" + username,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                            offset: Offset(3, 3),
+                                            blurRadius: 6,
+                                            color: Color.fromARGB(
+                                                255, 24, 7, 4),
+                                          ),
+                                        ],
+                                      ),
+
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          )
+
+                        ],
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(30),
+                      padding: const EdgeInsets.all(40),
                       child: Align(
                         alignment: Alignment.topRight,
 
@@ -206,10 +232,28 @@ class UserProfile extends StatelessWidget{
                               side: BorderSide(color: Colors.grey[900]!, width: 2),
                               borderRadius: BorderRadius.all(Radius.circular(15.0))
                           ),
-                          child: Icon(
-                              Icons.more_vert,
-                              size: 30,
-                              color: Colors.white
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned(
+                                left: 3,
+                                top: 3,
+
+                                child: Icon(
+                                    Icons.more_vert,
+                                    size: 30,
+                                    color: Color.fromARGB(
+                                    255, 151, 85, 39),
+
+                                ),
+
+                              ),
+                              Icon(
+                                  Icons.more_vert,
+                                  size: 30,
+                                  color: Colors.white
+
+                              ),
+                            ],
                           ),
                         ),
                       ),
