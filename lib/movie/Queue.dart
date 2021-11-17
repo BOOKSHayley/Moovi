@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
+import 'package:moovi/MooviProgressIndicator.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/DatabaseGetter.dart';
 import 'package:moovi/database/database.dart';
@@ -47,7 +48,7 @@ class QueueState extends State<Queue> with SingleTickerProviderStateMixin {
                   case ConnectionState.none:
                   case ConnectionState.waiting:
                   case ConnectionState.active:
-                    return Center(child: CircularProgressIndicator(),);
+                    return MooviProgressIndicator();
                   case ConnectionState.done:
                     if(snapshot.hasData){
                       cardsList = generateCardsList(snapshot.data!.take(10).toList());

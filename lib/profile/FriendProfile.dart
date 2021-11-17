@@ -5,6 +5,8 @@ import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 
+import '../MooviProgressIndicator.dart';
+
 class FriendMatchedCard extends StatefulWidget {
   final friendUsername;
   final friendName;
@@ -38,7 +40,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
                       case ConnectionState.none:
                       case ConnectionState.waiting:
                       case ConnectionState.active:
-                        return Center(child: CircularProgressIndicator(),);
+                        return MooviProgressIndicator();
                       case ConnectionState.done:
                         if (snapshot.hasData) {
                           cards = buildMatchedMovieCards(snapshot.data!);
