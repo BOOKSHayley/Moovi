@@ -166,10 +166,6 @@ class _FriendsListMenu extends State<FriendsListMenu> {
   InkWell noFriends(){
       return InkWell(
           child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.yellowAccent),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
               child: Card(
                   child: ListTile(
                       title: Text("No friends added. Click on the button in the corner to add some!",

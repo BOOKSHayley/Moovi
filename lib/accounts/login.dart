@@ -26,6 +26,7 @@ class _MyCustomFormState extends State<LoginPage>{
   final passwordFieldController = TextEditingController();
   final errorFieldController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _hasError = false;
 
   String password = "";
   String username = "";
@@ -40,135 +41,180 @@ class _MyCustomFormState extends State<LoginPage>{
 
   @override
   Widget build(BuildContext context){
+    final _bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Sign In"),
+          title: Text("Sign In", style: TextStyle(fontSize: 24),),
         ),
-        body: Form(
-          key: _formKey,
-          child: Column(
-              children: [
-                TextFormField(
-                    controller: usernameFieldController,
-                    decoration: InputDecoration(
-                      hintText: "Your username",
-                      labelText: "Username",
-                      contentPadding: EdgeInsets.all(10),
-                    ),
-                  validator: (username){
-                    if(username == null  || username.isEmpty){
-                      usernameFieldController.clear();
-                      passwordFieldController.clear();
-                      return "Please enter your username.";
-                    }
-                    return null;
-                  },
-                  onSaved: (_username) => username = _username!,
-                ),
-                TextFormField(
-                    obscureText: true,
-                    controller: passwordFieldController,
-                    decoration: InputDecoration(
-                      hintText: "Your password",
-                      labelText: "Password",
-                      contentPadding: EdgeInsets.all(10),
-                    ),
-                  validator: (pass){
-                    if(pass == null  || pass.isEmpty){
-                      passwordFieldController.clear();
-                      return "Please enter your password.";
-                    }
-                    return null;
-                  },
-                  onSaved: (pass) => password = pass!,
-                ),
-                TextField(
-                  controller: errorFieldController,
-                  readOnly: true,
-                ),
+        body: SingleChildScrollView(
+          reverse: true,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: _bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 30),
+                  child: Container(
+                    height: 100,
+                    child: Image.asset("assets/MooviCow.png"),
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget> [
-                      Padding(
-                        padding: EdgeInsets.all(5),
-                      ),
-                      SizedBox(
-                        width: 160,
-                        height: 50,
-                        child: TextButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[800])),
-                          child: Align(
-                            alignment: Alignment.center,
-
-                            child: Text(
-                              "No Account? Sign up!",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                Form(
+                    key: _formKey,
+                    child: Column(
+                        children: [
+                          TextFormField(
+                            controller: usernameFieldController,
+                            style: TextStyle(fontSize: 20),
+                            textInputAction: TextInputAction.next,
+                            cursorColor: Colors.yellowAccent,
+                            cursorWidth: 3,
+                            decoration: InputDecoration(
+                              hintText: "Your username",
+                              labelText: "Username",
+                              labelStyle: TextStyle(fontSize: 20),
+                              errorStyle: TextStyle(fontSize: 16),
+                              contentPadding: EdgeInsets.all(10),
                             ),
-                          ),
-                          onPressed: (){
-                            Navigator.push(context, new MaterialPageRoute(
-                                builder: (context) => AccountCreationPage(widget.db, widget.mvm)
-                            ));
-                          },
-
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(5),
-                      ),
-                      SizedBox(
-                        width: 160,
-                        height: 50,
-                        child: TextButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blueGrey[700])),
-                          child: Align(
-                            alignment: Alignment.center,
-
-                            child: Text(
-                              "Sign in",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          onPressed: () async{
-                            errorFieldController.clear();
-
-                            if(_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              UserEntity? user = await widget.mvm.
-                                  getUserbyUsernameAndPass(username, password);
-
-                              if (user == null) {
+                            validator: (username){
+                              if(username == null  || username.isEmpty){
                                 usernameFieldController.clear();
                                 passwordFieldController.clear();
-                                errorFieldController.text = "Your username or password was incorrect.";
-                              } else {
-                                LoginPage.user = user;
-                                Navigator.push(context, new MaterialPageRoute(
-                                    builder: (context) => MyApp(widget.db)
-                                ));
+                                return "Please enter your username.";
                               }
+                              return null;
+                            },
+                            onSaved: (_username) => username = _username!,
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            controller: passwordFieldController,
+                            style: TextStyle(fontSize: 20),
+                            textInputAction: TextInputAction.next,
+                            cursorColor: Colors.yellowAccent,
+                            cursorWidth: 3,
+                            decoration: InputDecoration(
+                              hintText: "Your password",
+                              labelText: "Password",
+                              labelStyle: TextStyle(fontSize: 20),
+                              errorStyle: TextStyle(fontSize: 16),
+                              contentPadding: EdgeInsets.all(10),
+                            ),
+                            validator: (pass){
+                              if(pass == null  || pass.isEmpty){
+                                passwordFieldController.clear();
+                                return "Please enter your password.";
+                              }
+                              return null;
+                            },
+                            onSaved: (pass) => password = pass!,
+                          ),
+                          Visibility(
+                            child: TextField(
+                              controller: errorFieldController,
+                              readOnly: true,
+                              style: TextStyle(color: Colors.red, fontSize: 20),
+                            ),
+                            visible: _hasError,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 30),
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget> [
+                                Padding(
+                                  padding: EdgeInsets.all(5),
+                                ),
+                                SizedBox(
+                                  width: 150,
+                                  height: 60,
+                                  child: TextButton(
+                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xfffad13c))),
+                                    child: Align(
+                                      alignment: Alignment.center,
 
-                            }
+                                      child: Text(
+                                        "No Account?\nSign up!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: (){
+                                      Navigator.push(context, new MaterialPageRoute(
+                                          builder: (context) => AccountCreationPage(widget.db, widget.mvm)
+                                      ));
+                                    },
 
-                          },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(5),
+                                ),
+                                SizedBox(
+                                  width: 150,
+                                  height: 60,
+                                  child: TextButton(
+                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.yellow)),
+                                    child: Align(
+                                      alignment: Alignment.center,
 
-                        ),
-                      ),
-                    ]
-                )
+                                      child: Text(
+                                        "Sign in",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () async{
+                                      errorFieldController.clear();
 
-              ]
-        ))
+                                      if(_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
+                                        UserEntity? user = await widget.mvm.
+                                        getUserbyUsernameAndPass(username, password);
+
+                                        if (user == null) {
+                                          usernameFieldController.clear();
+                                          passwordFieldController.clear();
+                                          setState(() { _hasError = true; });
+                                          errorFieldController.text = "Your username or password was incorrect.";
+                                        } else {
+                                          LoginPage.user = user;
+                                          Navigator.push(context, new MaterialPageRoute(
+                                              builder: (context) => MyApp(widget.db)
+                                          ));
+                                        }
+
+                                      }
+
+                                    },
+
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(5),
+                                ),
+                              ]
+                          )
+
+                        ]
+                    )),
+              ],
+            )
+          ),
+        )
+
     );
   }
 
