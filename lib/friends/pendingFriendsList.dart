@@ -1,6 +1,6 @@
 
 import "package:flutter/material.dart";
-import 'package:moovi/MooviProgressIndicator.dart';
+import 'package:moovi/Theme/MooviProgressIndicator.dart';
 import "package:moovi/database/mainViewModel.dart";
 import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/accounts/login.dart';

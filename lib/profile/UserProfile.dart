@@ -10,7 +10,7 @@ import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
-import '../MooviProgressIndicator.dart';
+import '../Theme/MooviProgressIndicator.dart';
 import '../movie/Movie.dart';
 import '../movie/MovieCard.dart';
 

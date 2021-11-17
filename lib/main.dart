@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bottom_indicator_bar/bottom_indicator_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/database/database.dart';
 import 'package:moovi/database/movieEntity.dart';
@@ -226,6 +227,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         child: _widgetOptions.elementAt(_selectedIndex)
 
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xff2a3038),
         showSelectedLabels: false,
@@ -235,8 +237,9 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
             icon: Icon(
                 Icons.account_box,
                 size: 30,
+
             ),
-            label: "Profile"
+            label: "Profile",
 
           ),
           BottomNavigationBarItem(
@@ -258,8 +261,18 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         selectedItemColor: Colors.yellow,
         onTap: _onItemTapped,
       ),
+
     );
 
+  }
+
+  Widget showIndicator(bool show) {
+    return show
+        ? Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Icon(Icons.brightness_1, size: 10, color: Colors.orange),
+    )
+        : SizedBox();
   }
 
   void setGenres(value, text){
