@@ -103,10 +103,6 @@ class _PendingFriendsList extends State<PendingFriendsList>{
       pendingFriendsList.add(new Card(key: ObjectKey(pendingFriendsEntities[i]!.userName),
          child:
          Container(
-           decoration: BoxDecoration(
-             border: Border.all(color: Colors.yellowAccent),
-             borderRadius: BorderRadius.circular(10.0)
-           ),
            child: Row(
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
