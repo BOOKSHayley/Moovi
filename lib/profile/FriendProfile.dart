@@ -93,15 +93,15 @@ class FriendProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-              height: 175,
+              height: 190,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[900]!, width: 5),
+                  border: Border.all(color: Color(0xff353d47), width: 5),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color(0xff19194d),
-                      Colors.deepPurple,
+                      const Color(0xffff7300),
+                      Colors.yellow,
                     ],
                   )
               ),
@@ -109,43 +109,116 @@ class FriendProfile extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(2),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: IconButton(
-                          icon: const Icon(Icons.arrow_left_rounded),
-                          iconSize: 45,
-                          tooltip: 'Go Back to Friends List',
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 5),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                            backgroundColor: Colors.grey[900],
-                            radius: 48,
-                            child: Image.asset("assets/MooviCow.png")
-                        ),
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 28),
+                            child: Stack(
+                              children: <Widget> [
+                                Positioned(
+                                  top: 3,
+                                  left: 3,
+                                  child: IconButton(
+                                    iconSize: 25,
+                                    icon: const Icon(
+                                        Icons.arrow_back,
+                                        color: const Color.fromARGB(
+                                            255, 151, 85, 39),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                                IconButton(
+                                  iconSize: 25,
+                                  icon: const Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            )
+                          ),
+                          Row(
+                            children: [
+                                CircleAvatar(
+                                  radius: 38,
+                                  backgroundColor: Colors.black,
+                                  child: CircleAvatar(
+                                    radius: 36,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.grey[900],
+                                        radius: 34,
+                                        child: Image.asset("assets/MooviCow.png")
+                                    ),
+                                  ),
+                                ),
+                              Padding(
+                                padding: const EdgeInsets.all(10),
 
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(name, style: TextStyle(fontSize: 40),),
-                        Text("@" + friendUsername, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),)
-                      ],
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          name,
+                                          style: TextStyle(
+                                            shadows: <Shadow>[
+                                              Shadow(
+                                                offset: Offset(3, 3),
+                                                blurRadius: 5,
+                                                color: Color.fromARGB(
+                                                    255, 33, 10, 6),
+                                              ),
+                                            ],
+                                            color: Colors.white,
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.bold,
+
+                                          ),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          "@" + friendUsername,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            shadows: <Shadow>[
+                                              Shadow(
+                                                offset: Offset(3, 3),
+                                                blurRadius: 6,
+                                                color: Color.fromARGB(
+                                                    255, 24, 7, 4),
+                                              ),
+                                            ],
+                                          ),
+
+                                        ),
+                                      ),
+                                    ]
+                                ),
+                              )
+
+                            ],
+                          ),
+
+                        ],
+                      )
+
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(30),
+                      padding: const EdgeInsets.all(40),
                       child: Align(
                         alignment: Alignment.topRight,
-
                         child: PopupMenuButton(
                           itemBuilder: (context) => [
                             PopupMenuItem(
@@ -165,12 +238,32 @@ class FriendProfile extends StatelessWidget{
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(15.0))
                           ),
-                          child: Icon(
+                          child: Stack(
+                          children: <Widget>[
+                          Positioned(
+                            left: 3,
+                            top: 3,
+
+                            child: Icon(
+                              Icons.more_vert,
+                              size: 30,
+                              color: Color.fromARGB(
+                                  255, 151, 85, 39),
+
+                            ),
+
+                          ),
+                          Icon(
                               Icons.more_vert,
                               size: 30,
                               color: Colors.white
+
                           ),
+                          ],
                         ),
+                        ),
+
+
                       ),
                     )
 
