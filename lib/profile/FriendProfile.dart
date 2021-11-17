@@ -60,7 +60,13 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
       cards = [ noMovies() ];
     } else {
       for (int i = 0; i < movies.length; i++) {
-        cards.add(Card(child: ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))));
+        cards.add(
+            Card(
+              child: Container( //ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))
+                child: Image.network(movies[i]!.imageUrl),
+              )
+            )
+        );
       }
     }
     return cards;
@@ -103,57 +109,37 @@ class FriendProfile extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(2),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: IconButton(
                           icon: const Icon(Icons.arrow_left_rounded),
-                          iconSize: 50,
+                          iconSize: 45,
                           tooltip: 'Go Back to Friends List',
                           onPressed: (){
                             Navigator.pop(context);
                           },),
                       ),
                     ),
-                    Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: CircleAvatar(
-                                    radius: 27,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                        backgroundColor: Colors.grey[900],
-                                        radius: 25,
-                                        child: Icon(
-                                            Icons.person_rounded,
-                                            size: 15,
-                                            color: Colors.grey
-                                        )
-                                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                            backgroundColor: Colors.grey[900],
+                            radius: 48,
+                            child: Image.asset("assets/MooviCow.png")
+                        ),
 
-                                  ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    name,
-                                    style: TextStyle(color: Colors.white, fontSize: 20),
-                                  ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    "@" + friendUsername,
-                                    style: TextStyle(color: Colors.grey, fontSize: 16),
-                                  ),
-                                ),
-                              ]
-                          ),
-                        )
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(name, style: TextStyle(fontSize: 40),),
+                        Text("@" + friendUsername, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),)
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.all(30),
@@ -199,14 +185,19 @@ class FriendProfile extends StatelessWidget{
                 child: Container(
                   child: Text(
                     'Your shared movies',
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                    style: TextStyle(color: Colors.grey, fontSize: 20),
                   ),
                 ),
               )
           ),
           Expanded(
               child: ListView(
-                  children: cardList
+                scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Row(
+                      children: cardList,
+                    )
+                  ]
               )
           ),
         ],
