@@ -42,7 +42,7 @@ class _LikedList extends State<LikedList> {
   Widget build(BuildContext context) {
     var user = LoginPage.user;
     String name = user.name; //dummy value
-    List<Card> cardsList;
+    List<Container> cardsList;
     return Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
       child: StreamBuilder<List<MovieEntity?>>(
@@ -56,7 +56,7 @@ class _LikedList extends State<LikedList> {
                 return MooviProgressIndicator();
               case ConnectionState.done:
                 if(snapshot.hasData){
-                  cardsList = generateCardsList(snapshot.data!);
+                  cardsList = generateCardList(snapshot.data!);
                 }
                 else{
                   cardsList = [ noMovies() ];
@@ -70,21 +70,40 @@ class _LikedList extends State<LikedList> {
   }
 
 
-  generateCardsList(List<MovieEntity?> movieEntities){
-    List<Card> cardList = [];
-    if(movieEntities.length == 0){
-      cardList = [ noMovies() ];
+  List<Container> generateCardList(List<MovieEntity?> movies){
+    List<Container> cards = [];
+    if(movies.length == 0){
+      cards = [ noMovies() ];
     } else {
-      for (int i = 0; i < movieEntities.length; i++) {
-        if (movieEntities[i] == null) { continue; }
-        cardList.add(new Card(child: ListTile(title: Text(movieEntities[i]!.title))));
+      for (int i = 0; i < movies.length; i++) {
+        cards.add(
+            Container(
+                width: (MediaQuery.of(context).size.width)/2,
+                height: (MediaQuery.of(context).size.width)/2 * (3/2),
+                child: Card(
+                    child: Container(
+                      child: Image.network(movies[i]!.imageUrl),
+                    )
+                )
+            )
+
+        );
       }
     }
-    return cardList;
+    return cards;
   }
 
-  Card noMovies(){
-    return Card(child: ListTile(title: Text("No liked movies yet. Go back to the Queue and Like some!")));
+  Container noMovies(){
+    return Container(
+        child: Card(
+            child: ListTile(
+                title: Text(
+                  "No liked movies yet. Go back to the queue and like some!",
+                  style: TextStyle(fontSize: 20),
+                )
+            )
+        )
+    );
   }
 
 }
@@ -275,7 +294,11 @@ class UserProfile extends StatelessWidget{
           ),
           Expanded(
               child: ListView(
-                  children: cardList
+                  children: <Widget>[
+                    Wrap(
+                      children: cardList,
+                    )
+                  ]
               )
           ),
         ],
