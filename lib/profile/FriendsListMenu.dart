@@ -157,7 +157,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
                       FriendMatchedCard(
-                          friends[i]!.userName, friends[i]!.name, mvm)));
+                          friends[i]!.userName, friends[i]!.name, FriendsListMenu.numSharedMovies[i], mvm)));
             }));
       }
     }

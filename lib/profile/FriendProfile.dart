@@ -5,24 +5,28 @@ import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
+import 'package:moovi/profile/FriendsListMenu.dart';
 import '../Theme/MooviProgressIndicator.dart';
+import 'ProfileMovieList.dart';
 
 class FriendMatchedCard extends StatefulWidget {
   final friendUsername;
   final friendName;
+  final _numSharedMovies;
   final MainViewModel mvm;
 
-  const FriendMatchedCard(this.friendUsername, this.friendName, this.mvm, {Key? key}) : super(key: key);
+  const FriendMatchedCard(this.friendUsername, this.friendName, this._numSharedMovies, this.mvm, {Key? key}) : super(key: key);
 
-  _FriendMatchedCard createState() => _FriendMatchedCard(friendUsername, friendName, mvm);
+  _FriendMatchedCard createState() => _FriendMatchedCard(friendUsername, friendName, _numSharedMovies, mvm);
 }
 
 class _FriendMatchedCard extends State<FriendMatchedCard> {
   final friendUsername;
   final friendName;
+  final _numSharedMovies;
   late final MainViewModel mvm;
 
-  _FriendMatchedCard(this.friendUsername, this.friendName, this.mvm);
+  _FriendMatchedCard(this.friendUsername, this.friendName, this._numSharedMovies, this.mvm);
 
 //ListView.builder
 
@@ -47,109 +51,16 @@ class _FriendMatchedCard extends State<FriendMatchedCard> {
                   return MooviProgressIndicator();
                 case ConnectionState.done:
                   if (snapshot.hasData) {
-                    cards = buildMatchedMovieCards(snapshot.data!);
+                    cards = ProfileMovieList.buildMovieCards(context, snapshot.data!, noMovies());//buildMatchedMovieCards(snapshot.data!);
                   } else {
                     cards = [ noMovies()];
                   }
-                  return FriendProfile(
-                      mvm, widget.friendUsername, widget.friendName,
-                      cards);
+                  return FriendProfile(mvm, widget.friendUsername, widget.friendName, cards, _numSharedMovies);
               }
             }))
       ),
     );
   }
-
-  //width: 232
-  //height: 343
-
-  List<InkWell> buildMatchedMovieCards(List<MovieEntity?> movies) {
-    List<InkWell> cards = [];
-    if (movies.length == 0) {
-      cards = [ noMovies()];
-    } else {
-      for (int i = 0; i < movies.length; i++) {
-        cards.add(InkWell(
-          child: Container(
-            width: (MediaQuery.of(context).size.width) / 2,
-            height: (MediaQuery.of(context).size.width) / 2 * (3 / 2),
-            child: Card(
-              child: Container(
-                child: FadeInImage.assetNetwork(
-                  placeholder: "assets/CuteYellowCow_transparent.png",
-                  image: movies[i]!.imageUrl,
-                )
-              ),
-            )
-          ),
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return showInfo(movies[i]!);
-              }
-            );
-          },
-        ));
-      }
-    }
-    return cards;
-  }
-
-
-  Container showInfo(MovieEntity movie) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(padding: EdgeInsets.all(5),),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Movie Information:", style: TextStyle(fontSize: 26),),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: ListView(
-                children: <Widget>[
-                  Divider(thickness: 4,),
-                  movieLines("Title", movie.title),
-                  movieLines("Year", movie.year.toString()),
-                  movieLines("Rated", movie.mpaa),
-                  movieLines("Runtime", movie.runtime),
-                  movieLines("IMDB Rating", movie.imdb.toString() + "/10"),
-                  movieLines("Genres", movie.genres),
-                  movieLines("Synopsis", movie.synopsis),
-                  movieLines("Available on", movie.streamingService),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Wrap movieLines(String firstText, String secondText) {
-    return Wrap(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(2),
-          child: Text(firstText + ":  ",
-            style: TextStyle(fontSize: 25, color: Colors.yellow),),
-        ),
-        Padding(
-          padding: EdgeInsets.all(2),
-          child: Text(secondText, style: TextStyle(fontSize: 25,),),
-        ),
-        Divider()
-      ],
-    );
-  }
-
 
   InkWell noMovies() {
     return InkWell(
@@ -157,14 +68,16 @@ class _FriendMatchedCard extends State<FriendMatchedCard> {
         child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),))
       ));
   }
+
 }
 
 class FriendProfile extends StatelessWidget{
   final friendUsername;
   final name;
   final cardList;
+  final _numSharedMovies;
   final MainViewModel mvm;
-  const FriendProfile(this.mvm, this.friendUsername, this.name, this.cardList, {Key? key}) : super(key: key);
+  const FriendProfile(this.mvm, this.friendUsername, this.name, this.cardList, this._numSharedMovies, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -299,32 +212,23 @@ class FriendProfile extends StatelessWidget{
                       Positioned(
                         left: 3,
                         top: 3,
-
                         child: Icon(
                           Icons.more_vert,
                           size: 30,
-                          color: Color.fromARGB(
-                              255, 151, 85, 39),
-
+                          color: Color.fromARGB(255, 151, 85, 39),
                         ),
-
                       ),
                       Icon(
                           Icons.more_vert,
                           size: 30,
                           color: Colors.white
-
                       ),
                       ],
                     ),
                     ),
-
-
                   ),
                 )
-
               ]
-
             )
           ),
           Padding(
@@ -333,7 +237,7 @@ class FriendProfile extends StatelessWidget{
               alignment: Alignment.bottomLeft,
               child: Container(
                 child: Text(
-                  'Your shared movies',
+                  "You've got " + _numSharedMovies.toString() + ' shared movies with this user!',
                   style: TextStyle(color: Colors.grey, fontSize: 20),
                 ),
               ),

@@ -1,19 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/accounts/login.dart';
-import 'package:moovi/database/DatabaseGetter.dart';
-import 'package:moovi/database/database.dart';
-import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
-import 'package:moovi/movie/Movie.dart';
 import '../Theme/MooviProgressIndicator.dart';
-import '../movie/Movie.dart';
-import '../movie/MovieCard.dart';
+import 'ProfileMovieList.dart';
 
 
 class LikedList extends StatefulWidget {
@@ -31,78 +23,44 @@ class _LikedList extends State<LikedList> {
     mvm = new MainViewModel(db);
   }
 
-  late Stream<List<MovieEntity?>> stream;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   stream =  ;
-  // }
-
   @override
   Widget build(BuildContext context) {
     var user = LoginPage.user;
     String name = user.name; //dummy value
-    List<Container> cardsList;
+    List<InkWell> cardsList;
     return Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
       child: StreamBuilder<List<MovieEntity?>>(
-          stream: mvm.getLikedMoviesOfUserAsStream(LoginPage.user),
-          builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
-            if(snapshot.hasError) { print("ERROR!"); }
-            switch(snapshot.connectionState){
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-              case ConnectionState.active:
-                return MooviProgressIndicator();
-              case ConnectionState.done:
-                if(snapshot.hasData){
-                  cardsList = generateCardList(snapshot.data!);
-                }
-                else{
-                  cardsList = [ noMovies() ];
-                }
-                return UserProfile(db, mvm, user.userName, name, cardsList);
-            }
-
+        stream: mvm.getLikedMoviesOfUserAsStream(LoginPage.user),
+        builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
+          if(snapshot.hasError) { print("ERROR!"); }
+          switch(snapshot.connectionState){
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              return MooviProgressIndicator();
+            case ConnectionState.done:
+              if(snapshot.hasData){
+                cardsList = ProfileMovieList.buildMovieCards(context, snapshot.data!, noMovies());//generateCardList(snapshot.data!);
+              }
+              else{
+                cardsList = [ noMovies() ];
+              }
+              return UserProfile(db, mvm, user.userName, name, cardsList);
           }
+
+        }
       ),
     );
   }
 
-
-  List<Container> generateCardList(List<MovieEntity?> movies){
-    List<Container> cards = [];
-    if(movies.length == 0){
-      cards = [ noMovies() ];
-    } else {
-      for (int i = 0; i < movies.length; i++) {
-        cards.add(
-            Container(
-                width: (MediaQuery.of(context).size.width)/2,
-                height: (MediaQuery.of(context).size.width)/2 * (3/2),
-                child: Card(
-                    child: Container(
-                      child: Image.network(movies[i]!.imageUrl),
-                    )
-                )
-            )
-
-        );
-      }
-    }
-    return cards;
-  }
-
-  Container noMovies(){
-    return Container(
-        child: Card(
-            child: ListTile(
-                title: Text(
-                  "No liked movies yet. Go back to the queue and like some!",
-                  style: TextStyle(fontSize: 20),
-                )
-            )
+  InkWell noMovies(){
+    return InkWell(
+      child: Card(
+        child: ListTile(
+          title: Text("No liked movies yet. Go back to the queue and like some!", style: TextStyle(fontSize: 20),)
         )
+      )
     );
   }
 
@@ -123,93 +81,92 @@ class UserProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-              height: 190,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff353d47), width: 5),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      const Color(0xffff7300),
-                      Colors.yellow,
+            height: 190,
+            decoration: BoxDecoration(
+              border: Border.all(color: Color(0xff353d47), width: 5),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xffff7300),
+                  Colors.yellow,
+                ],
+              )
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 60),
+                        child: Container(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: MooviCowProfile(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      name,
+                                      style: TextStyle(
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                            offset: Offset(3, 3),
+                                            blurRadius: 5,
+                                            color: Color.fromARGB(255, 33, 10, 6),
+                                          ),
+                                        ],
+                                        color: Colors.white,
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      "@" + username,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                            offset: Offset(3, 3),
+                                            blurRadius: 6,
+                                            color: Color.fromARGB(
+                                                255, 24, 7, 4),
+                                          ),
+                                        ],
+                                      ),
+
+                                    ),
+                                  ),
+                                ]
+                              ),
+                            )
+
+                          ],
+                        ),
+                      ),
+
                     ],
                   )
-              ),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                ),
+                Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 60),
-                            child: Container(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: MooviCowProfile(),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-
-                                  child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Center(
-                                          child: Text(
-                                            name,
-                                            style: TextStyle(
-                                              shadows: <Shadow>[
-                                                Shadow(
-                                                  offset: Offset(3, 3),
-                                                  blurRadius: 5,
-                                                  color: Color.fromARGB(
-                                                      255, 33, 10, 6),
-                                                ),
-                                              ],
-                                              color: Colors.white,
-                                              fontSize: 28,
-                                              fontWeight: FontWeight.bold,
-
-                                            ),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            "@" + username,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 22,
-                                              shadows: <Shadow>[
-                                                Shadow(
-                                                  offset: Offset(3, 3),
-                                                  blurRadius: 6,
-                                                  color: Color.fromARGB(
-                                                      255, 24, 7, 4),
-                                                ),
-                                              ],
-                                            ),
-
-                                          ),
-                                        ),
-                                      ]
-                                  ),
-                                )
-
-                              ],
-                            ),
-                          ),
-
-                        ],
-                      )
-
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(40),
                       child: Align(
@@ -234,9 +191,9 @@ class UserProfile extends StatelessWidget{
                           onSelected: (result) {
                             if (result == 1) {
                               Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (context) => LoginPage(db, mvm)),
-                                  (_) => false
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginPage(db, mvm)),
+                                      (_) => false
                               );
                             } else if (result == 2){
                               //todo: create an 'edit profile' page and use navigator
@@ -254,15 +211,11 @@ class UserProfile extends StatelessWidget{
                               Positioned(
                                 left: 3,
                                 top: 3,
-
                                 child: Icon(
-                                    Icons.more_vert,
-                                    size: 30,
-                                    color: Color.fromARGB(
-                                    255, 151, 85, 39),
-
+                                  Icons.more_vert,
+                                  size: 30,
+                                  color: Color.fromARGB(255, 151, 85, 39),
                                 ),
-
                               ),
                               Icon(
                                   Icons.more_vert,
@@ -274,11 +227,35 @@ class UserProfile extends StatelessWidget{
                           ),
                         ),
                       ),
+                    ),
+                    Container(
+                      // color: Colors.grey[900],
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(3),
+                            child: Image.asset("assets/Popcorn_transparent.png", width: 40, height: 40,),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 3, right: 15),
+                            child: Text(
+                              LoginPage.user.numClicks.toString(),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                          )
+                        ],
+                      ),
                     )
+                  ],
+                ),
 
-                  ]
 
-              )
+              ]
+
+            )
           ),
           Padding(
             padding: const EdgeInsets.all(10),
@@ -287,19 +264,19 @@ class UserProfile extends StatelessWidget{
               child: Container(
                 child: Text(
                   'Your liked moves',
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                  style: TextStyle(color: Colors.grey, fontSize: 20),
                 ),
               ),
             )
           ),
           Expanded(
-              child: ListView(
-                  children: <Widget>[
-                    Wrap(
-                      children: cardList,
-                    )
-                  ]
-              )
+            child: ListView(
+              children: <Widget>[
+                Wrap(
+                  children: cardList,
+                )
+              ]
+            )
           ),
         ],
       ),
