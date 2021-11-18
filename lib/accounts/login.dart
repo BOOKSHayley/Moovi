@@ -59,7 +59,7 @@ class _MyCustomFormState extends State<LoginPage>{
                   padding: EdgeInsets.only(top: 30),
                   child: Container(
                     height: 100,
-                    child: Image.asset("assets/MooviCow.png"),
+                    child: Image.asset("assets/CuteYellowCow_transparent.png"),
                   ),
                 ),
                 Form(
@@ -122,10 +122,13 @@ class _MyCustomFormState extends State<LoginPage>{
                           ),
                           Row(
                             children: [
-                              Padding(padding: EdgeInsets.all(7)),
-                              InkWell(
-                                child: Text("Forgot Password?", style: TextStyle(color:Colors.yellow, fontSize: 16),),
-                              )
+                              Padding(
+                                padding: EdgeInsets.all(7),
+                                child: InkWell(
+                                  child: Text("Forgot Password?", style: TextStyle(color:Colors.yellow, fontSize: 16),),
+                                ),
+                              ),
+
                             ],
                           ),
                           Padding(

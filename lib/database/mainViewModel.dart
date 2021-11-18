@@ -12,6 +12,7 @@ import 'package:moovi/database/personal_queue_dao.dart';
 import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/user_dao.dart';
 import 'package:crypto/crypto.dart';
+import 'package:moovi/movie/Movie.dart';
 import 'dart:convert';
 
 import 'package:moovi/profile/FriendsListMenu.dart';
@@ -246,6 +247,9 @@ class MainViewModel extends ChangeNotifier{
     final updatedFriendEntity = FriendsEntity(friendEntity!.id!, friendEntity.userOneId, friendEntity.userTwoId, false, 0);
     _friendsDao.deleteFriend(friendEntity);
     _friendsDao.insertFriend(updatedFriendEntity);
+    List<MovieEntity?> existingSharedMovies = await getSharedLikedMovies(currentUser, friendUsername);
+    UserEntity? friendUser = await getUserbyUsername(friendUsername);
+    updateFriendSharedMovieCount(currentUser, friendUser!, existingSharedMovies.length);
   }
 
   Future<void> updateUserClicks(UserEntity user, int clicks) async{

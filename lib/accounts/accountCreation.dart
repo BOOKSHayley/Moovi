@@ -65,7 +65,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                   padding: EdgeInsets.only(top: 20),
                   child: Container(
                     height: 100,
-                    child: Image.asset("assets/MooviCow.png"),
+                    child: Image.asset("assets/CuteYellowCow_transparent.png"),
                   ),
                 ),
                 Form(

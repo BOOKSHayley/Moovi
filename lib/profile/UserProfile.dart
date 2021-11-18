@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
+import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/DatabaseGetter.dart';
 import 'package:moovi/database/database.dart';
@@ -10,7 +11,7 @@ import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/movie/Movie.dart';
-import '../MooviProgressIndicator.dart';
+import '../Theme/MooviProgressIndicator.dart';
 import '../movie/Movie.dart';
 import '../movie/MovieCard.dart';
 
@@ -103,7 +104,7 @@ class UserProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-              height: 175,
+              height: 190,
               decoration: BoxDecoration(
                   border: Border.all(color: Color(0xff353d47), width: 5),
                   gradient: LinearGradient(
@@ -119,75 +120,76 @@ class UserProfile extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
+                      padding: const EdgeInsets.all(0),
+                      child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: CircleAvatar(
-                              radius: 40,
-                              backgroundColor: Colors.black,
-                              child: CircleAvatar(
-                                radius: 38,
-                                backgroundColor: Colors.white,
-                                child: CircleAvatar(
-                                    backgroundColor: Colors.grey[900],
-                                    radius: 36,
-                                    child: Image.asset("assets/CuteYellowCow_transparent.png")
-                                ),
-                              ),
-                            ),
+                            padding: EdgeInsets.only(top: 60),
+                            child: Container(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(15),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: MooviCowProfile(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
 
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      name,
-                                      style: TextStyle(
-                                        shadows: <Shadow>[
-                                          Shadow(
-                                            offset: Offset(3, 3),
-                                            blurRadius: 5,
-                                            color: Color.fromARGB(
-                                                255, 33, 10, 6),
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            name,
+                                            style: TextStyle(
+                                              shadows: <Shadow>[
+                                                Shadow(
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 5,
+                                                  color: Color.fromARGB(
+                                                      255, 33, 10, 6),
+                                                ),
+                                              ],
+                                              color: Colors.white,
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold,
+
+                                            ),
                                           ),
-                                        ],
-                                        color: Colors.white,
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            "@" + username,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22,
+                                              shadows: <Shadow>[
+                                                Shadow(
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 6,
+                                                  color: Color.fromARGB(
+                                                      255, 24, 7, 4),
+                                                ),
+                                              ],
+                                            ),
 
-                                      ),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "@" + username,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 22,
-                                        shadows: <Shadow>[
-                                          Shadow(
-                                            offset: Offset(3, 3),
-                                            blurRadius: 6,
-                                            color: Color.fromARGB(
-                                                255, 24, 7, 4),
                                           ),
-                                        ],
-                                      ),
-
-                                    ),
+                                        ),
+                                      ]
                                   ),
-                                ]
+                                )
+
+                              ],
                             ),
-                          )
+                          ),
 
                         ],
-                      ),
+                      )
+
                     ),
                     Padding(
                       padding: const EdgeInsets.all(40),
