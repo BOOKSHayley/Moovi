@@ -27,7 +27,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
 
   @override
   Widget build(BuildContext context){
-    List<Card> cards = [];
+    List<Container> cards = [];
     return Scaffold(
       body: Center(
           child: Container(
@@ -54,26 +54,43 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
     );
   }
 
-  List<Card> buildMatchedMovieCards(List<MovieEntity?> movies){
-    List<Card> cards = [];
+  //width: 232
+  //height: 343
+
+  List<Container> buildMatchedMovieCards(List<MovieEntity?> movies){
+    List<Container> cards = [];
     if(movies.length == 0){
       cards = [ noMovies() ];
     } else {
       for (int i = 0; i < movies.length; i++) {
         cards.add(
-            Card(
-              child: Container( //ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))
-                child: Image.network(movies[i]!.imageUrl),
-              )
+          Container(
+            width: (MediaQuery.of(context).size.width)/2,
+            height: (MediaQuery.of(context).size.width)/2 * (3/2),
+            child: Card(
+                child: Container(
+                  child: Image.network(movies[i]!.imageUrl),
+                )
             )
+          )
+
         );
       }
     }
     return cards;
   }
 
-  Card noMovies(){
-    return Card(child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),)));
+  Container noMovies(){
+    return Container(
+      child: Card(
+          child: ListTile(
+              title: Text(
+                "No shared movies with " + friendName + " yet. :(",
+                style: TextStyle(fontSize: 20),
+              )
+          )
+      )
+    );
   }
 
 
@@ -285,9 +302,9 @@ class FriendProfile extends StatelessWidget{
           ),
           Expanded(
               child: ListView(
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
                   children: <Widget>[
-                    Row(
+                    Wrap(
                       children: cardList,
                     )
                   ]
