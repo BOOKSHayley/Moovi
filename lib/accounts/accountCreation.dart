@@ -69,7 +69,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: Container(
-                    height: 100,
+                    height: 150,
                     child: Image.asset("assets/CuteYellowCow_transparent.png"),
                   ),
                 ),

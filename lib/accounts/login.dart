@@ -65,7 +65,7 @@ class _MyCustomFormState extends State<LoginPage>{
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: Container(
-                    height: 100,
+                    height: 150,
                     child: Image.asset("assets/CuteYellowCow_transparent.png"),
                   ),
                 ),
@@ -132,7 +132,7 @@ class _MyCustomFormState extends State<LoginPage>{
                               Padding(
                                 padding: EdgeInsets.all(7),
                                 child: InkWell(
-                                  child: Text("Forgot Password?", style: TextStyle(color:Colors.yellow, fontSize: 16),),
+                                  child: Text("Forgot Password?", style: TextStyle(color:Colors.grey[600], fontSize: 16),),
                                 ),
                               ),
 
