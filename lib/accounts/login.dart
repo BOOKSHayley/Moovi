@@ -48,15 +48,22 @@ class _MyCustomFormState extends State<LoginPage>{
           centerTitle: true,
           title: Text("Sign In", style: TextStyle(fontSize: 24),),
         ),
+
         body: SingleChildScrollView(
           reverse: true,
           child: Padding(
-            padding: EdgeInsets.only(bottom: _bottom),
+            padding: EdgeInsets.all(20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                Container(
+                    child: Padding(
+                      padding: EdgeInsets.all(60),
+                    )
+                ),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
+                  padding: EdgeInsets.all(10),
                   child: Container(
                     height: 100,
                     child: Image.asset("assets/MooviCow.png"),
@@ -133,7 +140,19 @@ class _MyCustomFormState extends State<LoginPage>{
                                   width: 150,
                                   height: 60,
                                   child: TextButton(
-                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xfffad13c))),
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(40),
+                                            side: BorderSide(
+                                                color: const Color(0xff3f3f45),
+                                                width: 3,
+                                                style: BorderStyle.solid
+                                            ),
+                                          )
+                                      ),
+                                    ),
                                     child: Align(
                                       alignment: Alignment.center,
 
@@ -162,7 +181,22 @@ class _MyCustomFormState extends State<LoginPage>{
                                   width: 150,
                                   height: 60,
                                   child: TextButton(
-                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.yellow)),
+
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: const Color(0xff3f3f45),
+                                                width: 3,
+                                                style: BorderStyle.solid
+                                            ),
+                                            borderRadius: BorderRadius.circular(40),
+
+                                          )
+                                      ),
+
+                                    ),
                                     child: Align(
                                       alignment: Alignment.center,
 
@@ -170,7 +204,7 @@ class _MyCustomFormState extends State<LoginPage>{
                                         "Sign in",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: Colors.black,
+                                          color: const Color(0xff000000),
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold
                                         ),
