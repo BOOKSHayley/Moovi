@@ -81,7 +81,7 @@ class UserProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-            height: 190,
+            height: 180,
             decoration: BoxDecoration(
               border: Border.all(color: Color(0xff353d47), width: 5),
               gradient: LinearGradient(
@@ -263,14 +263,15 @@ class UserProfile extends StatelessWidget{
               alignment: Alignment.bottomLeft,
               child: Container(
                 child: Text(
-                  'Your liked moves',
-                  style: TextStyle(color: Colors.grey, fontSize: 20),
+                  'Your Liked Movies',
+                  style: TextStyle(color: Colors.grey, fontSize: 22),
                 ),
               ),
             )
           ),
           Expanded(
             child: ListView(
+              padding: EdgeInsets.only(top: 0),
               children: <Widget>[
                 Wrap(
                   children: cardList,

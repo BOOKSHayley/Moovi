@@ -78,11 +78,13 @@ class _MyCustomFormState extends State<LoginPage>{
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
+                        maxLength: 10,
                         decoration: InputDecoration(
                           hintText: "Your username",
                           labelText: "Username",
                           labelStyle: TextStyle(fontSize: 20),
                           errorStyle: TextStyle(fontSize: 16),
+                          counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
                         validator: (username){
@@ -102,11 +104,13 @@ class _MyCustomFormState extends State<LoginPage>{
                         textInputAction: TextInputAction.done,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
+                        maxLength: 20,
                         decoration: InputDecoration(
                           hintText: "Your password",
                           labelText: "Password",
                           labelStyle: TextStyle(fontSize: 20),
                           errorStyle: TextStyle(fontSize: 16),
+                          counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
                         validator: (pass){

@@ -79,6 +79,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                     children: [
                       TextFormField(
                         controller: nameFieldController,
+                        maxLength: 10,
                         style: TextStyle(fontSize: 20),
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
@@ -88,12 +89,14 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                           labelText: "Name",
                           labelStyle: TextStyle(fontSize: 20),
                           errorStyle: TextStyle(fontSize: 16),
+                          counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
                         validator: (name){
                           if(name == null  || name.isEmpty){
                             return "Please enter your name";
                           }else if(name.length > 10){
+                            nameFieldController.clear();
                             return "Name cannot exceed 10 characters";
                           }
                           return null;
@@ -102,6 +105,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                       ),
                       TextFormField(
                         controller: usernameFieldController,
+                        maxLength: 10,
                         style: TextStyle(fontSize: 20),
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
@@ -111,12 +115,14 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                           labelText: "Username",
                           labelStyle: TextStyle(fontSize: 20),
                           errorStyle: TextStyle(fontSize: 16),
+                          counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
                         validator: (username) {
                           if(username == null  || username.isEmpty){
                             return "Please create a username.";
                           }else if(username.length > 10){
+                            usernameFieldController.clear();
                             return "Username must not exceed 10 characters";
                           }
                           return null;
@@ -127,6 +133,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                         obscureText: true,
                         controller: passwordFieldController,
                         style: TextStyle(fontSize: 20),
+                        maxLength: 20,
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
@@ -138,6 +145,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                           helperStyle: TextStyle(fontSize: 16),
                           suffixIcon: Icon(Icons.lock),
                           errorStyle: TextStyle(fontSize: 16),
+                          counterText: "",
                           contentPadding: EdgeInsets.all(10),
                           icon: Icon(Icons.visibility_off),
                         ),
@@ -157,6 +165,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                         obscureText: true,
                         controller: reenterPasswordFieldController,
                         style: TextStyle(fontSize: 20),
+                        maxLength: 20,
                         textInputAction: TextInputAction.done,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
@@ -165,6 +174,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                           labelText: "ReenterPassword",
                           labelStyle: TextStyle(fontSize: 20),
                           errorStyle: TextStyle(fontSize: 16),
+                          counterText: "",
                           contentPadding: EdgeInsets.all(10),
                           icon: Icon(Icons.visibility_off),
                         ),

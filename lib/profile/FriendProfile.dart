@@ -86,7 +86,7 @@ class FriendProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-            height: 190,
+            height: 175,
             decoration: BoxDecoration(
               border: Border.all(color: Color(0xff353d47), width: 5),
               gradient: LinearGradient(
@@ -184,50 +184,80 @@ class FriendProfile extends StatelessWidget{
                   )
 
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(40),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: PopupMenuButton(
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          child: Text("Remove Friend"),
-                          value: 1,
-                        )
-                      ],
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: PopupMenuButton(
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              child: Text("Remove Friend"),
+                              value: 1,
+                            )
+                          ],
 
-                      onSelected: (result) {
-                        if (result == 1) {
-                          mvm.removeFriendFromUser(LoginPage.user, friendUsername);
-                          Navigator.pop(context);
-                        }
+                          onSelected: (result) {
+                            if (result == 1) {
+                              mvm.removeFriendFromUser(LoginPage.user, friendUsername);
+                              Navigator.pop(context);
+                            }
 
-                      },
+                          },
 
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0))
-                      ),
-                      child: Stack(
-                      children: <Widget>[
-                      Positioned(
-                        left: 3,
-                        top: 3,
-                        child: Icon(
-                          Icons.more_vert,
-                          size: 30,
-                          color: Color.fromARGB(255, 151, 85, 39),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(15.0))
+                          ),
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned(
+                                left: 3,
+                                top: 3,
+                                child: Icon(
+                                  Icons.more_vert,
+                                  size: 30,
+                                  color: Color.fromARGB(255, 151, 85, 39),
+                                ),
+                              ),
+                              Icon(
+                                  Icons.more_vert,
+                                  size: 30,
+                                  color: Colors.white
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Icon(
-                          Icons.more_vert,
-                          size: 30,
-                          color: Colors.white
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: Container(
+                        // color: Colors.grey[900],
+                        decoration: BoxDecoration(
+                          color: Colors.grey[900],
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(3),
+                              child: Image.asset("assets/Popcorn_transparent.png", width: 40, height: 40,),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 3, right: 15),
+                              child: Text(
+                                _numSharedMovies.toString(),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                            )
+                          ],
+                        ),
                       ),
-                      ],
                     ),
-                    ),
-                  ),
-                )
+                  ],
+                ),
+
               ]
             )
           ),
@@ -237,7 +267,7 @@ class FriendProfile extends StatelessWidget{
               alignment: Alignment.bottomLeft,
               child: Container(
                 child: Text(
-                  "You've got " + _numSharedMovies.toString() + ' shared movies with this user!',
+                  _numSharedMovies.toString() + ' Shared Movies With ' + name,
                   style: TextStyle(color: Colors.grey, fontSize: 20),
                 ),
               ),
@@ -245,6 +275,7 @@ class FriendProfile extends StatelessWidget{
           ),
           Expanded(
             child: ListView(
+              padding: EdgeInsets.only(top: 0),
               scrollDirection: Axis.vertical,
                 children: <Widget>[
                   Wrap(

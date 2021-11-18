@@ -38,11 +38,15 @@ class _MyCustomFormState extends State<AddFriend>{
         title: Text('Add a Friend', style: TextStyle(fontSize: 24),),
         content: TextField(
           onChanged: (value) { },
+          maxLength: 10,
           controller: usernameFieldController,
           style: TextStyle(fontSize: 18),
+          cursorColor: Colors.yellowAccent,
+          cursorWidth: 3,
           decoration: InputDecoration(
             hintText: "Enter your friend's username",
-            hintStyle: TextStyle(fontSize: 18)
+            hintStyle: TextStyle(fontSize: 18),
+            counterText: "",
           ),
         ),
         actions: <Widget>[
@@ -68,10 +72,10 @@ class _MyCustomFormState extends State<AddFriend>{
                         usernameFieldController.clear();
                         UserEntity? exists = await widget.mvm.getUserbyUsername(friendUsername);
                         if(exists != null){
-                          errorFieldController.text = "You've already added this person as a friend.";
+                          errorFieldController.text = "Already Added.";
                           setState(() { _hasError = true; });
                         } else{
-                          errorFieldController.text = "Invalid username.";
+                          errorFieldController.text = "Invalid Username.";
                           setState(() { _hasError = true; });
                         }
                       }
