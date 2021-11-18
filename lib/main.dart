@@ -1,11 +1,5 @@
-import 'dart:async';
-
-import 'package:bottom_indicator_bar/bottom_indicator_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:moovi/database/database.dart';
-import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/profile/FriendsListMenu.dart';
-import 'package:moovi/movie/Movie.dart';
 import 'accounts/login.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
@@ -20,32 +14,11 @@ void main() async {
   final _database = await DatabaseGetter.instance.database;
   final MainViewModel mvm = MainViewModel(_database);
 
-  //TODO: Clean up main.dart
-  //Get rid of database stuff
-  //Move the Material App stuff so only the ref to Login is here. Move rest into another dart file
   runApp(MaterialApp(home: LoginPage(_database, mvm),
     debugShowCheckedModeBanner: false,
     theme: CustomTheme.darkTheme,
   )
   );
-
-
-  //IF YOU ARE RUNNING FOR FIRST TIME:
-  //1. COMMENT OUT THE RUN APP METHOD
-  //2. UNCOMMENT LINES BELOW. RUN, WAIT FOR PRINT STATEMENTS, STOP, COMMENT LINES AGAIN
-
-   //await mvm.clearAllTables();
-   //print("Cleared t");
-
-  //UNNECESSARY
-  //await mvm.addUser("Hayley", "H1");
-  // await mvm.addUser("Karley", "K1");
-  // await mvm.addUser("Aliza", "A1");
-  // print("Added users ");
-  // await mvm.addMovie("2001: A Space Odyssey","https://m.media-amazon.com/images/M/MV5BMmNlYzRiNDctZWNhMi00MzI4LThkZTctMTUzMmZkMmFmNThmXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX67_CR0,0,67,98_AL_.jpg","G",8.3,"149 min","Adventure, Sci-Fi", 0000,"Netflix", "After discovering a mysterious artifact buried beneath the Lunar surface, mankind sets off on a quest to find its origins with help from intelligent supercomputer H.A.L. 9000.");
-  // await mvm.addMovie("Howl's Moving Castle","https://i.pinimg.com/originals/7e/1a/a0/7e1aa0c598af420ad528a3fd8dabdc1a.jpg","PG",8.2,"119 min","Animation, Adventure, Family",0000,"Netflix", "When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.");
-  // await mvm.addMovie("The SpongeBob Movie: Sponge out of Water", "https://m.media-amazon.com/images/I/91dT8udHqNL._SL1500_.jpg", "PG", 10, "Never", "Animation, Family",0000,"Netflix", "IDK Stupid Spongebob");
-  // print("Added movies");
 
 }
 
@@ -78,8 +51,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   bool fantasyChecked = false; bool horrorChecked = false; bool romanceChecked = false; bool scifiChecked = false; bool thrillerChecked = false;
   int _selectedIndex = 1;
   late List<Widget> _widgetOptions;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  // static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   _MenusStatefulWidgetState(this.db) {
 
@@ -99,135 +71,131 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer:  Drawer(
-          child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            Container(
-              height: 100,
-              child:  DrawerHeader(child:
-              Text("Filter by:",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)
-              )
-              ),
+        child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          Container(
+            height: 100,
+            child:  DrawerHeader(child:
+            Text("Filter by:",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)
+            )
             ),
-            CheckboxListTile(
-                title: Text("Action"),
-              value: actionChecked,
-                onChanged: (value){
-                  setState(() {
-                    actionChecked = value!;
-                    setGenres(value, "Action");
-                  });
-                },
-            ),
-
-            CheckboxListTile(
-              title: Text("Adventure"),
-              value: adventureChecked,
+          ),
+          CheckboxListTile(
+              title: Text("Action"),
+            value: actionChecked,
               onChanged: (value){
                 setState(() {
-                  adventureChecked = value!;
-                  setGenres(value, "Adventure");
+                  actionChecked = value!;
+                  setGenres(value, "Action");
                 });
               },
-            ),
+          ),
 
-            CheckboxListTile(
-              title: Text("Comedy"),
-              value: comedyChecked,
-              onChanged: (value){
-                setState(() {
-                  comedyChecked = value!;
-                  setGenres(value, "Comedy");
-                });
-              },
-            ),
+          CheckboxListTile(
+            title: Text("Adventure"),
+            value: adventureChecked,
+            onChanged: (value){
+              setState(() {
+                adventureChecked = value!;
+                setGenres(value, "Adventure");
+              });
+            },
+          ),
 
-            CheckboxListTile(
-              title: Text("Crime"),
-              value: crimeChecked,
-              onChanged: (value){
-                setState(() {
-                  crimeChecked = value!;
-                  setGenres(value, "Crime");
-                });
-              },
-            ),
+          CheckboxListTile(
+            title: Text("Comedy"),
+            value: comedyChecked,
+            onChanged: (value){
+              setState(() {
+                comedyChecked = value!;
+                setGenres(value, "Comedy");
+              });
+            },
+          ),
 
-            CheckboxListTile(
-                title: Text("Drama"),
-              value: dramaChecked,
-              onChanged: (value){
-                setState(() {
-                  dramaChecked = value!;
-                  setGenres(value, "Drama");
-                });
-              },
-            ),
+          CheckboxListTile(
+            title: Text("Crime"),
+            value: crimeChecked,
+            onChanged: (value){
+              setState(() {
+                crimeChecked = value!;
+                setGenres(value, "Crime");
+              });
+            },
+          ),
 
-            CheckboxListTile(
-                title: Text("Fantasy"),
-              value: fantasyChecked,
-              onChanged: (value){
-                setState(() {
-                  fantasyChecked = value!;
-                  setGenres(value, "Fantasy");
-                });
-              },
-            ),
+          CheckboxListTile(
+              title: Text("Drama"),
+            value: dramaChecked,
+            onChanged: (value){
+              setState(() {
+                dramaChecked = value!;
+                setGenres(value, "Drama");
+              });
+            },
+          ),
 
-            CheckboxListTile(
-                title: Text("Horror"),
-              value: horrorChecked,
-              onChanged: (value){
-                setState(() {
-                  horrorChecked = value!;
-                  setGenres(value, "Horror");
-                });
-              },
-            ),
+          CheckboxListTile(
+              title: Text("Fantasy"),
+            value: fantasyChecked,
+            onChanged: (value){
+              setState(() {
+                fantasyChecked = value!;
+                setGenres(value, "Fantasy");
+              });
+            },
+          ),
 
-            CheckboxListTile(
-                title: Text("Romance"),
-              value: romanceChecked,
-              onChanged: (value){
-                setState(() {
-                  romanceChecked = value!;
-                  setGenres(value, "Romance");
-                });
-              },
-            ),
+          CheckboxListTile(
+              title: Text("Horror"),
+            value: horrorChecked,
+            onChanged: (value){
+              setState(() {
+                horrorChecked = value!;
+                setGenres(value, "Horror");
+              });
+            },
+          ),
 
-            CheckboxListTile(
-                title: Text("Sci-Fi"),
-              value: scifiChecked,
-              onChanged: (value){
-                setState(() {
-                  scifiChecked = value!;
-                  setGenres(value, "Sci-Fi");
-                });
-              },
-            ),
+          CheckboxListTile(
+              title: Text("Romance"),
+            value: romanceChecked,
+            onChanged: (value){
+              setState(() {
+                romanceChecked = value!;
+                setGenres(value, "Romance");
+              });
+            },
+          ),
 
-            CheckboxListTile(
-                title: Text("Thriller"),
-              value: thrillerChecked,
-              onChanged: (value){
-                setState(() {
-                  thrillerChecked = value!;
-                  setGenres(value, "Thriller");
-                });
-              },
-            ),
+          CheckboxListTile(
+              title: Text("Sci-Fi"),
+            value: scifiChecked,
+            onChanged: (value){
+              setState(() {
+                scifiChecked = value!;
+                setGenres(value, "Sci-Fi");
+              });
+            },
+          ),
 
-          ]
-        )
+          CheckboxListTile(
+              title: Text("Thriller"),
+            value: thrillerChecked,
+            onChanged: (value){
+              setState(() {
+                thrillerChecked = value!;
+                setGenres(value, "Thriller");
+              });
+            },
+          ),
+        ])
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex)
-
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xff2a3038),
         // showSelectedLabels: false,
@@ -235,12 +203,10 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-                Icons.account_box,
-                size: 30,
-
+              Icons.account_box,
+              size: 30,
             ),
             label: "Profile",
-
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -267,8 +233,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   }
 
   Widget showIndicator(bool show) {
-    return show
-        ? Padding(
+    return show ? Padding(
       padding: const EdgeInsets.only(top: 4),
       child: Icon(Icons.brightness_1, size: 10, color: Colors.orange),
     )
@@ -288,8 +253,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         MenusStatefulWidget.genres.add("");
       }
     }
-
-    print(MenusStatefulWidget.genres[0]);
+    // print(MenusStatefulWidget.genres[0]);
   }
 }
 

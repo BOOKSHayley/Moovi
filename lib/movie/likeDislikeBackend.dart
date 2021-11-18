@@ -28,7 +28,6 @@ void onDislikeClicked(UserEntity user, MovieEntity movie) async{
   dislikedMovies.add(movie);
   mvm.removePersonalQueueMovie(user, movie);
   mvm.updateUserClicks(user, 1);
-  // mvm.lowerPersonalQueueMoviePriority(username, movie);
 }
 
 

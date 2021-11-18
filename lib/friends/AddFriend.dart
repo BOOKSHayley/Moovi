@@ -33,71 +33,66 @@ class _MyCustomFormState extends State<AddFriend>{
   Widget build(BuildContext context){
 
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: AlertDialog(
-          title: Text('Add a Friend', style: TextStyle(fontSize: 24),),
-          content: TextField(
-            onChanged: (value) { },
-            controller: usernameFieldController,
-            style: TextStyle(fontSize: 18),
-            decoration: InputDecoration(
-              hintText: "Enter your friend's username",
-              hintStyle: TextStyle(fontSize: 18)
-            ),
+      backgroundColor: Colors.transparent,
+      body: AlertDialog(
+        title: Text('Add a Friend', style: TextStyle(fontSize: 24),),
+        content: TextField(
+          onChanged: (value) { },
+          controller: usernameFieldController,
+          style: TextStyle(fontSize: 18),
+          decoration: InputDecoration(
+            hintText: "Enter your friend's username",
+            hintStyle: TextStyle(fontSize: 18)
           ),
-          actions: <Widget>[
-            Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    TextButton(
-                      child: const Text('Cancel', style: TextStyle(color: Colors.yellow, fontSize: 18, fontWeight: FontWeight.w300),),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: const Text('Add', style: TextStyle(color: Colors.yellow, fontSize: 18, fontWeight: FontWeight.w300),),
-                      onPressed: () async {
-                        String friendUsername = usernameFieldController.text;
-                        bool successful = await widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
-                        if(successful) {
-                          Navigator.of(context).pop();
-                        } else{
-                          usernameFieldController.clear();
-                          UserEntity? exists = await widget.mvm.getUserbyUsername(friendUsername);
-                          if(exists != null){
-                            errorFieldController.text = "You've already added this person as a friend.";
-                            setState(() { _hasError = true; });
-                          } else{
-                            errorFieldController.text = "Invalid username.";
-                            setState(() { _hasError = true; });
-                          }
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                Visibility(
-                  visible: _hasError,
-                  child: TextField(
-                    controller: errorFieldController,
-                    readOnly: true,
-                    style: TextStyle(color: Colors.red, fontSize: 18),
+        ),
+        actions: <Widget>[
+          Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  TextButton(
+                    child: const Text('Cancel', style: TextStyle(color: Colors.yellow, fontSize: 18, fontWeight: FontWeight.w300),),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
+                  TextButton(
+                    child: const Text('Add', style: TextStyle(color: Colors.yellow, fontSize: 18, fontWeight: FontWeight.w300),),
+                    onPressed: () async {
+                      String friendUsername = usernameFieldController.text;
+                      bool successful = await widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
+                      if(successful) {
+                        Navigator.of(context).pop();
+                      } else{
+                        usernameFieldController.clear();
+                        UserEntity? exists = await widget.mvm.getUserbyUsername(friendUsername);
+                        if(exists != null){
+                          errorFieldController.text = "You've already added this person as a friend.";
+                          setState(() { _hasError = true; });
+                        } else{
+                          errorFieldController.text = "Invalid username.";
+                          setState(() { _hasError = true; });
+                        }
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Visibility(
+                visible: _hasError,
+                child: TextField(
+                  controller: errorFieldController,
+                  readOnly: true,
+                  style: TextStyle(color: Colors.red, fontSize: 18),
                 ),
-              ],
-            ),
-
-
-
-
-          ],
-        )
+              ),
+            ],
+          ),
+        ],
+      )
     );
-
-
+    
   }
 
 

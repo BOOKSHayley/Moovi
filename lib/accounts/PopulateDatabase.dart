@@ -7,14 +7,14 @@ class PopulateDatabase{
 
   //Ugly fix but works for now bc db is local
   static void populateDb(MainViewModel mvm) async{
-      List<MovieEntity?> movies = await mvm.getAllMovies();
-      if(movies.length < 100){
-          _populateHelper(mvm);
-      } else if (movies.length > 110){
-        print("Added movies more than once :(");
-        await mvm.clearMovieTable();
+    List<MovieEntity?> movies = await mvm.getAllMovies();
+    if(movies.length < 100){
         _populateHelper(mvm);
-      }
+    } else if (movies.length > 110){
+      print("Added movies more than once :(");
+      await mvm.clearMovieTable();
+      _populateHelper(mvm);
+    }
   }
 
   static void _populateHelper(MainViewModel mvm){

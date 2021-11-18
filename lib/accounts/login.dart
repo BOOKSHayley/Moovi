@@ -8,8 +8,7 @@ import 'accountCreation.dart';
 
 class LoginPage extends StatefulWidget{
 
-  // static late String username;
-  static late UserEntity user; //will hold the userEntity of the currently logged in user
+  static late UserEntity user;
 
   final db;
   final MainViewModel mvm;
@@ -52,15 +51,15 @@ class _MyCustomFormState extends State<LoginPage>{
         body: SingleChildScrollView(
           reverse: true,
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.only(left:20, right: 20, bottom: _bottom),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(60),
-                    )
+                  child: Padding(
+                    padding: EdgeInsets.all(30),
+                  )
                 ),
                 Padding(
                   padding: EdgeInsets.all(10),
@@ -70,196 +69,185 @@ class _MyCustomFormState extends State<LoginPage>{
                   ),
                 ),
                 Form(
-                    key: _formKey,
-                    child: Column(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: usernameFieldController,
+                        style: TextStyle(fontSize: 20),
+                        textInputAction: TextInputAction.next,
+                        cursorColor: Colors.yellowAccent,
+                        cursorWidth: 3,
+                        decoration: InputDecoration(
+                          hintText: "Your username",
+                          labelText: "Username",
+                          labelStyle: TextStyle(fontSize: 20),
+                          errorStyle: TextStyle(fontSize: 16),
+                          contentPadding: EdgeInsets.all(10),
+                        ),
+                        validator: (username){
+                          if(username == null  || username.isEmpty){
+                            usernameFieldController.clear();
+                            passwordFieldController.clear();
+                            return "Please enter your username.";
+                          }
+                          return null;
+                        },
+                        onSaved: (_username) => username = _username!,
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        controller: passwordFieldController,
+                        style: TextStyle(fontSize: 20),
+                        textInputAction: TextInputAction.done,
+                        cursorColor: Colors.yellowAccent,
+                        cursorWidth: 3,
+                        decoration: InputDecoration(
+                          hintText: "Your password",
+                          labelText: "Password",
+                          labelStyle: TextStyle(fontSize: 20),
+                          errorStyle: TextStyle(fontSize: 16),
+                          contentPadding: EdgeInsets.all(10),
+                        ),
+                        validator: (pass){
+                          if(pass == null  || pass.isEmpty){
+                            passwordFieldController.clear();
+                            return "Please enter your password.";
+                          }
+                          return null;
+                        },
+                        onSaved: (pass) => password = pass!,
+                      ),
+                      Visibility(
+                        child: TextField(
+                          controller: errorFieldController,
+                          readOnly: true,
+                          style: TextStyle(color: Colors.red, fontSize: 20),
+                        ),
+                        visible: _hasError,
+                      ),
+                      Row(
                         children: [
-                          TextFormField(
-                            controller: usernameFieldController,
-                            style: TextStyle(fontSize: 20),
-                            textInputAction: TextInputAction.next,
-                            cursorColor: Colors.yellowAccent,
-                            cursorWidth: 3,
-                            decoration: InputDecoration(
-                              hintText: "Your username",
-                              labelText: "Username",
-                              labelStyle: TextStyle(fontSize: 20),
-                              errorStyle: TextStyle(fontSize: 16),
-                              contentPadding: EdgeInsets.all(10),
+                          Padding(
+                            padding: EdgeInsets.all(7),
+                            child: InkWell(
+                              child: Text("Forgot Password?", style: TextStyle(color:Colors.grey[600], fontSize: 16),),
                             ),
-                            validator: (username){
-                              if(username == null  || username.isEmpty){
-                                usernameFieldController.clear();
-                                passwordFieldController.clear();
-                                return "Please enter your username.";
-                              }
-                              return null;
-                            },
-                            onSaved: (_username) => username = _username!,
                           ),
-                          TextFormField(
-                            obscureText: true,
-                            controller: passwordFieldController,
-                            style: TextStyle(fontSize: 20),
-                            textInputAction: TextInputAction.done,
-                            cursorColor: Colors.yellowAccent,
-                            cursorWidth: 3,
-                            decoration: InputDecoration(
-                              hintText: "Your password",
-                              labelText: "Password",
-                              labelStyle: TextStyle(fontSize: 20),
-                              errorStyle: TextStyle(fontSize: 16),
-                              contentPadding: EdgeInsets.all(10),
-                            ),
-                            validator: (pass){
-                              if(pass == null  || pass.isEmpty){
-                                passwordFieldController.clear();
-                                return "Please enter your password.";
-                              }
-                              return null;
-                            },
-                            onSaved: (pass) => password = pass!,
+
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 30),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget> [
+                          Padding(
+                            padding: EdgeInsets.all(5),
                           ),
-                          Visibility(
-                            child: TextField(
-                              controller: errorFieldController,
-                              readOnly: true,
-                              style: TextStyle(color: Colors.red, fontSize: 20),
-                            ),
-                            visible: _hasError,
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(7),
-                                child: InkWell(
-                                  child: Text("Forgot Password?", style: TextStyle(color:Colors.grey[600], fontSize: 16),),
+                          SizedBox(
+                            width: 150,
+                            height: 60,
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                    side: BorderSide(
+                                      color: const Color(0xff3f3f45),
+                                      width: 3,
+                                      style: BorderStyle.solid
+                                    ),
+                                  )
                                 ),
                               ),
-
-                            ],
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "No Account?\nSign up!",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800
+                                  ),
+                                ),
+                              ),
+                              onPressed: (){
+                                Navigator.push(context, new MaterialPageRoute(
+                                    builder: (context) => AccountCreationPage(widget.db, widget.mvm)
+                                ));
+                              },
+                            ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(bottom: 30),
+                            padding: EdgeInsets.all(5),
                           ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget> [
-                                Padding(
-                                  padding: EdgeInsets.all(5),
+                          SizedBox(
+                            width: 150,
+                            height: 60,
+                            child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      color: const Color(0xff3f3f45),
+                                      width: 3,
+                                      style: BorderStyle.solid
+                                    ),
+                                    borderRadius: BorderRadius.circular(40),
+                                  )
                                 ),
-                                SizedBox(
-                                  width: 150,
-                                  height: 60,
-                                  child: TextButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(Colors.yellow),
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(40),
-                                            side: BorderSide(
-                                                color: const Color(0xff3f3f45),
-                                                width: 3,
-                                                style: BorderStyle.solid
-                                            ),
-                                          )
-                                      ),
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-
-                                      child: Text(
-                                        "No Account?\nSign up!",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: (){
-                                      Navigator.push(context, new MaterialPageRoute(
-                                          builder: (context) => AccountCreationPage(widget.db, widget.mvm)
-                                      ));
-                                    },
-
+                              ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Sign in",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: const Color(0xff000000),
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.all(5),
-                                ),
-                                SizedBox(
-                                  width: 150,
-                                  height: 60,
-                                  child: TextButton(
+                              ),
+                              onPressed: () async{
+                                errorFieldController.clear();
 
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all(Colors.yellow),
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            side: BorderSide(
-                                                color: const Color(0xff3f3f45),
-                                                width: 3,
-                                                style: BorderStyle.solid
-                                            ),
-                                            borderRadius: BorderRadius.circular(40),
+                                if(_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  UserEntity? user = await widget.mvm.
+                                  getUserbyUsernameAndPass(username, password);
 
-                                          )
-                                      ),
-
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-
-                                      child: Text(
-                                        "Sign in",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: const Color(0xff000000),
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: () async{
-                                      errorFieldController.clear();
-
-                                      if(_formKey.currentState!.validate()) {
-                                        _formKey.currentState!.save();
-                                        UserEntity? user = await widget.mvm.
-                                        getUserbyUsernameAndPass(username, password);
-
-                                        if (user == null) {
-                                          usernameFieldController.clear();
-                                          passwordFieldController.clear();
-                                          setState(() { _hasError = true; });
-                                          errorFieldController.text = "Your username or password was incorrect.";
-                                        } else {
-                                          LoginPage.user = user;
-                                          Navigator.push(context, new MaterialPageRoute(
-                                              builder: (context) => MyApp(widget.db)
-                                          ));
-                                        }
-
-                                      }
-
-                                    },
-
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(5),
-                                ),
-                              ]
-                          )
-
+                                  if (user == null) {
+                                    usernameFieldController.clear();
+                                    passwordFieldController.clear();
+                                    setState(() { _hasError = true; });
+                                    errorFieldController.text = "Your username or password was incorrect.";
+                                  } else {
+                                    LoginPage.user = user;
+                                    Navigator.push(context, new MaterialPageRoute(
+                                        builder: (context) => MyApp(widget.db)
+                                    ));
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                          ),
                         ]
-                    )),
+                      )
+                    ]
+                  )),
               ],
             )
           ),
         )
-
     );
   }
 

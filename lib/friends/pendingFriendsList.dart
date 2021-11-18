@@ -31,11 +31,11 @@ class _PendingFriendsList extends State<PendingFriendsList>{
      return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: const Icon(Icons.arrow_left_rounded, size: 45),
-              tooltip: 'Go Back to Friends List',
-              onPressed: (){
-                Navigator.pop(context);
-              },
+            icon: const Icon(Icons.arrow_left_rounded, size: 45),
+            tooltip: 'Go Back to Friends List',
+            onPressed: (){
+              Navigator.pop(context);
+            },
           ),
           actions: [
             IconButton(

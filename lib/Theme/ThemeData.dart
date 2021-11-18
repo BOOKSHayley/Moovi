@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 
 class CustomTheme {
   static ThemeData get darkTheme {
     //1
     return ThemeData( //2
-        primaryColor: const Color(0xff2a3038),
-        primarySwatch: customPalette.coolGrey,
-        canvasColor: const Color(0xff2a3038),
-        cardColor: const Color(0xff2a2e33),
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xff1a1d21),
-        fontFamily: 'Montserrat',
-        //3
-        textTheme: ThemeData
-            .dark()
-            .textTheme,
-        buttonTheme: ButtonThemeData( // 4
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0)),
-          buttonColor: Colors.yellow,
-        )
+      primaryColor: const Color(0xff2a3038),
+      primarySwatch: customPalette.coolGrey,
+      canvasColor: const Color(0xff2a3038),
+      cardColor: const Color(0xff2a2e33),
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: const Color(0xff1a1d21),
+      fontFamily: 'Montserrat',
+      //3
+      textTheme: ThemeData.dark().textTheme,
+      buttonTheme: ButtonThemeData( // 4
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0)),
+        buttonColor: Colors.yellow,
+      )
     );
   }
 

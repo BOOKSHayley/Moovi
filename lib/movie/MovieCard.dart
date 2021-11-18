@@ -20,99 +20,99 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Swipable(
       child: FlipCard(
-          fill: Fill.fillBack,
-          direction: FlipDirection.HORIZONTAL,
-          front: Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    movie.title,
-                          //m.title, ******************************************************
-                    style: TextStyle(fontSize: 30)
-                  ),
-                  alignment: Alignment.topLeft,
-                  padding: EdgeInsets.all(20.0)
+        fill: Fill.fillBack,
+        direction: FlipDirection.HORIZONTAL,
+        front: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: Text(
+                  movie.title,
+                        //m.title, ******************************************************
+                  style: TextStyle(fontSize: 30)
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 30.0),
-                    child: Container(
-                      child: Image.network(
-                        movie.imageUrl,
-                        //m.imageUrl, **************************************************
-                        fit: BoxFit.fitHeight
-                      ),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0))
-                    )
-                  ),
-                )
-              ],
-            ),
-            constraints: BoxConstraints.expand(),
-            margin: EdgeInsets.only(top: 40.0),
-            decoration: BoxDecoration(
-              color: Colors.indigo[300],
-              borderRadius: BorderRadius.circular(16.0)
-            )
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(20.0)
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 30.0),
+                  child: Container(
+                    child: Image.network(
+                      movie.imageUrl,
+                      //m.imageUrl, **************************************************
+                      fit: BoxFit.fitHeight
+                    ),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0))
+                  )
+                ),
+              )
+            ],
           ),
-          back: Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    movie.title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold
-                    )
+          constraints: BoxConstraints.expand(),
+          margin: EdgeInsets.only(top: 40.0),
+          decoration: BoxDecoration(
+            color: Colors.indigo[300],
+            borderRadius: BorderRadius.circular(16.0)
+          )
+        ),
+        back: Container(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: Text(
+                  movie.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold
                   )
-                ),
-                Text(
-                  movie.year.toString(),
-                  style: TextStyle(fontSize: 18)
-                ),
+                )
+              ),
+              Text(
+                movie.year.toString(),
+                style: TextStyle(fontSize: 18)
+              ),
 
-                Padding(padding: EdgeInsets.only(left: 20, right: 20), child: Divider(color: Colors.white)),
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Rated " + movie.mpaa + " | " + movie.runtime,
-                    style: TextStyle(fontSize: 25)
-                  )
-                ),
-                Padding(padding: EdgeInsets.only(top: 10, left: 20, right: 20), child: Text("IMDB Rating: " + movie.imdb.toString() + "/10", style: TextStyle(fontSize: 25))),
+              Padding(padding: EdgeInsets.only(left: 20, right: 20), child: Divider(color: Colors.white)),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(
+                  "Rated " + movie.mpaa + " | " + movie.runtime,
+                  style: TextStyle(fontSize: 25)
+                )
+              ),
+              Padding(padding: EdgeInsets.only(top: 10, left: 20, right: 20), child: Text("IMDB Rating: " + movie.imdb.toString() + "/10", style: TextStyle(fontSize: 25))),
 
-                Padding(
-                  padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                  child: Text(
-                    movie.genres,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25)
-                  )
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                  child: Text(movie.synopsis,
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                child: Text(
+                  movie.genres,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25)
-                  )
-                ),
-                Padding(padding: EdgeInsets.only(top: 10, left: 20, right: 20), child: Text(
-                    "Available on: " + movie.streamingService,
-                    style: TextStyle(fontSize: 25)
-                ))
-              ],
-            ),
-            constraints: BoxConstraints.expand(),
-            margin: EdgeInsets.only(top: 40.0),
-            decoration: BoxDecoration(
-              color: Colors.indigo[300],
-              borderRadius: BorderRadius.circular(16.0)
-            )
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                child: Text(movie.synopsis,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25)
+                )
+              ),
+              Padding(padding: EdgeInsets.only(top: 10, left: 20, right: 20), child: Text(
+                  "Available on: " + movie.streamingService,
+                  style: TextStyle(fontSize: 25)
+              ))
+            ],
+          ),
+          constraints: BoxConstraints.expand(),
+          margin: EdgeInsets.only(top: 40.0),
+          decoration: BoxDecoration(
+            color: Colors.indigo[300],
+            borderRadius: BorderRadius.circular(16.0)
           )
+        )
       ),
       verticalSwipe: false,
 
