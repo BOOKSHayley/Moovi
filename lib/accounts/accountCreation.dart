@@ -152,6 +152,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                             obscureText: true,
                             controller: reenterPasswordFieldController,
                             style: TextStyle(fontSize: 20),
+                            textInputAction: TextInputAction.done,
                             cursorColor: Colors.yellowAccent,
                             cursorWidth: 3,
                             decoration: InputDecoration(

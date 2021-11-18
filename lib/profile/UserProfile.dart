@@ -133,7 +133,7 @@ class UserProfile extends StatelessWidget{
                                 child: CircleAvatar(
                                     backgroundColor: Colors.grey[900],
                                     radius: 36,
-                                    child: Image.asset("assets/MooviCow.png")
+                                    child: Image.asset("assets/CuteYellowCow_transparent.png")
                                 ),
                               ),
                             ),

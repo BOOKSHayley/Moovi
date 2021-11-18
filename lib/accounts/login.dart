@@ -93,7 +93,7 @@ class _MyCustomFormState extends State<LoginPage>{
                             obscureText: true,
                             controller: passwordFieldController,
                             style: TextStyle(fontSize: 20),
-                            textInputAction: TextInputAction.next,
+                            textInputAction: TextInputAction.done,
                             cursorColor: Colors.yellowAccent,
                             cursorWidth: 3,
                             decoration: InputDecoration(
@@ -119,6 +119,14 @@ class _MyCustomFormState extends State<LoginPage>{
                               style: TextStyle(color: Colors.red, fontSize: 20),
                             ),
                             visible: _hasError,
+                          ),
+                          Row(
+                            children: [
+                              Padding(padding: EdgeInsets.all(7)),
+                              InkWell(
+                                child: Text("Forgot Password?", style: TextStyle(color:Colors.yellow, fontSize: 16),),
+                              )
+                            ],
                           ),
                           Padding(
                             padding: EdgeInsets.only(bottom: 30),

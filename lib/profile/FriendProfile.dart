@@ -62,8 +62,52 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
       for (int i = 0; i < movies.length; i++) {
         cards.add(
             Card(
-              child: Container( //ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))
-                child: Image.network(movies[i]!.imageUrl),
+              child: InkWell(
+                child: Container( //ListTile(title: Text(movies[i]!.title, style: TextStyle(fontSize: 20)))
+                    child: FadeInImage.assetNetwork(
+                      placeholder: "assets/MooviCow.png",
+                      image: movies[i]!.imageUrl,
+                    )
+                ),
+                onTap: (){
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context){
+                        return Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Movie Information:", style: TextStyle(fontSize: 26),),
+                                ],
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: ListView(
+                                    children: <Widget>[
+                                      Divider(thickness: 4,),
+                                      movieLines("Title", movies[i]!.title),
+                                      movieLines("Year", movies[i]!.year.toString()),
+                                      movieLines("Rated", movies[i]!.mpaa),
+                                      movieLines("Runtime", movies[i]!.runtime),
+                                      movieLines("IMDB Rating", movies[i]!.imdb.toString() + "/10"),
+                                      movieLines("Genres", movies[i]!.genres),
+                                      movieLines("Synopsis", movies[i]!.synopsis),
+                                      movieLines("Available on", movies[i]!.streamingService),
+                                      ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                  );
+                },
               )
             )
         );
@@ -71,6 +115,23 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
     }
     return cards;
   }
+
+  Wrap movieLines(String firstText, String secondText){
+    return Wrap(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Text(firstText + ":  ", style: TextStyle(fontSize: 25, color: Colors.yellow),),
+        ),
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Text(secondText, style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
+        ),
+        Divider()
+      ],
+    );
+  }
+
 
   Card noMovies(){
     return Card(child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),)));
