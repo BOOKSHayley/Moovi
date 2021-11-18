@@ -61,10 +61,15 @@ class _MyCustomFormState extends State<AccountCreationPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Container(
+                  child: Padding(
+                    padding: EdgeInsets.all(60),
+                  )
+                ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.all(10),
                   child: Container(
-                    height: 100,
+                    height: 150,
                     child: Image.asset("assets/CuteYellowCow_transparent.png"),
                   ),
                 ),
@@ -189,49 +194,67 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                           SizedBox(
                             width: 200,
                             height: 50,
-                            child: TextButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(
-                                  Colors.yellow)),
-                              child: Align(
-                                alignment: Alignment.center,
+                            child: Container(
 
-                                child: Text(
-                                  "Sign up",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold
+                              child: TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                        side: BorderSide(
+                                            color: const Color(0xff40454b),
+                                            width: 3,
+                                            style: BorderStyle.solid
+                                        ),
+
+                                      )
                                   ),
                                 ),
-                              ),
-                              onPressed: () async{
-                                errorFieldController.clear();
+                                child: Align(
+                                  alignment: Alignment.center,
 
-                                if(_formKey.currentState!.validate()){
-                                  _formKey.currentState!.save();
-                                  bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
-                                  if(userAdded) {
-                                    PopulateDatabase.populateDb(widget.mvm);
-                                    nameFieldController.clear();
-                                    usernameFieldController.clear();
-                                    passwordFieldController.clear();
-                                    reenterPasswordFieldController.clear();
-                                    Navigator.push(context, new MaterialPageRoute(
-                                        builder: (context) =>
-                                            LoginPage(widget.db, widget.mvm)
-                                    ));
-                                  } else{
-                                    usernameFieldController.clear();
-                                    reenterPasswordFieldController.clear();
-                                    passwordFieldController.clear();
-                                    setState(() { _hasError = true; });
-                                    errorFieldController.text = "Username already taken";
+                                  child: Text(
+                                    "Sign up",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () async{
+                                  errorFieldController.clear();
+
+                                  if(_formKey.currentState!.validate()){
+                                    _formKey.currentState!.save();
+                                    bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
+                                    if(userAdded) {
+                                      PopulateDatabase.populateDb(widget.mvm);
+                                      nameFieldController.clear();
+                                      usernameFieldController.clear();
+                                      passwordFieldController.clear();
+                                      reenterPasswordFieldController.clear();
+                                      Navigator.push(context, new MaterialPageRoute(
+                                          builder: (context) =>
+                                              LoginPage(widget.db, widget.mvm)
+                                      ));
+                                    } else{
+                                      usernameFieldController.clear();
+                                      reenterPasswordFieldController.clear();
+                                      passwordFieldController.clear();
+                                      setState(() { _hasError = true; });
+                                      errorFieldController.text = "Username already taken";
+                                    }
                                   }
-                                }
-                              },
+                                },
 
-                            ),
+                              ),
+
+
+                            )
+
                           )
                         ]
                     ))
