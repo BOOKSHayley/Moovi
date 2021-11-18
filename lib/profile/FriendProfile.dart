@@ -1,10 +1,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
-
 import '../Theme/MooviProgressIndicator.dart';
 
 class FriendMatchedCard extends StatefulWidget {
@@ -17,39 +17,45 @@ class FriendMatchedCard extends StatefulWidget {
   _FriendMatchedCard createState() => _FriendMatchedCard(friendUsername, friendName, mvm);
 }
 
-class _FriendMatchedCard extends State<FriendMatchedCard>{
+class _FriendMatchedCard extends State<FriendMatchedCard> {
   final friendUsername;
   final friendName;
   late final MainViewModel mvm;
+
   _FriendMatchedCard(this.friendUsername, this.friendName, this.mvm);
 
 //ListView.builder
 
   @override
-  Widget build(BuildContext context){
-    List<Container> cards = [];
+  Widget build(BuildContext context) {
+    List<InkWell> cards = [];
     return Scaffold(
       body: Center(
-          child: Container(
-              child: StreamBuilder<List<MovieEntity?>>(
-                  stream: mvm.getSharedLikedMoviesAsStream(LoginPage.user, friendUsername),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<MovieEntity?>> snapshot) {
-                    if(snapshot.hasError) { print("ERROR!"); }
-                    switch(snapshot.connectionState){
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                      case ConnectionState.active:
-                        return MooviProgressIndicator();
-                      case ConnectionState.done:
-                        if (snapshot.hasData) {
-                          cards = buildMatchedMovieCards(snapshot.data!);
-                        } else {
-                          cards = [ noMovies() ];
-                        }
-                        return FriendProfile(mvm, widget.friendUsername, widget.friendName, cards);
-                    }
-                  }))
+        child: Container(
+          child: StreamBuilder<List<MovieEntity?>>(
+            stream: mvm.getSharedLikedMoviesAsStream(
+                LoginPage.user, friendUsername),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<MovieEntity?>> snapshot) {
+              if (snapshot.hasError) {
+                print("ERROR!");
+              }
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                case ConnectionState.active:
+                  return MooviProgressIndicator();
+                case ConnectionState.done:
+                  if (snapshot.hasData) {
+                    cards = buildMatchedMovieCards(snapshot.data!);
+                  } else {
+                    cards = [ noMovies()];
+                  }
+                  return FriendProfile(
+                      mvm, widget.friendUsername, widget.friendName,
+                      cards);
+              }
+            }))
       ),
     );
   }
@@ -57,43 +63,100 @@ class _FriendMatchedCard extends State<FriendMatchedCard>{
   //width: 232
   //height: 343
 
-  List<Container> buildMatchedMovieCards(List<MovieEntity?> movies){
-    List<Container> cards = [];
-    if(movies.length == 0){
-      cards = [ noMovies() ];
+  List<InkWell> buildMatchedMovieCards(List<MovieEntity?> movies) {
+    List<InkWell> cards = [];
+    if (movies.length == 0) {
+      cards = [ noMovies()];
     } else {
       for (int i = 0; i < movies.length; i++) {
-        cards.add(
-          Container(
-            width: (MediaQuery.of(context).size.width)/2,
-            height: (MediaQuery.of(context).size.width)/2 * (3/2),
+        cards.add(InkWell(
+          child: Container(
+            width: (MediaQuery.of(context).size.width) / 2,
+            height: (MediaQuery.of(context).size.width) / 2 * (3 / 2),
             child: Card(
-                child: Container(
-                  child: Image.network(movies[i]!.imageUrl),
+              child: Container(
+                child: FadeInImage.assetNetwork(
+                  placeholder: "assets/CuteYellowCow_transparent.png",
+                  image: movies[i]!.imageUrl,
                 )
+              ),
             )
-          )
-
-        );
+          ),
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return showInfo(movies[i]!);
+              }
+            );
+          },
+        ));
       }
     }
     return cards;
   }
 
-  Container noMovies(){
+
+  Container showInfo(MovieEntity movie) {
     return Container(
-      child: Card(
-          child: ListTile(
-              title: Text(
-                "No shared movies with " + friendName + " yet. :(",
-                style: TextStyle(fontSize: 20),
-              )
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(padding: EdgeInsets.all(5),),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Movie Information:", style: TextStyle(fontSize: 26),),
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: ListView(
+                children: <Widget>[
+                  Divider(thickness: 4,),
+                  movieLines("Title", movie.title),
+                  movieLines("Year", movie.year.toString()),
+                  movieLines("Rated", movie.mpaa),
+                  movieLines("Runtime", movie.runtime),
+                  movieLines("IMDB Rating", movie.imdb.toString() + "/10"),
+                  movieLines("Genres", movie.genres),
+                  movieLines("Synopsis", movie.synopsis),
+                  movieLines("Available on", movie.streamingService),
+                ],
+              ),
+            ),
           )
-      )
+        ],
+      ),
+    );
+  }
+
+  Wrap movieLines(String firstText, String secondText) {
+    return Wrap(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Text(firstText + ":  ",
+            style: TextStyle(fontSize: 25, color: Colors.yellow),),
+        ),
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Text(secondText, style: TextStyle(fontSize: 25,),),
+        ),
+        Divider()
+      ],
     );
   }
 
 
+  InkWell noMovies() {
+    return InkWell(
+      child: Card(
+        child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),))
+      ));
+  }
 }
 
 class FriendProfile extends StatelessWidget{
@@ -110,205 +173,181 @@ class FriendProfile extends StatelessWidget{
       body: Column(
         children: <Widget>[
           Container(
-              height: 190,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff353d47), width: 5),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      const Color(0xffff7300),
-                      Colors.yellow,
-                    ],
-                  )
-              ),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            height: 190,
+            decoration: BoxDecoration(
+              border: Border.all(color: Color(0xff353d47), width: 5),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xffff7300),
+                  Colors.yellow,
+                ],
+              )
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 28),
+                        child: Stack(
+                          children: <Widget> [
+                            Positioned(
+                              top: 3,
+                              left: 3,
+                              child: IconButton(
+                                iconSize: 25,
+                                icon: const Icon( Icons.arrow_back, color: const Color.fromARGB(255, 151, 85, 39),),
+                                onPressed: () { Navigator.pop(context); },
+                              ),
+                            ),
+                            IconButton(
+                              iconSize: 25,
+                              icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        )
+                      ),
+                      Row(
                         children: [
+                          MooviCowProfile(),
                           Padding(
-                            padding: const EdgeInsets.only(top: 28),
-                            child: Stack(
-                              children: <Widget> [
-                                Positioned(
-                                  top: 3,
-                                  left: 3,
-                                  child: IconButton(
-                                    iconSize: 25,
-                                    icon: const Icon(
-                                        Icons.arrow_back,
-                                        color: const Color.fromARGB(
-                                            255, 151, 85, 39),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                                IconButton(
-                                  iconSize: 25,
-                                  icon: const Icon(
-                                      Icons.arrow_back,
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    name,
+                                    style: TextStyle(
+                                      shadows: <Shadow>[
+                                        Shadow(offset: Offset(3, 3), blurRadius: 5, color: Color.fromARGB(255, 33, 10, 6),
+                                        ),
+                                      ],
                                       color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            )
-                          ),
-                          Row(
-                            children: [
-                                CircleAvatar(
-                                  radius: 38,
-                                  backgroundColor: Colors.black,
-                                  child: CircleAvatar(
-                                    radius: 36,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                        backgroundColor: Colors.grey[900],
-                                        radius: 34,
-                                        child: Image.asset("assets/MooviCow.png")
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+
                                     ),
                                   ),
                                 ),
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Center(
-                                        child: Text(
-                                          name,
-                                          style: TextStyle(
-                                            shadows: <Shadow>[
-                                              Shadow(
-                                                offset: Offset(3, 3),
-                                                blurRadius: 5,
-                                                color: Color.fromARGB(
-                                                    255, 33, 10, 6),
-                                              ),
-                                            ],
-                                            color: Colors.white,
-                                            fontSize: 28,
-                                            fontWeight: FontWeight.bold,
-
-                                          ),
+                                Center(
+                                  child: Text(
+                                    "@" + friendUsername,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      shadows: <Shadow>[
+                                        Shadow(
+                                          offset: Offset(3, 3),
+                                          blurRadius: 6,
+                                          color: Color.fromARGB(255, 24, 7, 4),
                                         ),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          "@" + friendUsername,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                            shadows: <Shadow>[
-                                              Shadow(
-                                                offset: Offset(3, 3),
-                                                blurRadius: 6,
-                                                color: Color.fromARGB(
-                                                    255, 24, 7, 4),
-                                              ),
-                                            ],
-                                          ),
+                                      ],
+                                    ),
 
-                                        ),
-                                      ),
-                                    ]
+                                  ),
                                 ),
-                              )
-
-                            ],
-                          ),
+                              ]
+                            ),
+                          )
 
                         ],
-                      )
+                      ),
 
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(40),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: PopupMenuButton(
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              child: Text("Remove Friend"),
-                              value: 1,
-                            )
-                          ],
+                    ],
+                  )
 
-                          onSelected: (result) {
-                            if (result == 1) {
-                              mvm.removeFriendFromUser(LoginPage.user, friendUsername);
-                              Navigator.pop(context);
-                            }
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(40),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: PopupMenuButton(
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text("Remove Friend"),
+                          value: 1,
+                        )
+                      ],
 
-                          },
+                      onSelected: (result) {
+                        if (result == 1) {
+                          mvm.removeFriendFromUser(LoginPage.user, friendUsername);
+                          Navigator.pop(context);
+                        }
 
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(15.0))
-                          ),
-                          child: Stack(
-                          children: <Widget>[
-                          Positioned(
-                            left: 3,
-                            top: 3,
+                      },
 
-                            child: Icon(
-                              Icons.more_vert,
-                              size: 30,
-                              color: Color.fromARGB(
-                                  255, 151, 85, 39),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15.0))
+                      ),
+                      child: Stack(
+                      children: <Widget>[
+                      Positioned(
+                        left: 3,
+                        top: 3,
 
-                            ),
+                        child: Icon(
+                          Icons.more_vert,
+                          size: 30,
+                          color: Color.fromARGB(
+                              255, 151, 85, 39),
 
-                          ),
-                          Icon(
-                              Icons.more_vert,
-                              size: 30,
-                              color: Colors.white
-
-                          ),
-                          ],
                         ),
-                        ),
-
 
                       ),
-                    )
+                      Icon(
+                          Icons.more_vert,
+                          size: 30,
+                          color: Colors.white
 
-                  ]
+                      ),
+                      ],
+                    ),
+                    ),
 
-              )
+
+                  ),
+                )
+
+              ]
+
+            )
           ),
           Padding(
-              padding: const EdgeInsets.all(10),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  child: Text(
-                    'Your shared movies',
-                    style: TextStyle(color: Colors.grey, fontSize: 20),
-                  ),
+            padding: const EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                child: Text(
+                  'Your shared movies',
+                  style: TextStyle(color: Colors.grey, fontSize: 20),
                 ),
-              )
+              ),
+            )
           ),
           Expanded(
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                  children: <Widget>[
-                    Wrap(
-                      children: cardList,
-                    )
-                  ]
-              )
+            child: ListView(
+              scrollDirection: Axis.vertical,
+                children: <Widget>[
+                  Wrap(
+                    children: cardList,
+                  )
+                ]
+            )
           ),
         ],
       ),

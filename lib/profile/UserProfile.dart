@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
+import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/DatabaseGetter.dart';
 import 'package:moovi/database/database.dart';
@@ -151,19 +152,7 @@ class UserProfile extends StatelessWidget{
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(2),
-                                  child: CircleAvatar(
-                                    radius: 38,
-                                    backgroundColor: Colors.black,
-                                    child: CircleAvatar(
-                                      radius: 36,
-                                      backgroundColor: Colors.white,
-                                      child: CircleAvatar(
-                                          backgroundColor: Colors.grey[900],
-                                          radius: 34,
-                                          child: Image.asset("assets/MooviCow.png")
-                                      ),
-                                    ),
-                                  ),
+                                  child: MooviCowProfile(),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(10),

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
@@ -58,15 +59,32 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                   );
               }
             })]),
-            floatingActionButton: FloatingActionButton(
-                    onPressed: () {
-                        Navigator.of(context)
+            floatingActionButton: Stack(
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context)
                         .push(
-                            MaterialPageRoute(builder: (context) => PendingFriendsList(db))
-                        );
-                    },
-                    child: const Icon(Icons.person_add),
-                    backgroundColor: Colors.yellow,)
+                        MaterialPageRoute(builder: (context) => PendingFriendsList(db))
+                    );
+                  },
+                  child: Icon(Icons.person_add),
+                  backgroundColor: Colors.yellow,
+                ),
+                Visibility(
+                    visible: PendingFriendsList.numPending != 0,
+                    child: Positioned(
+                        top: 0,
+                        left: 35,
+                        child: CircleAvatar(
+                          radius: 11,
+                          backgroundColor: Colors.red,
+                          child: Text(PendingFriendsList.numPending.toString(), style: TextStyle(color: Colors.white, fontSize: 15),),
+                        )
+                    )
+                ),
+              ],
+            )
     );
   }
 
@@ -93,15 +111,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                         children: <Widget>[
                           Padding(
                               padding: EdgeInsets.only(left: 10),
-                              child: CircleAvatar(
-                                radius: 24,
-                                backgroundColor: Colors.white,
-                                child: CircleAvatar(
-                                    backgroundColor: Colors.grey[900],
-                                    radius: 22,
-                                    child:Image.asset("assets/MooviCow.png")
-                                ),
-                              )
+                              child: MooviCowProfile()
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 15),
@@ -140,14 +150,6 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                           )
                         ],
                       )
-
-                      // Padding(
-                      //     padding: EdgeInsets.only(left: 150),
-                      //     child:
-                      // )
-
-
-
                     ]),
 
             ),

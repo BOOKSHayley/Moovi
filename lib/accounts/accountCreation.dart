@@ -70,7 +70,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                   padding: EdgeInsets.all(10),
                   child: Container(
                     height: 100,
-                    child: Image.asset("assets/MooviCow.png"),
+                    child: Image.asset("assets/CuteYellowCow_transparent.png"),
                   ),
                 ),
                 Form(
@@ -157,6 +157,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                             obscureText: true,
                             controller: reenterPasswordFieldController,
                             style: TextStyle(fontSize: 20),
+                            textInputAction: TextInputAction.done,
                             cursorColor: Colors.yellowAccent,
                             cursorWidth: 3,
                             decoration: InputDecoration(
