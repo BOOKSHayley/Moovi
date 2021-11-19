@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:moovi/database/database.dart';
 import 'Queue.dart';
 
 class QueueMenu extends StatefulWidget {
-  final db;
-  QueueMenu(this.db, {Key? key}) : super(key: key);
-
-  //final String title;
+  QueueMenu({Key? key}) : super(key: key);
 
   @override
-  _QueueMenuState createState() => _QueueMenuState(db);
+  _QueueMenuState createState() => _QueueMenuState();
 }
 
 class _QueueMenuState extends State<QueueMenu> {
-  final db;
   final queueKey = GlobalKey<QueueState>();
-  _QueueMenuState(this.db);
+  _QueueMenuState();
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: <Widget>[
-          Queue(db, key: queueKey),
+          Queue(key: queueKey),
           Padding(
             padding: EdgeInsets.only(top: 8.0),
             child: Row(children: <Widget>[

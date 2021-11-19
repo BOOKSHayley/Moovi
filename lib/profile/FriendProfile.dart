@@ -2,33 +2,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/Theme/MooviCowProfile.dart';
-import 'package:moovi/accounts/login.dart';
-import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
-import 'package:moovi/profile/FriendsListMenu.dart';
+import 'package:moovi/database/userEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
+import '../main.dart';
 import 'ProfileMovieList.dart';
 
 class FriendMatchedCard extends StatefulWidget {
-  final friendUsername;
-  final friendName;
+  final friend;
   final _numSharedMovies;
-  final MainViewModel mvm;
 
-  const FriendMatchedCard(this.friendUsername, this.friendName, this._numSharedMovies, this.mvm, {Key? key}) : super(key: key);
+  FriendMatchedCard(this.friend, this._numSharedMovies, {Key? key}) : super(key: key);
 
-  _FriendMatchedCard createState() => _FriendMatchedCard(friendUsername, friendName, _numSharedMovies, mvm);
+  _FriendMatchedCard createState() => _FriendMatchedCard(friend, _numSharedMovies);
 }
 
 class _FriendMatchedCard extends State<FriendMatchedCard> {
-  final friendUsername;
-  final friendName;
   final _numSharedMovies;
-  late final MainViewModel mvm;
+  late UserEntity friend;
+  bool globalVar = true;
 
-  _FriendMatchedCard(this.friendUsername, this.friendName, this._numSharedMovies, this.mvm);
-
-//ListView.builder
+  _FriendMatchedCard(this.friend, this._numSharedMovies);
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +31,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard> {
       body: Center(
         child: Container(
           child: StreamBuilder<List<MovieEntity?>>(
-            stream: mvm.getSharedLikedMoviesAsStream(
-                LoginPage.user, friendUsername),
+            stream: MyApp.mvm.getSharedLikedMoviesAsStream(MyApp.user, friend),
             builder: (BuildContext context,
                 AsyncSnapshot<List<MovieEntity?>> snapshot) {
               if (snapshot.hasError) {
@@ -55,7 +48,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard> {
                   } else {
                     cards = [ noMovies()];
                   }
-                  return FriendProfile(mvm, widget.friendUsername, widget.friendName, cards, _numSharedMovies);
+                  return FriendProfile(friend, cards, _numSharedMovies);
               }
             }))
       ),
@@ -65,19 +58,17 @@ class _FriendMatchedCard extends State<FriendMatchedCard> {
   InkWell noMovies() {
     return InkWell(
       child: Card(
-        child: ListTile(title: Text("No shared movies with " + friendName + " yet. :(", style: TextStyle(fontSize: 20),))
+        child: ListTile(title: Text("No shared movies with " + friend.name + " yet. :(", style: TextStyle(fontSize: 20),))
       ));
   }
 
 }
 
 class FriendProfile extends StatelessWidget{
-  final friendUsername;
-  final name;
+  final friend;
   final cardList;
   final _numSharedMovies;
-  final MainViewModel mvm;
-  const FriendProfile(this.mvm, this.friendUsername, this.name, this.cardList, this._numSharedMovies, {Key? key}) : super(key: key);
+  const FriendProfile(this.friend, this.cardList, this._numSharedMovies, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -116,7 +107,10 @@ class FriendProfile extends StatelessWidget{
                               child: IconButton(
                                 iconSize: 25,
                                 icon: const Icon( Icons.arrow_back, color: const Color.fromARGB(255, 151, 85, 39),),
-                                onPressed: () { Navigator.pop(context); },
+                                onPressed: () {
+                                  // Navigator.push(context, FriendProfile(mvm, friendUsername, name, cardList, _numSharedMovies));
+                                  Navigator.pop(context);
+                                },
                               ),
                             ),
                             IconButton(
@@ -143,7 +137,7 @@ class FriendProfile extends StatelessWidget{
                               children: [
                                 Center(
                                   child: Text(
-                                    name,
+                                    friend.name,
                                     style: TextStyle(
                                       shadows: <Shadow>[
                                         Shadow(offset: Offset(3, 3), blurRadius: 5, color: Color.fromARGB(255, 33, 10, 6),
@@ -158,7 +152,7 @@ class FriendProfile extends StatelessWidget{
                                 ),
                                 Center(
                                   child: Text(
-                                    "@" + friendUsername,
+                                    "@" + friend.userName,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
@@ -201,7 +195,7 @@ class FriendProfile extends StatelessWidget{
 
                           onSelected: (result) {
                             if (result == 1) {
-                              mvm.removeFriendFromUser(LoginPage.user, friendUsername);
+                              MyApp.mvm.removeFriendFromUser(MyApp.user, friend);
                               Navigator.pop(context);
                             }
 
@@ -248,7 +242,7 @@ class FriendProfile extends StatelessWidget{
                             Padding(
                               padding: EdgeInsets.only(left: 3, right: 15),
                               child: Text(
-                                _numSharedMovies.toString(),
+                                friend.numClicks.toString(),
                                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
                             )
                           ],
@@ -267,7 +261,7 @@ class FriendProfile extends StatelessWidget{
               alignment: Alignment.bottomLeft,
               child: Container(
                 child: Text(
-                  _numSharedMovies.toString() + ' Shared Movies With ' + name,
+                  _numSharedMovies.toString() + ' Shared Movies With ' + friend.name,
                   style: TextStyle(color: Colors.grey, fontSize: 20),
                 ),
               ),

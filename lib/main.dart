@@ -1,8 +1,10 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/profile/FriendsListMenu.dart';
 import 'accounts/login.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
+import 'database/userEntity.dart';
 import 'profile/UserProfile.dart';
 import 'movie/QueueMenu.dart';
 import 'package:moovi/Theme/ThemeData.dart';
@@ -14,7 +16,10 @@ void main() async {
   final _database = await DatabaseGetter.instance.database;
   final MainViewModel mvm = MainViewModel(_database);
 
-  runApp(MaterialApp(home: LoginPage(_database, mvm),
+  MyApp.db = _database;
+  MyApp.mvm = mvm;
+
+  runApp(MaterialApp(home: LoginPage(),
     debugShowCheckedModeBanner: false,
     theme: CustomTheme.darkTheme,
   )
@@ -23,42 +28,44 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget{
-  final db;
-  const MyApp(this.db, {Key? key}) : super(key: key);
+  static late FloorDatabase db;
+  static late MainViewModel mvm;
+  static late UserEntity user;
+  static List<String> genres = [""];
+
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MOOVI',
       theme: CustomTheme.darkTheme,
-      home: MenusStatefulWidget(db),
+      home: MenusStatefulWidget(),
     );
   }
 }
 
 class MenusStatefulWidget extends StatefulWidget {
-  static List<String> genres = [""];
-  final db;
-  const MenusStatefulWidget(this.db, {Key? key}) : super(key: key);
+
+  const MenusStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState(db);
+  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState();
 }
 
 class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
-  final db;
   bool actionChecked = false; bool adventureChecked = false; bool comedyChecked = false; bool crimeChecked = false; bool dramaChecked = false;
   bool fantasyChecked = false; bool horrorChecked = false; bool romanceChecked = false; bool scifiChecked = false; bool thrillerChecked = false;
   int _selectedIndex = 1;
   late List<Widget> _widgetOptions;
-  // static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  _MenusStatefulWidgetState(this.db) {
+  _MenusStatefulWidgetState() {
 
   _widgetOptions = <Widget>[ //List of widgets for the screen
-    LikedList(db),
-    QueueMenu(db),
-    FriendsListMenu(db)
+    LikedList(),
+    QueueMenu(),
+    FriendsListMenu()
   ];
 }
   void _onItemTapped(int index) {
@@ -241,16 +248,17 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   }
 
   void setGenres(value, text){
-    if(value && !MenusStatefulWidget.genres.contains(text)){
-      if(MenusStatefulWidget.genres[0] == ""){
-        MenusStatefulWidget.genres[0] = text;
+    final genres = MyApp.genres;
+    if(value && !genres.contains(text)){
+      if(genres[0] == ""){
+        genres[0] = text;
       } else {
-        MenusStatefulWidget.genres.add(text);
+        genres.add(text);
       }
     } else if(!value){ //value is false
-      MenusStatefulWidget.genres.remove(text);
-      if(MenusStatefulWidget.genres.length == 0){
-        MenusStatefulWidget.genres.add("");
+      genres.remove(text);
+      if(genres.length == 0){
+        genres.add("");
       }
     }
     // print(MenusStatefulWidget.genres[0]);

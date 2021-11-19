@@ -1,15 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moovi/database/mainViewModel.dart';
-
+import '../main.dart';
 import 'PopulateDatabase.dart';
 import 'login.dart';
 
 class AccountCreationPage extends StatefulWidget {
-  final db;
-  final MainViewModel mvm;
-
-  const AccountCreationPage(this.db, this.mvm, {Key? key}) : super(key: key);
+  const AccountCreationPage({Key? key}) : super(key: key);
 
   @override
   _MyCustomFormState createState() => _MyCustomFormState();
@@ -235,15 +231,15 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                               errorFieldController.clear();
                               if(_formKey.currentState!.validate()){
                                 _formKey.currentState!.save();
-                                bool userAdded = await widget.mvm.addUser(_name, _username, password: _password);
+                                bool userAdded = await MyApp.mvm.addUser(_name, _username, password: _password);
                                 if(userAdded) {
-                                  PopulateDatabase.populateDb(widget.mvm);
+                                  PopulateDatabase.populateDb(MyApp.mvm);
                                   nameFieldController.clear();
                                   usernameFieldController.clear();
                                   passwordFieldController.clear();
                                   reenterPasswordFieldController.clear();
                                   Navigator.push(context, new MaterialPageRoute(
-                                      builder: (context) => LoginPage(widget.db, widget.mvm)
+                                      builder: (context) => LoginPage()
                                   ));
                                 } else{
                                   usernameFieldController.clear();

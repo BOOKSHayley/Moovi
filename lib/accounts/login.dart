@@ -1,18 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
-
 import '../main.dart';
 import 'accountCreation.dart';
 
 class LoginPage extends StatefulWidget{
-
-  static late UserEntity user;
-
-  final db;
-  final MainViewModel mvm;
-  const LoginPage(this.db, this.mvm, {Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _MyCustomFormState createState() => _MyCustomFormState();
@@ -181,7 +174,7 @@ class _MyCustomFormState extends State<LoginPage>{
                               ),
                               onPressed: (){
                                 Navigator.push(context, new MaterialPageRoute(
-                                    builder: (context) => AccountCreationPage(widget.db, widget.mvm)
+                                    builder: (context) => AccountCreationPage()
                                 ));
                               },
                             ),
@@ -223,7 +216,7 @@ class _MyCustomFormState extends State<LoginPage>{
 
                                 if(_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  UserEntity? user = await widget.mvm.
+                                  UserEntity? user = await MyApp.mvm.
                                   getUserbyUsernameAndPass(username, password);
 
                                   if (user == null) {
@@ -232,9 +225,9 @@ class _MyCustomFormState extends State<LoginPage>{
                                     setState(() { _hasError = true; });
                                     errorFieldController.text = "Your username or password was incorrect.";
                                   } else {
-                                    LoginPage.user = user;
+                                    MyApp.user = user;
                                     Navigator.push(context, new MaterialPageRoute(
-                                        builder: (context) => MyApp(widget.db)
+                                        builder: (context) => MyApp()
                                     ));
                                   }
                                 }

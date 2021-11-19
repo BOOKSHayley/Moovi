@@ -1,31 +1,22 @@
 import 'dart:ui';
-
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:moovi/Theme/MooviCowProfile.dart';
-import 'package:moovi/accounts/login.dart';
-import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
+import '../main.dart';
 import 'FriendProfile.dart';
 import 'package:moovi/friends/pendingFriendsList.dart';
 
 class FriendsListMenu extends StatefulWidget {
   static List<int> numSharedMovies = [];
-  final db;
-  const FriendsListMenu(this.db, {Key? key}) : super(key: key);
+  const FriendsListMenu({Key? key}) : super(key: key);
 
-  _FriendsListMenu createState() => _FriendsListMenu(db);
+  _FriendsListMenu createState() => _FriendsListMenu();
 }
 
 class _FriendsListMenu extends State<FriendsListMenu> {
-  late MainViewModel mvm;
-  final db;
-  _FriendsListMenu(this.db){
-    mvm = MainViewModel(db);
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +28,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
       body: Column(
       children: [
         StreamBuilder<List<UserEntity?>>(
-          stream: mvm.getAllFriendsOfUserAsStream(LoginPage.user, false),
+          stream: MyApp.mvm.getAllFriendsOfUserAsStream(MyApp.user, false),
           builder: (BuildContext context,
               AsyncSnapshot<List<UserEntity?>> snapshot) {
             if(snapshot.hasError) { print("ERROR!"); }
@@ -63,7 +54,8 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                 onPressed: () {
                   Navigator.of(context)
                       .push(
-                      MaterialPageRoute(builder: (context) => PendingFriendsList(db))
+                      MaterialPageRoute(builder: (context) => PendingFriendsList())
+
                   );
                 },
                 child: Icon(Icons.person_add),
@@ -151,7 +143,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => FriendMatchedCard(
-                  friends[i]!.userName, friends[i]!.name, FriendsListMenu.numSharedMovies[i], mvm)));
+                  friends[i]!, FriendsListMenu.numSharedMovies[i])));
             }));
       }
     }

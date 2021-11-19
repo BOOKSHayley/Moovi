@@ -2,28 +2,20 @@
 import "package:flutter/material.dart";
 import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/Theme/MooviProgressIndicator.dart';
-import "package:moovi/database/mainViewModel.dart";
 import 'package:moovi/database/userEntity.dart';
-import 'package:moovi/accounts/login.dart';
-
+import '../main.dart';
 import 'AddFriend.dart';
 
 class PendingFriendsList extends StatefulWidget{
-  final db;
   static int numPending = 0;
-  const PendingFriendsList(this.db, { Key? key }) : super(key: key);
+  const PendingFriendsList({ Key? key }) : super(key: key);
 
   @override
-  State<PendingFriendsList> createState() => _PendingFriendsList(db);
+  State<PendingFriendsList> createState() => _PendingFriendsList();
 
 }
 
 class _PendingFriendsList extends State<PendingFriendsList>{
-  late MainViewModel mvm;
-  final db;
-  _PendingFriendsList(this.db){
-    mvm = MainViewModel(db);
-  }
 
   @override
    Widget build(BuildContext context){
@@ -43,7 +35,7 @@ class _PendingFriendsList extends State<PendingFriendsList>{
               icon: const Icon(Icons.add),
               onPressed: () {
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => AddFriend(db, mvm)
+                    builder: (context) => AddFriend()
                 ));
               },
             )
@@ -54,7 +46,7 @@ class _PendingFriendsList extends State<PendingFriendsList>{
         body: Container(
           width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
           child: StreamBuilder<List<UserEntity?>>(
-            stream: mvm.getAllFriendsOfUserAsStream(LoginPage.user, true),
+            stream: MyApp.mvm.getAllFriendsOfUserAsStream(MyApp.user, true),
             builder: (BuildContext context, AsyncSnapshot<List<UserEntity?>> snapshot){
               if(snapshot.hasError) { print("ERROR!"); }
               switch(snapshot.connectionState){
@@ -134,7 +126,7 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                       color: Colors.green,
                       tooltip: 'Accept',
                       onPressed: (){
-                        mvm.updateFriendOfUserFromPending(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                        MyApp.mvm.updateFriendOfUserFromPending(MyApp.user, pendingFriendsEntities[i]!);
                         setState(() { PendingFriendsList.numPending -= 1; });
                       },),
                     IconButton(
@@ -142,7 +134,7 @@ class _PendingFriendsList extends State<PendingFriendsList>{
                       color: Colors.red,
                       tooltip: 'Decline',
                       onPressed: (){
-                        mvm.removeFriendFromUser(LoginPage.user, pendingFriendsEntities[i]!.userName);
+                        MyApp.mvm.removeFriendFromUser(MyApp.user, pendingFriendsEntities[i]!);
                         setState(() { PendingFriendsList.numPending -= 1; });
                       },)
                   ]

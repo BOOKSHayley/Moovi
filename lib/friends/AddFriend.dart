@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moovi/accounts/login.dart';
-import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/userEntity.dart';
+import '../main.dart';
 
 class AddFriend extends StatefulWidget{
-  final db;
-  final MainViewModel mvm;
-
-  AddFriend(this.db, this.mvm, {Key? key}) : super(key: key);
+  AddFriend({Key? key}) : super(key: key);
 
   @override
   _MyCustomFormState createState() => _MyCustomFormState();
@@ -65,12 +61,12 @@ class _MyCustomFormState extends State<AddFriend>{
                     child: const Text('Add', style: TextStyle(color: Colors.yellow, fontSize: 18, fontWeight: FontWeight.w300),),
                     onPressed: () async {
                       String friendUsername = usernameFieldController.text;
-                      bool successful = await widget.mvm.addFriendToUser(LoginPage.user, friendUsername, true);
+                      bool successful = await MyApp.mvm.addFriendToUser(MyApp.user, friendUsername, true);
                       if(successful) {
                         Navigator.of(context).pop();
                       } else{
                         usernameFieldController.clear();
-                        UserEntity? exists = await widget.mvm.getUserbyUsername(friendUsername);
+                        UserEntity? exists = await MyApp.mvm.getUserbyUsername(friendUsername);
                         if(exists != null){
                           errorFieldController.text = "Already Added.";
                           setState(() { _hasError = true; });

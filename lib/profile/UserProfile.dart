@@ -2,36 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/accounts/login.dart';
-import 'package:moovi/database/mainViewModel.dart';
 import 'package:moovi/database/movieEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
+import '../main.dart';
 import 'ProfileMovieList.dart';
 
 
 class LikedList extends StatefulWidget {
-  final db;
-  const LikedList(this.db, {Key? key}) : super(key: key);
+  const LikedList({Key? key}) : super(key: key);
 
   @override
-  _LikedList createState() => _LikedList(db);
+  _LikedList createState() => _LikedList();
 }
 
 class _LikedList extends State<LikedList> {
-  final db;
-  late MainViewModel mvm;
-  _LikedList(this.db){
-    mvm = new MainViewModel(db);
-  }
 
   @override
   Widget build(BuildContext context) {
-    var user = LoginPage.user;
+    var user = MyApp.user;
     String name = user.name; //dummy value
     List<InkWell> cardsList;
     return Container(
       width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
       child: StreamBuilder<List<MovieEntity?>>(
-        stream: mvm.getLikedMoviesOfUserAsStream(LoginPage.user),
+        stream: MyApp.mvm.getLikedMoviesOfUserAsStream(MyApp.user),
         builder: (BuildContext context, AsyncSnapshot<List<MovieEntity?>> snapshot){
           if(snapshot.hasError) { print("ERROR!"); }
           switch(snapshot.connectionState){
@@ -46,7 +40,7 @@ class _LikedList extends State<LikedList> {
               else{
                 cardsList = [ noMovies() ];
               }
-              return UserProfile(db, mvm, user.userName, name, cardsList);
+              return UserProfile(user.userName, name, cardsList);
           }
 
         }
@@ -70,9 +64,7 @@ class UserProfile extends StatelessWidget{
   final username;
   final name;
   final cardList;
-  final db;
-  final mvm;
-  const UserProfile(this.db, this.mvm, this.username, this.name, this.cardList, {Key? key}) : super(key: key);
+  const UserProfile(this.username, this.name, this.cardList, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -191,9 +183,8 @@ class UserProfile extends StatelessWidget{
                           onSelected: (result) {
                             if (result == 1) {
                               Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => LoginPage(db, mvm)),
-                                      (_) => false
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginPage()), (_) => false
                               );
                             } else if (result == 2){
                               //todo: create an 'edit profile' page and use navigator
@@ -203,8 +194,8 @@ class UserProfile extends StatelessWidget{
                           },
 
                           shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.grey[900]!, width: 2),
-                              borderRadius: BorderRadius.all(Radius.circular(15.0))
+                            side: BorderSide(color: Colors.grey[900]!, width: 2),
+                            borderRadius: BorderRadius.all(Radius.circular(15.0))
                           ),
                           child: Stack(
                             children: <Widget>[
@@ -221,7 +212,6 @@ class UserProfile extends StatelessWidget{
                                   Icons.more_vert,
                                   size: 30,
                                   color: Colors.white
-
                               ),
                             ],
                           ),
@@ -243,7 +233,7 @@ class UserProfile extends StatelessWidget{
                           Padding(
                             padding: EdgeInsets.only(left: 3, right: 15),
                             child: Text(
-                              LoginPage.user.numClicks.toString(),
+                              MyApp.user.numClicks.toString(),
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
                           )
                         ],
@@ -251,10 +241,7 @@ class UserProfile extends StatelessWidget{
                     )
                   ],
                 ),
-
-
               ]
-
             )
           ),
           Padding(
