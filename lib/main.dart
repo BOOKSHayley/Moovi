@@ -41,17 +41,17 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       title: 'MOOVI',
       theme: CustomTheme.darkTheme,
-      home: MenusStatefulWidget(),
+      home: MenusStatefulWidget(1),
     );
   }
 }
 
 class MenusStatefulWidget extends StatefulWidget {
-
-  const MenusStatefulWidget({Key? key}) : super(key: key);
+  final index;
+  const MenusStatefulWidget(this.index, {Key? key}) : super(key: key);
 
   @override
-  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState();
+  State<MenusStatefulWidget> createState() => _MenusStatefulWidgetState(index);
 }
 
 class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
@@ -60,8 +60,8 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
   int _selectedIndex = 1;
   late List<Widget> _widgetOptions;
 
-  _MenusStatefulWidgetState() {
-
+  _MenusStatefulWidgetState(index) {
+    _selectedIndex = index;
   _widgetOptions = <Widget>[ //List of widgets for the screen
     LikedList(),
     QueueMenu(),

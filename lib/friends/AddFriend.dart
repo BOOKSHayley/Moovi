@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/database/userEntity.dart';
+import 'package:moovi/friends/pendingFriendsList.dart';
+import 'package:moovi/profile/FriendsListMenu.dart';
 import '../main.dart';
 
 class AddFriend extends StatefulWidget{
@@ -54,7 +56,11 @@ class _MyCustomFormState extends State<AddFriend>{
                   TextButton(
                     child: const Text('Cancel', style: TextStyle(color: Colors.yellow, fontSize: 18, fontWeight: FontWeight.w300),),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
+                      Navigator.of(context)
+                          .push(
+                          MaterialPageRoute(builder: (context) => PendingFriendsList())
+                      );
                     },
                   ),
                   TextButton(
@@ -63,7 +69,11 @@ class _MyCustomFormState extends State<AddFriend>{
                       String friendUsername = usernameFieldController.text;
                       bool successful = await MyApp.mvm.addFriendToUser(MyApp.user, friendUsername, true);
                       if(successful) {
-                        Navigator.of(context).pop();
+                        // Navigator.of(context).pop();
+                        Navigator.of(context)
+                            .push(
+                            MaterialPageRoute(builder: (context) => PendingFriendsList())
+                        );
                       } else{
                         usernameFieldController.clear();
                         UserEntity? exists = await MyApp.mvm.getUserbyUsername(friendUsername);

@@ -78,7 +78,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
     );
   }
 
-  List<InkWell> buildFriendCards(List<UserEntity?> friends, BuildContext context){
+  List<InkWell> buildFriendCards(List<UserEntity?> friends, BuildContext context) {
     List<InkWell> cards = [];
 
     if(friends.length != FriendsListMenu.numSharedMovies.length){

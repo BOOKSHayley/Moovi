@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/Theme/MooviProgressIndicator.dart';
 import 'package:moovi/database/userEntity.dart';
+import 'package:moovi/profile/FriendsListMenu.dart';
 import '../main.dart';
 import 'AddFriend.dart';
 
@@ -26,7 +27,11 @@ class _PendingFriendsList extends State<PendingFriendsList>{
             icon: const Icon(Icons.arrow_left_rounded, size: 45),
             tooltip: 'Go Back to Friends List',
             onPressed: (){
-              Navigator.pop(context);
+              // Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MenusStatefulWidget(2)), (_) => false
+              );
             },
           ),
           actions: [

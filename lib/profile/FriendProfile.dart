@@ -6,6 +6,7 @@ import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/database/userEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
 import '../main.dart';
+import 'FriendsListMenu.dart';
 import 'ProfileMovieList.dart';
 
 class FriendMatchedCard extends StatefulWidget {
@@ -108,8 +109,11 @@ class FriendProfile extends StatelessWidget{
                                 iconSize: 25,
                                 icon: const Icon( Icons.arrow_back, color: const Color.fromARGB(255, 151, 85, 39),),
                                 onPressed: () {
-                                  // Navigator.push(context, FriendProfile(mvm, friendUsername, name, cardList, _numSharedMovies));
-                                  Navigator.pop(context);
+                                  // Navigator.pop(context);
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => MenusStatefulWidget(2)), (_) => false
+                                  );
                                 },
                               ),
                             ),
@@ -120,7 +124,11 @@ class FriendProfile extends StatelessWidget{
                                   color: Colors.white,
                               ),
                               onPressed: () {
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => MenusStatefulWidget(2)), (_) => false
+                                );
                               },
                             ),
                           ],
