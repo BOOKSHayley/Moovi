@@ -27,6 +27,10 @@ class MovieCard extends StatelessWidget {
             ),
           ),
           constraints: BoxConstraints.expand(),
+          decoration: BoxDecoration(
+            color: Color(0xff1a1d21),
+            borderRadius: BorderRadius.circular(16.0)
+          ),
           margin: EdgeInsets.only(top: 40.0),
         ),
         back: Container(

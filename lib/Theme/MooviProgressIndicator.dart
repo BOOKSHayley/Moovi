@@ -10,7 +10,7 @@ class MooviProgressIndicator extends StatelessWidget{
       alignment: Alignment.center,
       children: [
         SizedBox(
-          child: CircularProgressIndicator(color: Colors.white,),
+          child: CircularProgressIndicator(color: Colors.yellow,),
           height: 100,
           width: 100,
         ),
