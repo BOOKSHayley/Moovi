@@ -18,19 +18,14 @@ class MovieCard extends StatelessWidget {
         fill: Fill.fillBack,
         direction: FlipDirection.HORIZONTAL,
         front: Container(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  child:FadeInImage.assetNetwork(
-                    placeholder: "assets/CuteYellowCow_transparent.png",
-                    image: movie.imageUrl,
-                  ),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0))
-                  )
-              ),
-            ],
-          ),
+          child:
+            Expanded(
+                child:FadeInImage.assetNetwork(
+                  fit: BoxFit.fill,
+                  placeholder: "assets/CuteYellowCow_transparent.png",
+                  image: movie.imageUrl,
+                ),
+            ),
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
           decoration: BoxDecoration(
@@ -205,12 +200,13 @@ class MovieCard extends StatelessWidget {
 
   TextStyle getShadowedTextStyle(){
     return TextStyle(
-        fontSize: 25,
-        shadows: <Shadow>[Shadow(
-            offset: Offset(3, 3),
-            blurRadius: 5,
-            color: Color.fromARGB(255, 33, 10, 6)
-        )]);
+      fontSize: 25,
+      shadows: <Shadow>[Shadow(
+        offset: Offset(3, 3),
+        blurRadius: 5,
+        color: Color.fromARGB(255, 33, 10, 6)
+      )
+    ]);
   }
 
   Color getRatingColor(double rating){
