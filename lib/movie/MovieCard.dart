@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:moovi/database/movieEntity.dart';
@@ -13,8 +14,6 @@ class MovieCard extends StatelessWidget {
   final username;
   final StreamController<double> _controller = StreamController<double>();
   MovieCard(this.username, this.movie);
-  //final MovieEntity m; **********************************************************
-  //MovieCard(this.m); ************************************************************
 
   @override
   Widget build(BuildContext context) {
@@ -25,37 +24,33 @@ class MovieCard extends StatelessWidget {
         front: Container(
           child: Column(
             children: <Widget>[
-              Container(
-                child: Text(
-                  movie.title,
-                        //m.title, ******************************************************
-                  style: TextStyle(fontSize: 30)
-                ),
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.all(20.0)
-              ),
               Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 30.0),
-                  child: Container(
-                    child: Image.network(
-                      movie.imageUrl,
-                      //m.imageUrl, **************************************************
-                      fit: BoxFit.fitHeight
-                    ),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0))
+                child: Container(
+                  child: Image.network(
+                    movie.imageUrl,
+                    fit: BoxFit.fill
+                  ),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0))
                   )
                 ),
-              )
+              //)
             ],
           ),
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
           decoration: BoxDecoration(
-            color: Colors.indigo[300],
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xffff7300),
+                  Colors.yellow,
+                ],
+              ),
             borderRadius: BorderRadius.circular(16.0)
           )
         ),
+
         back: Container(
           child: Column(
             children: [
@@ -64,64 +59,170 @@ class MovieCard extends StatelessWidget {
                 child: Text(
                   movie.title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold
-                  )
+                  style: getShadowedTextStyle()
                 )
               ),
+
               Text(
                 movie.year.toString(),
                 style: TextStyle(fontSize: 18)
               ),
 
-              Padding(padding: EdgeInsets.only(left: 20, right: 20), child: Divider(color: Colors.white)),
               Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text(
-                  "Rated " + movie.mpaa + " | " + movie.runtime,
-                  style: TextStyle(fontSize: 25)
-                )
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Divider(color: Colors.white)
               ),
-              Padding(padding: EdgeInsets.only(top: 10, left: 20, right: 20), child: Text("IMDB Rating: " + movie.imdb.toString() + "/10", style: TextStyle(fontSize: 25))),
 
-              Padding(
-                padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                child: Text(
-                  movie.genres,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25)
-                )
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                child: Text(movie.synopsis,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25)
-                )
-              ),
-              Padding(padding: EdgeInsets.only(top: 10, left: 20, right: 20), child: Text(
-                  "Available on: " + movie.streamingService,
-                  style: TextStyle(fontSize: 25)
-              ))
-            ],
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+                      child: Container(
+                        child: Text(
+                          "Rated " + movie.mpaa,
+                          style: getShadowedTextStyle()
+                        ),
+                      )
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Icon(Icons.access_time),
+                            Text(
+                              " " + movie.runtime,
+                              style: getShadowedTextStyle()
+                            )
+                          ]
+                        ),
+                      )
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Text(
+                              "IMDB Rating: ",
+                              style: getShadowedTextStyle()
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.star),
+                                Text(
+                                  movie.imdb.toString(),
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: getRatingColor(movie.imdb),
+                                    shadows: <Shadow>[Shadow(
+                                          offset: Offset(3, 3),
+                                          blurRadius: 5,
+                                          color: Color.fromARGB(255, 33, 10, 6)
+                                    )]
+                                  )
+                                ),
+                                Text(
+                                  "/10",
+                                  style: TextStyle(fontSize: 18)
+                                )
+                              ]
+                            )
+                          ]
+                        ),
+                      )
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+                      child: Container(
+                        child: Text(
+                          movie.genres,
+                          textAlign: TextAlign.left,
+                          style: getShadowedTextStyle()
+                        ),
+                      )
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 5, left: 10, right: 20),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Text(
+                              "Available on: ",
+                              style: getShadowedTextStyle()
+                            ),
+                            Image.network("https://www.freepnglogos.com/uploads/netflix-logo-0.png",
+                              height: 20,
+                              width: 60
+                            )
+                          ]
+                        ),
+                      )
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                      child: Divider(color: Colors.white)
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                      child: Container(
+                        child: Text(
+                          movie.synopsis,
+                          textAlign: TextAlign.left,
+                          style: getShadowedTextStyle()
+                        ),
+                      )
+                    ),
+                  ]
+                ),
+              )
+            ]
           ),
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
           decoration: BoxDecoration(
-            color: Colors.indigo[300],
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                const Color(0xffff7300),
+                Colors.yellow
+              ]
+            ),
             borderRadius: BorderRadius.circular(16.0)
           )
         )
       ),
       verticalSwipe: false,
-
       onSwipeLeft: (position){onDislikeClicked(MyApp.user, movie);},
       onSwipeRight: (position){onLikeClicked(MyApp.user, movie);},
       swipe: _controller.stream,
-
-      //onSwipeLeft: (position){onDislikeClicked(m);}, *********************************
     );
+  }
+
+  TextStyle getShadowedTextStyle(){
+    return TextStyle(
+        fontSize: 25,
+        shadows: <Shadow>[Shadow(
+            offset: Offset(3, 3),
+            blurRadius: 5,
+            color: Color.fromARGB(255, 33, 10, 6)
+        )]);
+  }
+
+  Color getRatingColor(double rating){
+    if(rating < 5) return Colors.red;
+    if(rating < 7) return Colors.yellow;
+    if(rating < 10) return Colors.green;
+    else return Colors.white;
   }
 
   autoSwipe(bool leftSwipe){
