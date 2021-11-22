@@ -29,6 +29,12 @@ class _QueueMenuState extends State<QueueMenu> {
                 ),
               ),
               Expanded(
+                child: Image.asset("assets/CuteYellowCow_transparent.png",
+                height: 75,
+                width: 75,
+                ),
+              ),
+              Expanded(
                 child: FloatingActionButton(
                   backgroundColor: Colors.green,
                   child: Icon(Icons.thumb_up),
