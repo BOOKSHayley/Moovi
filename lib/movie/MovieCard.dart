@@ -18,27 +18,16 @@ class MovieCard extends StatelessWidget {
         fill: Fill.fillBack,
         direction: FlipDirection.HORIZONTAL,
         front: Container(
-          child:
-            Expanded(
-                child:FadeInImage.assetNetwork(
-                  fit: BoxFit.fill,
-                  placeholder: "assets/CuteYellowCow_transparent.png",
-                  image: movie.imageUrl,
-                ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child:FadeInImage.assetNetwork(
+              fit: BoxFit.fill,
+              placeholder: "assets/CuteYellowCow_transparent.png",
+              image: movie.imageUrl,
             ),
+          ),
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                const Color(0xffff7300),
-                Colors.yellow,
-              ],
-            ),
-            borderRadius: BorderRadius.circular(16.0)
-          )
         ),
         back: Container(
           child: SingleChildScrollView(
