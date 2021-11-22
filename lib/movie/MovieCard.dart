@@ -26,9 +26,9 @@ class MovieCard extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Container(
-                  child: Image.network(
-                    movie.imageUrl,
-                    fit: BoxFit.fill
+                  child:FadeInImage.assetNetwork(
+                    placeholder: "assets/CuteYellowCow_transparent.png",
+                    image: movie.imageUrl,
                   ),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0))
                   )
@@ -39,20 +39,21 @@ class MovieCard extends StatelessWidget {
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xffff7300),
-                  Colors.yellow,
-                ],
-              ),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                const Color(0xffff7300),
+                Colors.yellow,
+              ],
+            ),
             borderRadius: BorderRadius.circular(16.0)
           )
         ),
-
         back: Container(
-          child: Column(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.only(top: 15),
@@ -69,8 +70,8 @@ class MovieCard extends StatelessWidget {
               ),
 
               Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Divider(color: Colors.white)
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Divider(color: Colors.white)
               ),
 
               Container(
@@ -120,9 +121,9 @@ class MovieCard extends StatelessWidget {
                                     fontSize: 25,
                                     color: getRatingColor(movie.imdb),
                                     shadows: <Shadow>[Shadow(
-                                          offset: Offset(3, 3),
-                                          blurRadius: 5,
-                                          color: Color.fromARGB(255, 33, 10, 6)
+                                      offset: Offset(3, 3),
+                                      blurRadius: 5,
+                                      color: Color.fromARGB(255, 33, 10, 6)
                                     )]
                                   )
                                 ),
@@ -185,7 +186,7 @@ class MovieCard extends StatelessWidget {
                 ),
               )
             ]
-          ),
+          ),),
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
           decoration: BoxDecoration(
@@ -199,7 +200,7 @@ class MovieCard extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(16.0)
           )
-        )
+        ),
       ),
       verticalSwipe: false,
       onSwipeLeft: (position){onDislikeClicked(MyApp.user, movie);},
