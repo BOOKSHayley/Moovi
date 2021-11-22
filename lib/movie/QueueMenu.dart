@@ -30,8 +30,8 @@ class _QueueMenuState extends State<QueueMenu> {
               ),
               Expanded(
                 child: Image.asset("assets/CuteYellowCow_transparent.png",
-                height: 75,
-                width: 75,
+                height: 65,
+                width: 65,
                 ),
               ),
               Expanded(
