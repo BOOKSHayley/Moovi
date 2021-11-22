@@ -17,13 +17,4 @@ class MovieCardStackState extends State<MovieCardStack>{
   Widget build(BuildContext context) {
     return Stack(children: cardsArray);
   }
-
-  popMovieCard(){
-    return cardsArray[cardsArray.length-1];
-  }
-
-  stackRefresh(){
-    cardsArray.removeAt(cardsArray.length-1);
-    setState(() {});
-  }
 }

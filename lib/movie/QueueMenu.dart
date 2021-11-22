@@ -25,7 +25,7 @@ class _QueueMenuState extends State<QueueMenu> {
                 child: FloatingActionButton(
                   backgroundColor: Colors.red,
                   child: Icon(Icons.thumb_down),
-                  onPressed: () {queueKey.currentState?.stackSwipe(true);},
+                  onPressed: () {},
                 ),
               ),
               Expanded(
@@ -38,7 +38,7 @@ class _QueueMenuState extends State<QueueMenu> {
                 child: FloatingActionButton(
                   backgroundColor: Colors.green,
                   child: Icon(Icons.thumb_up),
-                  onPressed: () {queueKey.currentState?.stackSwipe(false);},
+                  onPressed: () {},
                 )
               )
             ]
