@@ -205,7 +205,7 @@ class MovieCard extends StatelessWidget {
   Color _getRatingColor(double rating){
     if(rating < 5) return Colors.red;
     if(rating < 7) return Colors.yellow;
-    if(rating < 10) return Colors.green;
+    if(rating <= 10) return Colors.green;
     else return Colors.white;
   }
 }
