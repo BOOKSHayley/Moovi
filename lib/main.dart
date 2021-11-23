@@ -205,8 +205,8 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xff2a3038),
-        // showSelectedLabels: false,
-        // showUnselectedLabels: false,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
