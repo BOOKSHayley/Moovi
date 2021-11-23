@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/friends/pendingFriendsList.dart';
-import 'package:moovi/profile/FriendsListMenu.dart';
+import 'package:moovi/friends/FriendsListMenu.dart';
 import '../main.dart';
 
 class AddFriend extends StatefulWidget{

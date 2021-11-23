@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import 'package:moovi/Theme/MooviCowProfile.dart';
 import 'package:moovi/Theme/MooviProgressIndicator.dart';
 import 'package:moovi/database/userEntity.dart';
-import 'package:moovi/profile/FriendsListMenu.dart';
+import 'package:moovi/friends/FriendsListMenu.dart';
 import '../main.dart';
 import 'AddFriend.dart';
 

@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
-import 'package:moovi/profile/FriendsListMenu.dart';
+import 'package:moovi/friends/FriendsListMenu.dart';
 import 'accounts/login.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';

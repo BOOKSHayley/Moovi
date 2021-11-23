@@ -7,7 +7,7 @@ import 'package:moovi/database/userEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
 import '../main.dart';
 import 'FriendsListMenu.dart';
-import 'ProfileMovieList.dart';
+import '../profile/ProfileMovieList.dart';
 
 class FriendMatchedCard extends StatefulWidget {
   final friend;

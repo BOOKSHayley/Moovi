@@ -13,7 +13,7 @@ import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/user_dao.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import 'package:moovi/profile/FriendsListMenu.dart';
+import 'package:moovi/friends/FriendsListMenu.dart';
 
 
 class MainViewModel extends ChangeNotifier{
