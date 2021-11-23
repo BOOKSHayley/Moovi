@@ -43,7 +43,7 @@ class MovieCard extends StatelessWidget {
                 child: Text(
                   movie.title,
                   textAlign: TextAlign.center,
-                  style: getShadowedTextStyle()
+                  style: _getShadowedTextStyle()
                 )
               ),
 
@@ -66,7 +66,7 @@ class MovieCard extends StatelessWidget {
                       child: Container(
                         child: Text(
                           "Rated " + movie.mpaa,
-                          style: getShadowedTextStyle()
+                          style: _getShadowedTextStyle()
                         ),
                       )
                     ),
@@ -79,7 +79,7 @@ class MovieCard extends StatelessWidget {
                             Icon(Icons.access_time),
                             Text(
                               " " + movie.runtime,
-                              style: getShadowedTextStyle()
+                              style: _getShadowedTextStyle()
                             )
                           ]
                         ),
@@ -93,7 +93,7 @@ class MovieCard extends StatelessWidget {
                           children: [
                             Text(
                               "IMDB Rating: ",
-                              style: getShadowedTextStyle()
+                              style: _getShadowedTextStyle()
                             ),
                             Row(
                               children: [
@@ -102,7 +102,7 @@ class MovieCard extends StatelessWidget {
                                   movie.imdb.toString(),
                                   style: TextStyle(
                                     fontSize: 25,
-                                    color: getRatingColor(movie.imdb),
+                                    color: _getRatingColor(movie.imdb),
                                     shadows: <Shadow>[Shadow(
                                       offset: Offset(3, 3),
                                       blurRadius: 5,
@@ -127,7 +127,7 @@ class MovieCard extends StatelessWidget {
                         child: Text(
                           movie.genres,
                           textAlign: TextAlign.left,
-                          style: getShadowedTextStyle()
+                          style: _getShadowedTextStyle()
                         ),
                       )
                     ),
@@ -139,7 +139,7 @@ class MovieCard extends StatelessWidget {
                           children: [
                             Text(
                               "Available on: ",
-                              style: getShadowedTextStyle()
+                              style: _getShadowedTextStyle()
                             ),
                             Image.network("https://www.freepnglogos.com/uploads/netflix-logo-0.png",
                               height: 20,
@@ -161,7 +161,7 @@ class MovieCard extends StatelessWidget {
                         child: Text(
                           movie.synopsis,
                           textAlign: TextAlign.left,
-                          style: getShadowedTextStyle()
+                          style: _getShadowedTextStyle()
                         ),
                       )
                     ),
@@ -191,7 +191,7 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  TextStyle getShadowedTextStyle(){
+  TextStyle _getShadowedTextStyle(){
     return TextStyle(
       fontSize: 25,
       shadows: <Shadow>[Shadow(
@@ -202,7 +202,7 @@ class MovieCard extends StatelessWidget {
     ]);
   }
 
-  Color getRatingColor(double rating){
+  Color _getRatingColor(double rating){
     if(rating < 5) return Colors.red;
     if(rating < 7) return Colors.yellow;
     if(rating < 10) return Colors.green;
