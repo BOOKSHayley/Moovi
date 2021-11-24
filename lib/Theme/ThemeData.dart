@@ -7,10 +7,10 @@ class CustomTheme {
       primaryColor: const Color(0xff2a3038),
       primarySwatch: customPalette.coolGrey,
       canvasColor: const Color(0xff2a3038),
-      cardColor: const Color(0xff2a2e33),
+      cardColor: const Color(0xff272b32),
+      fontFamily: 'Gotham',
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: const Color(0xff1a1d21),
-      fontFamily: 'Montserrat',
+      scaffoldBackgroundColor: const Color(0xff15151a),
       //3
       textTheme: ThemeData.dark().textTheme,
       buttonTheme: ButtonThemeData( // 4

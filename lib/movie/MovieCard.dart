@@ -161,7 +161,7 @@ class MovieCard extends StatelessWidget {
                         child: Text(
                           movie.synopsis,
                           textAlign: TextAlign.left,
-                          style: _getShadowedTextStyle()
+                          // style: _getShadowedTextStyle()
                         ),
                       )
                     ),
@@ -173,14 +173,15 @@ class MovieCard extends StatelessWidget {
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                const Color(0xffff7300),
-                Colors.yellow
-              ]
-            ),
+            color: const Color(0xff282b31),
+            // gradient: LinearGradient(
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            //   colors: [
+            //     const Color(0xffff7300),
+            //     Colors.yellow
+            //   ]
+            // ),
             borderRadius: BorderRadius.circular(16.0)
           )
         ),
@@ -194,12 +195,8 @@ class MovieCard extends StatelessWidget {
   TextStyle _getShadowedTextStyle(){
     return TextStyle(
       fontSize: 25,
-      shadows: <Shadow>[Shadow(
-        offset: Offset(3, 3),
-        blurRadius: 5,
-        color: Color.fromARGB(255, 33, 10, 6)
-      )
-    ]);
+      fontFamily: 'thebold',
+      );
   }
 
   Color _getRatingColor(double rating){

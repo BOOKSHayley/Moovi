@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   floor:
   flip_card: ^0.6.0
   flutter_swipable: ^1.1.0
@@ -81,3 +82,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Gotham
+      fonts:
+        - asset: assets/Metropolis-Black.otf
+    - family: thebold
+      fonts:
+        - asset: assets/theboldfont.ttf

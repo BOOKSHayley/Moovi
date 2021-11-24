@@ -22,6 +22,7 @@ void main() async {
   runApp(MaterialApp(home: LoginPage(),
     debugShowCheckedModeBanner: false,
     theme: CustomTheme.darkTheme,
+
   )
   );
 
@@ -204,7 +205,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         child: _widgetOptions.elementAt(_selectedIndex)
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xff2a3038),
+        backgroundColor: const Color(0xff202428),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
