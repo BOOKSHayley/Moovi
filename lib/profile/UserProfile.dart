@@ -74,16 +74,20 @@ class UserProfile extends StatelessWidget{
         children: <Widget>[
           Container(
             height: 180,
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xff353d47), width: 5),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xffff7300),
-                  Colors.yellow,
-                ],
+              image: DecorationImage(
+                image: AssetImage('assets/banner-angles.jpg'),
+                fit: BoxFit.fill,
               )
+              // gradient: LinearGradient(
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              //   colors: [
+              //     const Color(0xff0e1724),
+              //     const Color(0xff132639),
+              //   ],
+              // )
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,36 +196,26 @@ class UserProfile extends StatelessWidget{
                               //todo: create a settings page and use navigator
                             }
                           },
-
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.grey[900]!, width: 2),
-                            borderRadius: BorderRadius.all(Radius.circular(15.0))
-                          ),
-                          child: Stack(
-                            children: <Widget>[
-                              Positioned(
-                                left: 3,
-                                top: 3,
-                                child: Icon(
-                                  Icons.more_vert,
-                                  size: 30,
-                                  color: Color.fromARGB(255, 151, 85, 39),
-                                ),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.black87,
+                                borderRadius: BorderRadius.all(Radius.circular(25)),
                               ),
-                              Icon(
+                              child: Icon(
                                   Icons.more_vert,
                                   size: 30,
                                   color: Colors.white
                               ),
-                            ],
-                          ),
+                            )
                         ),
                       ),
                     ),
                     Container(
                       // color: Colors.grey[900],
                       decoration: BoxDecoration(
-                        color: Colors.grey[900],
+                        color: Colors.black87,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                       child: Row(

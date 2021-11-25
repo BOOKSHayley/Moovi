@@ -8,10 +8,12 @@ import 'database/userEntity.dart';
 import 'profile/UserProfile.dart';
 import 'movie/QueueMenu.dart';
 import 'package:moovi/Theme/ThemeData.dart';
+import 'package:moovi/splash.dart';
 
 
 
 void main() async {
+  Paint.enableDithering = true;
   WidgetsFlutterBinding.ensureInitialized();
   final _database = await DatabaseGetter.instance.database;
   final MainViewModel mvm = MainViewModel(_database);
@@ -19,7 +21,7 @@ void main() async {
   MyApp.db = _database;
   MyApp.mvm = mvm;
 
-  runApp(MaterialApp(home: LoginPage(),
+  runApp(MaterialApp(home: Splash(),
     debugShowCheckedModeBanner: false,
     theme: CustomTheme.darkTheme,
 

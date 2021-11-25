@@ -80,15 +80,19 @@ class FriendProfile extends StatelessWidget{
           Container(
             height: 175,
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xff353d47), width: 5),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xffff7300),
-                  Colors.yellow,
-                ],
-              )
+                image: DecorationImage(
+                  image: AssetImage('assets/banner-angles.jpg'),
+                  fit: BoxFit.fill,
+                )
+              // border: Border.all(color: Color(0xff353d47), width: 5),
+              // gradient: LinearGradient(
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              //   colors: [
+              //     const Color(0xffff7300),
+              //     Colors.yellow,
+              //   ],
+              // )
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -209,27 +213,20 @@ class FriendProfile extends StatelessWidget{
 
                           },
 
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(15.0))
-                          ),
-                          child: Stack(
-                            children: <Widget>[
-                              Positioned(
-                                left: 3,
-                                top: 3,
-                                child: Icon(
-                                  Icons.more_vert,
-                                  size: 30,
-                                  color: Color.fromARGB(255, 151, 85, 39),
-                                ),
-                              ),
-                              Icon(
-                                  Icons.more_vert,
-                                  size: 30,
-                                  color: Colors.white
-                              ),
-                            ],
-                          ),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.black87,
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
+                            ),
+                            child: Icon(
+                                Icons.more_vert,
+                                size: 30,
+                                color: Colors.white
+                            ),
+                          )
+
                         ),
                       ),
                     ),
@@ -238,7 +235,7 @@ class FriendProfile extends StatelessWidget{
                       child: Container(
                         // color: Colors.grey[900],
                         decoration: BoxDecoration(
-                          color: Colors.grey[900],
+                          color: Colors.black87,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         child: Row(

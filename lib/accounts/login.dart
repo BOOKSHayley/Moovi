@@ -58,6 +58,18 @@ class _MyCustomFormState extends State<LoginPage>{
                     padding: EdgeInsets.all(30),
                   )
                 ),
+                Align(
+                  alignment: Alignment.center,
+                    child: Text(
+                        "MOOVI",
+                        style: TextStyle(
+                          fontFamily: 'brandon',
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )
+                    )
+                    ),
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: Container(
@@ -97,7 +109,7 @@ class _MyCustomFormState extends State<LoginPage>{
                       TextFormField(
                         obscureText: true,
                         controller: passwordFieldController,
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
                         textInputAction: TextInputAction.done,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
@@ -123,7 +135,7 @@ class _MyCustomFormState extends State<LoginPage>{
                         child: TextField(
                           controller: errorFieldController,
                           readOnly: true,
-                          style: TextStyle(color: Colors.red, fontSize: 20),
+                          style: TextStyle(color: Colors.red, fontSize: 20, fontFamily: 'brandon'),
                         ),
                         visible: _hasError,
                       ),
@@ -208,7 +220,8 @@ class _MyCustomFormState extends State<LoginPage>{
                       Padding(
                         padding: EdgeInsets.all(10),
                         child: InkWell(
-                          child: Text("No account? Sign up!", style: TextStyle(color: const Color(0xfffde259), fontSize: 18, fontFamily: 'brandon'),),
+                          child: Text("No account? Sign up!", style: TextStyle(color: const Color(
+                              0xffffffff), fontSize: 18, fontFamily: 'brandon'),),
                           onTap: (){
                             Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) => AccountCreationPage()
