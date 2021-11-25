@@ -90,3 +90,6 @@ flutter:
     - family: thebold
       fonts:
         - asset: assets/theboldfont.ttf
+    - family: brandon
+      fonts:
+        - asset: assets/Brandon_bld.otf

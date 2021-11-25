@@ -232,7 +232,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           )
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.yellow,
+        selectedItemColor: const Color(0xfff5df50),
         onTap: _onItemTapped,
       ),
 

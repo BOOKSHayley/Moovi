@@ -39,135 +39,149 @@ class MovieCard extends StatelessWidget {
             child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.only(top: 15, left: 10, right: 10),
                 child: Text(
                   movie.title,
                   textAlign: TextAlign.center,
-                  style: _getShadowedTextStyle()
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontFamily: 'brandon',
+                  )
                 )
               ),
 
-              Text(
-                movie.year.toString(),
-                style: TextStyle(fontSize: 18)
-              ),
-
               Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Divider(color: Colors.white)
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Divider(color: Colors.white)
               ),
 
               Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
-                      child: Container(
-                        child: Text(
-                          "Rated " + movie.mpaa,
-                          style: _getShadowedTextStyle()
-                        ),
-                      )
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Icon(Icons.access_time),
-                            Text(
-                              " " + movie.runtime,
-                              style: _getShadowedTextStyle()
-                            )
-                          ]
-                        ),
-                      )
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Text(
-                              "IMDB Rating: ",
-                              style: _getShadowedTextStyle()
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.star),
-                                Text(
-                                  movie.imdb.toString(),
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    color: _getRatingColor(movie.imdb),
-                                    shadows: <Shadow>[Shadow(
-                                      offset: Offset(3, 3),
-                                      blurRadius: 5,
-                                      color: Color.fromARGB(255, 33, 10, 6)
-                                    )]
-                                  )
+                child: Padding(
+                  padding: EdgeInsets.only(left: 50, right: 50),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              movie.year.toString(),
+                              style: TextStyle(fontSize: 18)
+                          ),
+                          Container(
+                                child: Text(
+                                    movie.mpaa,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'brandon',
+                                    )
                                 ),
-                                Text(
-                                  "/10",
-                                  style: TextStyle(fontSize: 18)
-                                )
-                              ]
-                            )
-                          ]
-                        ),
-                      )
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
-                      child: Container(
-                        child: Text(
-                          movie.genres,
-                          textAlign: TextAlign.left,
-                          style: _getShadowedTextStyle()
-                        ),
-                      )
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.only(top: 5, left: 10, right: 20),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Text(
-                              "Available on: ",
-                              style: _getShadowedTextStyle()
+                              ),
+                          Row(
+                                children: [
+                                  Icon(Icons.access_time),
+                                  Text(
+                                    " " + movie.runtime,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'brandon',
+                                    ),
+                                  )
+                                ]
                             ),
-                            Image.network("https://www.freepnglogos.com/uploads/netflix-logo-0.png",
-                              height: 20,
-                              width: 60
+                        ]
+                    )
+                )
+              ),
+
+                Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+                            child: Container(
+                              child: Text(
+                                  movie.genres,
+                                  textAlign: TextAlign.left,
+                                  style: _getShadowedTextStyle()
+                              ),
                             )
-                          ]
                         ),
-                      )
-                    ),
 
-                    Padding(
-                      padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                      child: Divider(color: Colors.white)
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-                      child: Container(
-                        child: Text(
-                          movie.synopsis,
-                          textAlign: TextAlign.left,
-                          // style: _getShadowedTextStyle()
+                        Padding(
+                            padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+                            child: Container(
+                              child: Row(
+                                  children: [
+                                    Text(
+                                      "IMDB Rating: ",
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                        fontFamily: 'brandon',
+                                      ),
+                                    ),
+                                    Row(
+                                        children: [
+                                          Icon(Icons.star),
+                                          Text(
+                                              movie.imdb.toString(),
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                color: _getRatingColor(movie.imdb),
+                                              )
+                                          ),
+                                          Text(
+                                              "/10",
+                                              style: TextStyle(fontSize: 18)
+                                          )
+                                        ]
+                                    )
+                                  ]
+                              ),
+                            )
                         ),
-                      )
-                    ),
-                  ]
-                ),
-              )
+
+                        Padding(
+                            padding: EdgeInsets.only(top: 5, left: 10, right: 20),
+                            child: Container(
+                              child: Row(
+                                  children: [
+                                    Text(
+                                        "Available on: ",
+                                        style: _getShadowedTextStyle()
+                                    ),
+                                    Image.network("https://www.freepnglogos.com/uploads/netflix-logo-0.png",
+                                        height: 20,
+                                        width: 60
+                                    )
+                                  ]
+                              ),
+                            )
+                        ),
+
+                        Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Divider(color: Colors.white)
+                        ),
+
+                        Padding(
+                            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                            child: Container(
+                              child: Text(
+                                  movie.synopsis,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: const Color(0xffc2c2c2),
+                                    fontSize: 20,
+                                    fontFamily: 'brandon',
+                                  )
+                              ),
+                            )
+                        ),
+                      ]
+                  ),
+                  )
+                )
             ]
           ),),
           constraints: BoxConstraints.expand(),
@@ -195,14 +209,14 @@ class MovieCard extends StatelessWidget {
   TextStyle _getShadowedTextStyle(){
     return TextStyle(
       fontSize: 25,
-      fontFamily: 'thebold',
+      fontFamily: 'brandon',
       );
   }
 
   Color _getRatingColor(double rating){
-    if(rating < 5) return Colors.red;
-    if(rating < 7) return Colors.yellow;
-    if(rating <= 10) return Colors.green;
+    if(rating < 5) return const Color(0xffaf4646);
+    if(rating < 7) return const Color(0xffefb24d);
+    if(rating <= 10) return const Color(0xff9aec6e);
     else return Colors.white;
   }
 }

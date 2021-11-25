@@ -38,7 +38,11 @@ class _MyCustomFormState extends State<LoginPage>{
       resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Sign In", style: TextStyle(fontSize: 24),),
+          title: Text("Sign In", style: TextStyle(
+              fontSize: 24,
+              fontFamily: 'brandon'
+          ),
+          ),
         ),
 
         body: SingleChildScrollView(
@@ -67,7 +71,7 @@ class _MyCustomFormState extends State<LoginPage>{
                     children: [
                       TextFormField(
                         controller: usernameFieldController,
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
@@ -75,8 +79,8 @@ class _MyCustomFormState extends State<LoginPage>{
                         decoration: InputDecoration(
                           hintText: "Your username",
                           labelText: "Username",
-                          labelStyle: TextStyle(fontSize: 20),
-                          errorStyle: TextStyle(fontSize: 16),
+                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
@@ -101,8 +105,8 @@ class _MyCustomFormState extends State<LoginPage>{
                         decoration: InputDecoration(
                           hintText: "Your password",
                           labelText: "Password",
-                          labelStyle: TextStyle(fontSize: 20),
-                          errorStyle: TextStyle(fontSize: 16),
+                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
@@ -128,7 +132,7 @@ class _MyCustomFormState extends State<LoginPage>{
                           Padding(
                             padding: EdgeInsets.all(7),
                             child: InkWell(
-                              child: Text("Forgot Password?", style: TextStyle(color:Colors.grey[600], fontSize: 16),),
+                              child: Text("Forgot Password?", style: TextStyle(color:Colors.grey[600], fontSize: 16, fontFamily: 'brandon'),),
                             ),
                           ),
 
@@ -137,115 +141,87 @@ class _MyCustomFormState extends State<LoginPage>{
                       Padding(
                         padding: EdgeInsets.only(bottom: 30),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                          ),
-                          SizedBox(
-                            width: 150,
-                            height: 60,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(40),
-                                    side: BorderSide(
-                                      color: const Color(0xff3f3f45),
-                                      width: 3,
-                                      style: BorderStyle.solid
+                      Align(
+                        alignment: Alignment.center,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget> [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width -50,
+                                height: 60,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(const Color(0xfffde259)),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: const Color(0xff3f3f45),
+                                              width: 3,
+                                              style: BorderStyle.solid
+                                          ),
+                                          borderRadius: BorderRadius.circular(40),
+                                        )
                                     ),
-                                  )
-                                ),
-                              ),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "No Account?\nSign up!",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800
                                   ),
-                                ),
-                              ),
-                              onPressed: (){
-                                Navigator.push(context, new MaterialPageRoute(
-                                    builder: (context) => AccountCreationPage()
-                                ));
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                          ),
-                          SizedBox(
-                            width: 150,
-                            height: 60,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.yellow),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color: const Color(0xff3f3f45),
-                                      width: 3,
-                                      style: BorderStyle.solid
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Sign in",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: const Color(0xff000000),
+                                          fontSize: 25,
+                                          fontFamily: 'brandon',
+                                          fontWeight: FontWeight.bold
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(40),
-                                  )
-                                ),
-                              ),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Sign in",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: const Color(0xff000000),
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold
                                   ),
+                                  onPressed: () async{
+                                    errorFieldController.clear();
+
+                                    if(_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
+                                      UserEntity? user = await MyApp.mvm.
+                                      getUserbyUsernameAndPass(username, password);
+
+                                      if (user == null) {
+                                        usernameFieldController.clear();
+                                        passwordFieldController.clear();
+                                        setState(() { _hasError = true; });
+                                        errorFieldController.text = "Your username or password was incorrect.";
+                                      } else {
+                                        MyApp.user = user;
+                                        Navigator.push(context, new MaterialPageRoute(
+                                            builder: (context) => MyApp()
+                                        ));
+                                      }
+                                    }
+                                  },
                                 ),
                               ),
-                              onPressed: () async{
-                                errorFieldController.clear();
-
-                                if(_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
-                                  UserEntity? user = await MyApp.mvm.
-                                  getUserbyUsernameAndPass(username, password);
-
-                                  if (user == null) {
-                                    usernameFieldController.clear();
-                                    passwordFieldController.clear();
-                                    setState(() { _hasError = true; });
-                                    errorFieldController.text = "Your username or password was incorrect.";
-                                  } else {
-                                    MyApp.user = user;
-                                    Navigator.push(context, new MaterialPageRoute(
-                                        builder: (context) => MyApp()
-                                    ));
-                                  }
-                                }
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                          ),
-                        ]
-                      )
-                    ]
-                  )),
-              ],
+                              Padding(
+                                padding: EdgeInsets.all(5),
+                              ),
+                            ]
+                        ),
+                      ),
+                      InkWell(
+                        child: Text("No account? Sign up!", style: TextStyle(color: const Color(0xfffde259), fontSize: 16, fontFamily: 'brandon'),),
+                          onTap: (){
+                            Navigator.push(context, new MaterialPageRoute(
+                                builder: (context) => AccountCreationPage()
+                                )
+                              );
+                          },
+                      ),
+                   ]
+                  ),
+                ),
+              ]
             )
           ),
         )
-    );
+      );
   }
 
 }

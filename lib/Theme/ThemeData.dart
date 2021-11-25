@@ -8,7 +8,7 @@ class CustomTheme {
       primarySwatch: customPalette.coolGrey,
       canvasColor: const Color(0xff2a3038),
       cardColor: const Color(0xff272b32),
-      fontFamily: 'Gotham',
+      fontFamily: 'brandon',
       brightness: Brightness.dark,
       scaffoldBackgroundColor: const Color(0xff15151a),
       //3
@@ -16,7 +16,7 @@ class CustomTheme {
       buttonTheme: ButtonThemeData( // 4
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0)),
-        buttonColor: Colors.yellow,
+        buttonColor: const Color(0xfffde259),
       )
     );
   }
