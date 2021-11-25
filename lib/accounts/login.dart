@@ -205,15 +205,18 @@ class _MyCustomFormState extends State<LoginPage>{
                             ]
                         ),
                       ),
-                      InkWell(
-                        child: Text("No account? Sign up!", style: TextStyle(color: const Color(0xfffde259), fontSize: 16, fontFamily: 'brandon'),),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: InkWell(
+                          child: Text("No account? Sign up!", style: TextStyle(color: const Color(0xfffde259), fontSize: 18, fontFamily: 'brandon'),),
                           onTap: (){
                             Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) => AccountCreationPage()
-                                )
-                              );
+                            )
+                            );
                           },
-                      ),
+                        ),
+                      )
                    ]
                   ),
                 ),
