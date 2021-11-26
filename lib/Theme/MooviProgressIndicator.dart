@@ -15,7 +15,7 @@ class MooviProgressIndicator extends StatelessWidget{
           width: 100,
         ),
         SizedBox(
-          child:Image.asset("assets/CuteYellowCow_transparent.png"),
+          child:Image.asset("assets/CuteCow_transparent.png"),
           height: 98,
           width: 98,
         )

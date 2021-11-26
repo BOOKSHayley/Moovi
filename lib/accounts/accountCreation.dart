@@ -48,7 +48,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text("Create Account", style: TextStyle(fontSize: 24, fontFamily: 'brandon'),),
+          title: Text("Create Account", style: TextStyle(fontSize: 28, fontFamily: 'brandon'),),
         ),
         body: SingleChildScrollView(
           reverse: true,
@@ -66,7 +66,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                   padding: EdgeInsets.all(5),
                   child: Container(
                     height: 150,
-                    child: Image.asset("assets/CuteYellowCow_transparent.png"),
+                    child: Image.asset("assets/CuteCow_transparent.png"),
                   ),
                 ),
                 Form(
@@ -76,15 +76,15 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                       TextFormField(
                         controller: nameFieldController,
                         maxLength: 10,
-                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                        style: TextStyle(fontSize: 22, fontFamily: 'brandon'),
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
                         decoration: InputDecoration(
                           hintText: "Your Name",
                           labelText: "Name",
-                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
-                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
+                          labelStyle: TextStyle(fontSize: 22, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 18, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
@@ -102,15 +102,15 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                       TextFormField(
                         controller: usernameFieldController,
                         maxLength: 10,
-                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                        style: TextStyle(fontSize: 22, fontFamily: 'brandon'),
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
                         decoration: InputDecoration(
                           hintText: "Your username",
                           labelText: "Username",
-                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
-                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
+                          labelStyle: TextStyle(fontSize: 22, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 18, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
@@ -128,7 +128,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                       TextFormField(
                         obscureText: true,
                         controller: passwordFieldController,
-                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                        style: TextStyle(fontSize: 22, fontFamily: 'brandon'),
                         maxLength: 20,
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
@@ -136,11 +136,11 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                         decoration: InputDecoration(
                           hintText: "Create a password",
                           labelText: "Password",
-                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                          labelStyle: TextStyle(fontSize: 22, fontFamily: 'brandon'),
                           helperText: "Password must be at least 8 characters",
-                          helperStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
+                          helperStyle: TextStyle(fontSize: 18, fontFamily: 'brandon'),
                           suffixIcon: Icon(Icons.lock),
-                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 18, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                           icon: Icon(Icons.visibility_off),
@@ -160,7 +160,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                       TextFormField(
                         obscureText: true,
                         controller: reenterPasswordFieldController,
-                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                        style: TextStyle(fontSize: 22, fontFamily: 'brandon'),
                         maxLength: 20,
                         textInputAction: TextInputAction.done,
                         cursorColor: Colors.yellowAccent,
@@ -168,8 +168,8 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                         decoration: InputDecoration(
                           hintText: "Re-Enter your password",
                           labelText: "ReenterPassword",
-                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
-                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
+                          labelStyle: TextStyle(fontSize: 22, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 18, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                           icon: Icon(Icons.visibility_off),
@@ -189,7 +189,7 @@ class _MyCustomFormState extends State<AccountCreationPage> {
                         child: TextField(
                           controller: errorFieldController,
                           readOnly: true,
-                          style: TextStyle(color: Colors.red, fontSize: 20, fontFamily: 'brandon'),
+                          style: TextStyle(color: Colors.red, fontSize: 22, fontFamily: 'brandon'),
                         ),
                         visible: _hasError,
                       ),

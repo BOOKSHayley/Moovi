@@ -39,7 +39,7 @@ class _MyCustomFormState extends State<LoginPage>{
         appBar: AppBar(
           centerTitle: true,
           title: Text("Sign In", style: TextStyle(
-              fontSize: 24,
+              fontSize: 28,
               fontFamily: 'brandon'
           ),
           ),
@@ -74,7 +74,7 @@ class _MyCustomFormState extends State<LoginPage>{
                   padding: EdgeInsets.all(10),
                   child: Container(
                     height: 150,
-                    child: Image.asset("assets/CuteYellowCow_transparent.png"),
+                    child: Image.asset("assets/CuteCow_transparent.png"),
                   ),
                 ),
                 Form(
@@ -83,7 +83,7 @@ class _MyCustomFormState extends State<LoginPage>{
                     children: [
                       TextFormField(
                         controller: usernameFieldController,
-                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                        style: TextStyle(fontSize: 22, fontFamily: 'brandon'),
                         textInputAction: TextInputAction.next,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
@@ -91,8 +91,8 @@ class _MyCustomFormState extends State<LoginPage>{
                         decoration: InputDecoration(
                           hintText: "Your username",
                           labelText: "Username",
-                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
-                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
+                          labelStyle: TextStyle(fontSize: 22, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 18, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
@@ -109,7 +109,7 @@ class _MyCustomFormState extends State<LoginPage>{
                       TextFormField(
                         obscureText: true,
                         controller: passwordFieldController,
-                        style: TextStyle(fontSize: 20, fontFamily: 'brandon'),
+                        style: TextStyle(fontSize: 22, fontFamily: 'brandon'),
                         textInputAction: TextInputAction.done,
                         cursorColor: Colors.yellowAccent,
                         cursorWidth: 3,
@@ -117,8 +117,8 @@ class _MyCustomFormState extends State<LoginPage>{
                         decoration: InputDecoration(
                           hintText: "Your password",
                           labelText: "Password",
-                          labelStyle: TextStyle(fontSize: 20, fontFamily: 'brandon'),
-                          errorStyle: TextStyle(fontSize: 16, fontFamily: 'brandon'),
+                          labelStyle: TextStyle(fontSize: 22, fontFamily: 'brandon'),
+                          errorStyle: TextStyle(fontSize: 18, fontFamily: 'brandon'),
                           counterText: "",
                           contentPadding: EdgeInsets.all(10),
                         ),
@@ -135,7 +135,7 @@ class _MyCustomFormState extends State<LoginPage>{
                         child: TextField(
                           controller: errorFieldController,
                           readOnly: true,
-                          style: TextStyle(color: Colors.red, fontSize: 20, fontFamily: 'brandon'),
+                          style: TextStyle(color: Colors.red, fontSize: 22, fontFamily: 'brandon'),
                         ),
                         visible: _hasError,
                       ),
@@ -144,7 +144,7 @@ class _MyCustomFormState extends State<LoginPage>{
                           Padding(
                             padding: EdgeInsets.all(7),
                             child: InkWell(
-                              child: Text("Forgot Password?", style: TextStyle(color:Colors.grey[600], fontSize: 16, fontFamily: 'brandon'),),
+                              child: Text("Forgot Password?", style: TextStyle(color:Colors.grey[600], fontSize: 18, fontFamily: 'brandon'),),
                             ),
                           ),
 
@@ -221,7 +221,7 @@ class _MyCustomFormState extends State<LoginPage>{
                         padding: EdgeInsets.all(10),
                         child: InkWell(
                           child: Text("No account? Sign up!", style: TextStyle(color: const Color(
-                              0xffffffff), fontSize: 18, fontFamily: 'brandon'),),
+                              0xffffffff), fontSize: 20, fontFamily: 'brandon'),),
                           onTap: (){
                             Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) => AccountCreationPage()

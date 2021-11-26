@@ -1,5 +1,4 @@
 import 'package:floor/floor.dart';
-import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/database/personalQueueEntity.dart';
 
 @dao

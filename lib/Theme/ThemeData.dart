@@ -5,7 +5,7 @@ class CustomTheme {
     //1
     return ThemeData( //2
       primaryColor: const Color(0xff2a3038),
-      primarySwatch: customPalette.coolGrey,
+      primarySwatch: CustomPalette.coolGrey,
       canvasColor: const Color(0xff2a3038),
       cardColor: const Color(0xff272b32),
       fontFamily: 'brandon',
@@ -23,7 +23,7 @@ class CustomTheme {
 
 }
 
-class customPalette {
+class CustomPalette {
   static const MaterialColor coolGrey = const MaterialColor(
     0xff2a3038, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.
     const <int, Color>{
