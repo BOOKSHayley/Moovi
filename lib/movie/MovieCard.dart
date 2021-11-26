@@ -187,15 +187,15 @@ class MovieCard extends StatelessWidget {
           constraints: BoxConstraints.expand(),
           margin: EdgeInsets.only(top: 40.0),
           decoration: BoxDecoration(
-            color: const Color(0xff282b31),
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [
-            //     const Color(0xffff7300),
-            //     Colors.yellow
-            //   ]
-            // ),
+            //color: const Color(0xff282b31),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                const Color(0xff282b31),
+                const Color(0xffe07d5f),
+              ]
+            ),
             borderRadius: BorderRadius.circular(16.0)
           )
         ),
