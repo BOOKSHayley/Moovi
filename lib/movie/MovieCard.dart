@@ -193,7 +193,7 @@ class MovieCard extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 const Color(0xff282b31),
-                const Color(0xffe07d5f),
+                const Color(0xffe0d15f),
               ]
             ),
             borderRadius: BorderRadius.circular(16.0)
