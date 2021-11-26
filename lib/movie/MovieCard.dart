@@ -203,11 +203,20 @@ class MovieCardState extends State<MovieCard>{
                   ]
                 ),),
               constraints: BoxConstraints.expand(),
-              margin: EdgeInsets.only(top: 40.0),
-              decoration: BoxDecoration(
-                color: const Color(0xff282b31),
-                borderRadius: BorderRadius.circular(16.0)
-              )
+          margin: EdgeInsets.only(top: 40.0),
+          decoration: BoxDecoration(
+            //color: const Color(0xff282b31),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                const Color(0xff282b31),
+                //const Color(0xffe0d15f),
+                const Color(0xffc2ad0e)
+              ]
+            ),
+            borderRadius: BorderRadius.circular(16.0)
+          )
             ),
           ),
           verticalSwipe: false,
