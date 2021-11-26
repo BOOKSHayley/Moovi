@@ -165,13 +165,13 @@ class MovieCardState extends State<MovieCard>{
                                 child: Row(
                                   children: [
                                     Text(
-                                      "Available on: ",
+                                      "Available on: Netflix",
                                       style: _getShadowedTextStyle()
                                     ),
-                                    Image.network("https://www.freepnglogos.com/uploads/netflix-logo-0.png",
-                                      height: 20,
-                                      width: 60
-                                    )
+                                    // Image.network("https://www.freepnglogos.com/uploads/netflix-logo-0.png",
+                                    //   height: 20,
+                                    //   width: 60
+                                    // )
                                   ]
                                 ),
                               )
@@ -321,7 +321,7 @@ class MovieCardState extends State<MovieCard>{
   }
 
   Color _getRatingColor(double rating){
-    if(rating < 5) return const Color(0xffaf4646);
+    if(rating < 5) return Colors.red;//const Color(0xFFFF0000);
     if(rating < 7) return const Color(0xffefb24d);
     if(rating <= 10) return const Color(0xff9aec6e);
     else return Colors.white;
