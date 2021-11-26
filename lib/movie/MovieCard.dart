@@ -300,7 +300,6 @@ class MovieCardState extends State<MovieCard>{
 
   void handleXChange(double x){
     if(x > 0){ //going right
-      print(x);
       setState(() {
         _yesOpacity = min(0.01 * x, 1);
       });
