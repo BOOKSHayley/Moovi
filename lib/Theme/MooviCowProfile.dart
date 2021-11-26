@@ -16,7 +16,7 @@ class MooviCowProfile extends StatelessWidget {
         child: CircleAvatar(
           backgroundColor: const Color(0xff14171a),
           radius: 34,
-          child: Image.asset("assets/CuteYellowCow_transparent.png")
+          child: Image.asset("assets/CuteCow_transparent.png")
         ),
       ),
     );

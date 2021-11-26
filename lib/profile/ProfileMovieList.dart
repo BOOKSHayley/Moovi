@@ -19,7 +19,7 @@ class ProfileMovieList {
             child: Card(
               child: Container(
                 child: FadeInImage.assetNetwork(
-                  placeholder: "assets/CuteYellowCow_transparent.png",
+                  placeholder: "assets/CuteCow_transparent.png",
                   image: movies[i]!.imageUrl,
                 )
               ),

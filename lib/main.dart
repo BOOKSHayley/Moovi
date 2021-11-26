@@ -1,14 +1,13 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/friends/FriendsListMenu.dart';
-import 'accounts/login.dart';
 import 'database/DatabaseGetter.dart';
 import 'database/mainViewModel.dart';
 import 'database/userEntity.dart';
 import 'profile/UserProfile.dart';
 import 'movie/QueueMenu.dart';
 import 'package:moovi/Theme/ThemeData.dart';
-import 'package:moovi/splash.dart';
+import 'package:moovi/Theme/splash.dart';
 
 
 

@@ -1,7 +1,5 @@
-// database/person.dart
 
 import 'package:floor/floor.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:moovi/database/userEntity.dart';
 import 'package:moovi/database/movieEntity.dart';
 
