@@ -189,7 +189,7 @@ class MovieCardState extends State<MovieCard>{
                                   movie.synopsis,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                    color: const Color(0xECE8E8D0),
+                                    color: const Color(0xECFFFFFF),
                                     fontSize: 24,
                                     fontFamily: 'brandon',
                                   )
@@ -212,7 +212,7 @@ class MovieCardState extends State<MovieCard>{
               colors: [
                 const Color(0xff282b31),
                 //const Color(0xffe0d15f),
-                const Color(0xffc2ad0e)
+                const Color(0xff685b1e)
               ]
             ),
             borderRadius: BorderRadius.circular(16.0)
