@@ -92,7 +92,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
             ),
           ),
           CheckboxListTile(
-              title: Text("Action"),
+              title: Text("Action", style: TextStyle(fontSize: 20),),
             value: actionChecked,
               onChanged: (value){
                 setState(() {
@@ -103,7 +103,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-            title: Text("Adventure"),
+            title: Text("Adventure", style: TextStyle(fontSize: 20),),
             value: adventureChecked,
             onChanged: (value){
               setState(() {
@@ -114,7 +114,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-            title: Text("Comedy"),
+            title: Text("Comedy", style: TextStyle(fontSize: 20),),
             value: comedyChecked,
             onChanged: (value){
               setState(() {
@@ -125,7 +125,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-            title: Text("Crime"),
+            title: Text("Crime", style: TextStyle(fontSize: 20),),
             value: crimeChecked,
             onChanged: (value){
               setState(() {
@@ -136,7 +136,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-              title: Text("Drama"),
+              title: Text("Drama", style: TextStyle(fontSize: 20),),
             value: dramaChecked,
             onChanged: (value){
               setState(() {
@@ -147,7 +147,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-              title: Text("Fantasy"),
+              title: Text("Fantasy", style: TextStyle(fontSize: 20),),
             value: fantasyChecked,
             onChanged: (value){
               setState(() {
@@ -158,7 +158,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-              title: Text("Horror"),
+              title: Text("Horror", style: TextStyle(fontSize: 20),),
             value: horrorChecked,
             onChanged: (value){
               setState(() {
@@ -169,7 +169,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-              title: Text("Romance"),
+              title: Text("Romance", style: TextStyle(fontSize: 20),),
             value: romanceChecked,
             onChanged: (value){
               setState(() {
@@ -180,7 +180,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-              title: Text("Sci-Fi"),
+              title: Text("Sci-Fi", style: TextStyle(fontSize: 20),),
             value: scifiChecked,
             onChanged: (value){
               setState(() {
@@ -191,7 +191,7 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
           ),
 
           CheckboxListTile(
-              title: Text("Thriller"),
+              title: Text("Thriller", style: TextStyle(fontSize: 20),),
             value: thrillerChecked,
             onChanged: (value){
               setState(() {
