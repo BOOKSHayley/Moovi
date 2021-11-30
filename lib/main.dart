@@ -84,12 +84,16 @@ class _MenusStatefulWidgetState extends State<MenusStatefulWidget> {
         padding: EdgeInsets.zero,
         children: [
           Container(
-            height: 100,
+            height: 120,
             child:  DrawerHeader(child:
             Text("Filter by:",
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)
-            )
             ),
+
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
           ),
           CheckboxListTile(
               title: Text("Action", style: TextStyle(fontSize: 20),),
