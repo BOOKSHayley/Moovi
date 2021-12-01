@@ -12,7 +12,7 @@ import 'package:moovi/friends/pendingFriendsList.dart';
 
 class FriendsListMenu extends StatefulWidget {
   static List<int> numSharedMovies = [];
-  static List<String> images = ["assets/hayley.jpg"];
+  static List<String> images = ["assets/hayley.jpg", "assets/karley.jpg"];
   const FriendsListMenu({Key? key}) : super(key: key);
 
   _FriendsListMenu createState() => _FriendsListMenu();
@@ -103,7 +103,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: RandoUserProfilePic(FriendsListMenu.images[0]) //MooviCowProfile()
+                      child: RandoUserProfilePic(FriendsListMenu.images[(i % FriendsListMenu.images.length)]) //MooviCowProfile()
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 15),
