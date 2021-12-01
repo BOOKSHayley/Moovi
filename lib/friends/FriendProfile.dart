@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moovi/Theme/MooviCowProfile.dart';
+import 'package:moovi/Theme/RandoUserProfilePic.dart';
 import 'package:moovi/database/movieEntity.dart';
 import 'package:moovi/database/userEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
@@ -139,7 +140,8 @@ class FriendProfile extends StatelessWidget{
                       ),
                       Row(
                         children: [
-                          MooviCowProfile(),
+                          RandoUserProfilePic("assets/nash.jpg"),
+                          //MooviCowProfile(),
                           Padding(
                             padding: const EdgeInsets.all(10),
                             child: Column(

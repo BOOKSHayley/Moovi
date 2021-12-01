@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:moovi/Theme/MooviCowProfile.dart';
+import 'package:moovi/Theme/RandoUserProfilePic.dart';
 import 'package:moovi/accounts/login.dart';
 import 'package:moovi/database/movieEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
@@ -106,7 +107,7 @@ class UserProfile extends StatelessWidget{
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(2),
-                              child: MooviCowProfile(),
+                              child: RandoUserProfilePic("assets/nash.jpg"), //MooviCowProfile(),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(10),

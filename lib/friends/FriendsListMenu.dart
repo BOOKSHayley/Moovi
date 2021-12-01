@@ -3,6 +3,7 @@ import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:moovi/Theme/MooviCowProfile.dart';
+import 'package:moovi/Theme/RandoUserProfilePic.dart';
 import 'package:moovi/database/userEntity.dart';
 import '../Theme/MooviProgressIndicator.dart';
 import '../main.dart';
@@ -11,6 +12,7 @@ import 'package:moovi/friends/pendingFriendsList.dart';
 
 class FriendsListMenu extends StatefulWidget {
   static List<int> numSharedMovies = [];
+  static List<String> images = ["assets/hayley.jpg"];
   const FriendsListMenu({Key? key}) : super(key: key);
 
   _FriendsListMenu createState() => _FriendsListMenu();
@@ -101,7 +103,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: MooviCowProfile()
+                      child: RandoUserProfilePic(FriendsListMenu.images[0]) //MooviCowProfile()
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 15),
