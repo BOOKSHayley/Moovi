@@ -12,18 +12,20 @@ import '../profile/ProfileMovieList.dart';
 class FriendMatchedCard extends StatefulWidget {
   final friend;
   final _numSharedMovies;
+  final img;
 
-  FriendMatchedCard(this.friend, this._numSharedMovies, {Key? key}) : super(key: key);
+  FriendMatchedCard(this.friend, this._numSharedMovies, this.img, {Key? key}) : super(key: key);
 
-  _FriendMatchedCard createState() => _FriendMatchedCard(friend, _numSharedMovies);
+  _FriendMatchedCard createState() => _FriendMatchedCard(friend, _numSharedMovies, img);
 }
 
 class _FriendMatchedCard extends State<FriendMatchedCard> {
   final _numSharedMovies;
   late UserEntity friend;
+  final img;
   bool globalVar = true;
 
-  _FriendMatchedCard(this.friend, this._numSharedMovies);
+  _FriendMatchedCard(this.friend, this._numSharedMovies, this.img);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class _FriendMatchedCard extends State<FriendMatchedCard> {
                   } else {
                     cards = [ noMovies()];
                   }
-                  return FriendProfile(friend, cards, _numSharedMovies);
+                  return FriendProfile(friend, cards, _numSharedMovies, img);
               }
             }))
       ),
@@ -69,7 +71,8 @@ class FriendProfile extends StatelessWidget{
   final friend;
   final cardList;
   final _numSharedMovies;
-  const FriendProfile(this.friend, this.cardList, this._numSharedMovies, {Key? key}) : super(key: key);
+  final img;
+  const FriendProfile(this.friend, this.cardList, this._numSharedMovies, this.img, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -140,7 +143,7 @@ class FriendProfile extends StatelessWidget{
                       ),
                       Row(
                         children: [
-                          RandoUserProfilePic("assets/nash.jpg"),
+                          RandoUserProfilePic(img),
                           //MooviCowProfile(),
                           Padding(
                             padding: const EdgeInsets.all(10),

@@ -12,7 +12,7 @@ import 'package:moovi/friends/pendingFriendsList.dart';
 
 class FriendsListMenu extends StatefulWidget {
   static List<int> numSharedMovies = [];
-  static List<String> images = ["assets/hayley.jpg", "assets/karley.jpg"];
+  static List<String> images = ["assets/hayley.jpg", "assets/karley.jpg", "assets/lucas.jpg", "assets/aliza.png"];
   const FriendsListMenu({Key? key}) : super(key: key);
 
   _FriendsListMenu createState() => _FriendsListMenu();
@@ -145,7 +145,7 @@ class _FriendsListMenu extends State<FriendsListMenu> {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => FriendMatchedCard(
-                  friends[i]!, FriendsListMenu.numSharedMovies[i])));
+                  friends[i]!, FriendsListMenu.numSharedMovies[i], FriendsListMenu.images[(i % FriendsListMenu.images.length)])));
             }));
       }
     }
