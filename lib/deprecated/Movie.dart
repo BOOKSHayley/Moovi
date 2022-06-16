@@ -100,10 +100,4 @@ class Movie
     }
     return queue;
   }
-
-
-
-
-
-
 }

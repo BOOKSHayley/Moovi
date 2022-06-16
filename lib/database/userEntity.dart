@@ -1,7 +1,5 @@
-// database/person.dart
 
 import 'package:floor/floor.dart';
-import 'package:flutter/cupertino.dart';
 
 @Entity(tableName: "users_table")
 class UserEntity {
@@ -17,5 +15,9 @@ class UserEntity {
   @ColumnInfo(name:"password")
   final String password;
 
-  UserEntity(this.id, this.name, this.userName, this.password);
+  @ColumnInfo(name:"number_of_clicks")
+  int numClicks;
+
+  UserEntity(this.id, this.name, this.userName, this.password, this.numClicks);
+
 }

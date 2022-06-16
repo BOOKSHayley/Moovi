@@ -1,4 +1,3 @@
-// dao/person_dao.dart
 
 import 'package:floor/floor.dart';
 import 'package:moovi/database/movieEntity.dart';

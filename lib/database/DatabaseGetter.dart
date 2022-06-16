@@ -4,7 +4,8 @@
 import 'package:moovi/database/database.dart';
 
 class DatabaseGetter{
-  static final _databaseName = 'flutter_database_v2.db';
+  
+  static final _databaseName = 'flutter_database_v6.db';
 
   DatabaseGetter._privateConstructor();
   static final DatabaseGetter instance = DatabaseGetter._privateConstructor();

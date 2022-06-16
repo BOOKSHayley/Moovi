@@ -1,4 +1,3 @@
-// dao/person_dao.dart
 
 import 'package:floor/floor.dart';
 import 'package:moovi/database/userEntity.dart';
@@ -11,11 +10,14 @@ abstract class UserDao {
   @Query('SELECT * FROM users_table WHERE username = :userName')
   Future<UserEntity?> findUserByUsername(String userName);
 
+  @Query('SELECT * FROM users_table WHERE username = :userName AND password = :pass')
+  Future<UserEntity?> findUserByUsernameAndPass(String userName, String pass);
+
   @Query('SELECT * FROM users_table WHERE id = :id')
   Future<UserEntity?> findUserById(int id);
 
   @Insert(onConflict: OnConflictStrategy.abort)
-  Future<void> insertUser(UserEntity user);
+  Future<int> insertUser(UserEntity user);
 
   @delete
   Future<void> deleteUser(UserEntity user);

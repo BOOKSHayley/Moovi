@@ -1,4 +1,3 @@
-// dao/person_dao.dart
 
 import 'package:floor/floor.dart';
 import 'package:moovi/database/friendsEntity.dart';
@@ -11,10 +10,10 @@ abstract class FriendsDao {
   @Query('SELECT * FROM friends_table WHERE (user_one_id = :userId OR user_two_id = :userId) AND pending = 0')
   Stream<List<FriendsEntity>> findAllFriendsOfUserAsStream(int userId);
 
-  @Query('SELECT * FROM friends_table WHERE (user_one_id = :userId OR user_two_id = :userId) AND pending = 1')
+  @Query('SELECT * FROM friends_table WHERE user_two_id = :userId AND pending = 1')
   Future<List<FriendsEntity>> findAllPendingFriendsOf(int userId);
 
-  @Query('SELECT * FROM friends_table WHERE (user_one_id = :userId OR user_two_id = :userId) AND pending = 1')
+  @Query('SELECT * FROM friends_table WHERE user_two_id = :userId AND pending = 1')
   Stream<List<FriendsEntity>> findAllPendingFriendsOfUserAsStream(int userId);
 
   @Query('SELECT * FROM friends_table WHERE (user_one_id = :userId AND user_two_id = :friendId) OR (user_one_id = :friendId AND user_two_id = :userId)')

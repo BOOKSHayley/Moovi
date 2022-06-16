@@ -1,7 +1,5 @@
-// database/person.dart
 
 import 'package:floor/floor.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:moovi/database/userEntity.dart';
 
 @Entity(
@@ -39,5 +37,8 @@ class FriendsEntity {
   @ColumnInfo(name:"pending")
   final bool pending;
 
-  FriendsEntity(this.id, this.userOneId, this.userTwoId, this.pending);
+  @ColumnInfo(name:"num_shared_movies")
+  int numSharedMovies;
+
+  FriendsEntity(this.id, this.userOneId, this.userTwoId, this.pending, this.numSharedMovies);
 }
